@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>Aryan Trades</title>
+<meta name="theme-color" content="#2d1e14">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Aryan Trades">
+<style>
+  :root{
+    --paper:#fdf8f0;
+    --cream:#f8efe0;
+    --cream-2:#efe1c8;
+    --ink:#2b2016;
+    --ink-soft:#5c4c3a;
+    --ink-faint:#8d7b64;
+    --brand:#2d1e14;
+    --brand-2:#1f140d;
+    --brand-3:#4a3122;
+    --gold:#e8a33d;
+    --gold-light:#f5c878;
+    --accent:#c4531f;
+    --accent-dark:#933c14;
+    --good:#3d7a4a;
+    --bad:#b3402a;
+    --line:rgba(43,32,22,0.12);
+    --shadow:0 14px 34px -16px rgba(43,32,22,0.3);
+    --shadow-lg:0 24px 60px -20px rgba(31,20,13,0.5);
+    --ease:cubic-bezier(.16,.84,.44,1);
+    --safe-top:env(safe-area-inset-top,0px);
+    --safe-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{
+    background:var(--brand-2); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:15px; line-height:1.45; overscroll-behavior-y:none; -webkit-font-smoothing:antialiased;
+  }
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+  input,select,textarea{font-family:inherit;font-size:16px;color:var(--ink);}
+  h1,h2,h3{font-family:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,serif;font-weight:600;letter-spacing:-0.01em;color:var(--ink);}
+  .num{font-variant-numeric:tabular-nums;}
+
+  .app{max-width:480px;margin:0 auto;min-height:100dvh;background:var(--paper);position:relative;box-shadow:var(--shadow-lg);display:flex;flex-direction:column;}
+
+  /* top bar */
+  .topbar{position:sticky;top:0;z-index:40;background:var(--brand);color:var(--cream);padding-top:calc(var(--safe-top) + 14px);}
+  .topbar-inner{display:flex;align-items:center;justify-content:space-between;padding:2px 18px 14px;gap:10px;}
+  .brand-row{display:flex;align-items:center;gap:10px;min-width:0;}
+  .brand-mark{width:28px;height:28px;border-radius:8px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:Georgia,serif;font-weight:700;color:var(--brand-2);font-size:14px;}
+  .topbar h1{font-size:20px;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .date-chip{position:relative;display:flex;align-items:center;gap:6px;background:rgba(248,239,224,0.12);color:var(--cream);padding:8px 12px;border-radius:100px;font-weight:700;font-size:13px;border:1px solid rgba(248,239,224,0.2);flex-shrink:0;}
+  .date-chip svg{width:13px;height:13px;opacity:.85;}
+  .date-chip input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;}
+
+  .view{flex:1;padding:16px 16px calc(120px + var(--safe-bottom));overflow-x:hidden;}
+  .section-title{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin:22px 2px 10px;display:flex;justify-content:space-between;align-items:center;}
+  .section-title:first-child{margin-top:2px;}
+  .section-title button{font-size:12px;letter-spacing:0;text-transform:none;color:var(--accent-dark);font-weight:700;}
+
+  .date-nav{display:flex;align-items:center;justify-content:space-between;background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:6px;margin-bottom:14px;}
+  .date-nav button{width:38px;height:34px;border-radius:10px;background:var(--cream-2);font-size:19px;font-weight:700;color:var(--ink-soft);}
+  .date-nav .dn-label{font-weight:800;font-size:14px;text-align:center;}
+  .date-nav .dn-sub{display:block;font-size:11px;font-weight:700;color:var(--accent-dark);}
+
+  /* KPI */
+  .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .kpi-card{background:var(--brand);color:var(--cream);border-radius:18px;padding:14px 15px 13px;box-shadow:var(--shadow);position:relative;}
+  .kpi-card.gold{background:linear-gradient(155deg,var(--gold) 0%,#cf8520 100%);color:var(--brand-2);}
+  .kpi-card.accent{background:linear-gradient(155deg,var(--accent) 0%,var(--accent-dark) 100%);color:var(--paper);}
+  .kpi-card.light{background:var(--cream);color:var(--ink);border:1px solid var(--line);box-shadow:none;}
+  .kpi-card.wide{grid-column:1 / -1;}
+  .kpi-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;opacity:.75;}
+  .kpi-value{font-family:Georgia,"Iowan Old Style",Palatino,serif;font-size:23px;font-weight:600;margin-top:5px;line-height:1.1;}
+  .kpi-sub{font-size:11.5px;opacity:.75;margin-top:4px;}
+
+  .card{background:var(--cream);border-radius:16px;padding:12px 15px;border:1px solid var(--line);}
+  .card + .card{margin-top:10px;}
+  .list{display:flex;flex-direction:column;gap:8px;}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:11px 14px;transition:transform .18s var(--ease),background .18s var(--ease);}
+  .row:active{transform:scale(.98);background:var(--cream-2);}
+  button.row,label.row{width:100%;text-align:left;font:inherit;color:inherit;}
+  .row-main{display:flex;flex-direction:column;gap:2px;min-width:0;}
+  .row-title{font-weight:700;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .row-sub{font-size:12.5px;color:var(--ink-soft);}
+  .row-end{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;}
+  .row-amt{font-weight:800;font-size:15px;}
+  .badge{font-size:10.5px;font-weight:700;letter-spacing:.03em;padding:3px 8px;border-radius:100px;text-transform:uppercase;white-space:nowrap;}
+  .badge.good{background:rgba(61,122,74,.14);color:var(--good);}
+  .badge.warn{background:rgba(232,163,61,.2);color:#8a5a12;}
+  .badge.bad{background:rgba(179,64,42,.14);color:var(--bad);}
+  .badge.plain{background:rgba(92,76,58,.12);color:var(--ink-soft);}
+  .date-heading{font-size:12px;font-weight:700;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.06em;margin:14px 2px 8px;}
+  .empty{text-align:center;padding:34px 20px;color:var(--ink-faint);}
+  .empty h3{font-size:15px;margin-bottom:4px;color:var(--ink-soft);}
+  .empty p{font-size:13px;}
+
+  .ms{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13.5px;}
+  .ms:last-child{border-bottom:none;}
+  .ms b{font-weight:800;text-align:right;}
+  .ms small{display:block;font-size:11px;color:var(--ink-faint);font-weight:600;}
+  .ms.total{border-top:2px solid var(--ink);border-bottom:none;margin-top:2px;padding-top:10px;font-size:14.5px;}
+  .ms.total span{font-weight:800;}
+  .ms .good{color:var(--good);} .ms .bad{color:var(--bad);}
+  .ms button.link{font-size:12px;font-weight:700;color:var(--brand);background:var(--gold-light);padding:5px 10px;border-radius:100px;}
+
+  .actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .act{background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:12px 6px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--ink);transition:transform .15s var(--ease);}
+  .act:active{transform:scale(.95);background:var(--cream-2);}
+  .act .ic{width:30px;height:30px;border-radius:10px;background:var(--brand);color:var(--gold-light);display:flex;align-items:center;justify-content:center;font-size:15px;}
+
+  .rate-card{display:flex;align-items:center;justify-content:space-between;background:var(--brand);color:var(--cream);border-radius:16px;padding:12px 15px;margin-bottom:12px;}
+  .rate-card .kpi-label{opacity:.75;}
+  .rate-card .rv{font-family:Georgia,serif;font-size:22px;font-weight:600;}
+  .pill-btn{font-size:12.5px;font-weight:700;color:var(--brand-2);background:var(--gold);padding:8px 14px;border-radius:100px;flex-shrink:0;}
+  .pill-btn.ghost{background:var(--cream-2);color:var(--ink);}
+
+  .jeep-card{background:var(--cream);border:1px solid var(--line);border-radius:18px;padding:14px 14px 12px;margin-bottom:12px;}
+  .jeep-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px;}
+  .jeep-head h3{font-size:17px;}
+  .jeep-head .row-sub{margin-top:1px;}
+  .stat3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
+  .stat3 div{background:var(--paper);border-radius:10px;padding:7px 8px;border:1px solid var(--line);}
+  .stat3 span{display:block;font-size:10.5px;font-weight:700;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.04em;}
+  .stat3 b{font-size:14px;font-weight:800;}
+  .jeep-btns{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px;}
+  .jeep-btns button{background:var(--brand);color:var(--cream);border-radius:10px;padding:9px 2px;font-size:12px;font-weight:700;}
+  .jeep-btns button.alt{background:var(--cream-2);color:var(--ink);}
+  .sub-list{margin-top:8px;border-top:1px dashed var(--line);}
+  .sub-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 2px;border-bottom:1px solid var(--line);font-size:13px;}
+  .sub-row:last-child{border-bottom:none;}
+  .sub-row:active{background:var(--cream-2);}
+  .sub-row .l{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .sub-row .l small{color:var(--ink-faint);font-weight:600;}
+  .sub-row .r{display:flex;align-items:center;gap:6px;flex-shrink:0;font-weight:700;}
+
+  .search{width:100%;padding:11px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--cream);margin-bottom:10px;outline:none;}
+  .search:focus{border-color:var(--brand);}
+
+  /* buttons */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 18px;border-radius:14px;font-weight:700;font-size:14.5px;width:100%;transition:transform .2s var(--ease);}
+  .btn:active{transform:scale(.97);}
+  .btn-primary{background:var(--brand);color:var(--cream);box-shadow:0 12px 26px -12px rgba(45,30,20,.55);}
+  .btn-ghost{background:var(--cream-2);color:var(--ink);}
+  .btn-danger{background:rgba(179,64,42,.1);color:var(--bad);}
+  .btn-row{display:flex;gap:10px;}
+  .btn-row .btn{flex:1;}
+  .btn:disabled{opacity:.6;}
+
+  .fab{position:fixed;z-index:45;right:calc((100vw - min(480px,100vw))/2 + 18px);bottom:calc(88px + var(--safe-bottom));width:56px;height:56px;border-radius:50%;background:var(--accent);color:var(--paper);display:flex;align-items:center;justify-content:center;box-shadow:0 16px 32px -10px rgba(196,83,31,.6);transition:transform .25s var(--ease),opacity .25s var(--ease);}
+  .fab:active{transform:scale(.92);}
+  .fab svg{width:24px;height:24px;}
+  .fab.hidden{opacity:0;pointer-events:none;transform:scale(.6);}
+
+  .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:44;max-width:480px;margin:0 auto;background:rgba(253,248,240,0.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--line);display:flex;padding:7px 2px calc(7px + var(--safe-bottom));}
+  .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;color:var(--ink-faint);border-radius:12px;min-width:0;}
+  .tab svg{width:21px;height:21px;}
+  .tab span{font-size:10px;font-weight:700;}
+  .tab.active{color:var(--accent-dark);}
+
+  /* sheet */
+  .sheet-overlay{position:fixed;inset:0;background:rgba(24,16,10,0.45);z-index:60;opacity:0;pointer-events:none;transition:opacity .3s var(--ease);}
+  .sheet-overlay.open{opacity:1;pointer-events:auto;}
+  .sheet{position:fixed;left:0;right:0;bottom:0;z-index:61;max-width:480px;margin:0 auto;background:var(--paper);border-radius:22px 22px 0 0;box-shadow:0 -20px 60px -20px rgba(0,0,0,.4);padding:10px 20px calc(24px + var(--safe-bottom));max-height:90vh;overflow-y:auto;transform:translateY(105%);transition:transform .38s var(--ease);}
+  .sheet.open{transform:translateY(0);}
+  .sheet-handle{width:38px;height:4px;border-radius:100px;background:var(--line);margin:6px auto 14px;}
+  .sheet h2{font-size:19px;margin-bottom:14px;}
+  .field{margin-bottom:13px;}
+  .field label{display:block;font-size:11.5px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;}
+  .field input,.field select,.field textarea{width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--cream);color:var(--ink);outline:none;}
+  .field input:focus,.field select:focus{border-color:var(--brand);}
+  .field input[readonly]{opacity:.8;}
+  .field-row{display:flex;gap:10px;}
+  .field-row .field{flex:1;min-width:0;}
+  .segmented{display:flex;background:var(--cream);border-radius:12px;padding:4px;border:1.5px solid var(--line);}
+  .segmented button{flex:1;padding:9px 4px;border-radius:9px;font-weight:700;font-size:12.5px;color:var(--ink-soft);}
+  .segmented button.active{background:var(--brand);color:var(--cream);}
+  .hint{font-size:11.5px;color:var(--ink-faint);margin-top:4px;}
+  .calc-line{background:var(--cream-2);border-radius:12px;padding:10px 14px;font-size:13.5px;margin-bottom:13px;display:flex;justify-content:space-between;gap:10px;}
+  .calc-line b{font-weight:800;}
+  .toast{position:fixed;left:50%;bottom:calc(96px + var(--safe-bottom));z-index:80;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--brand-2);color:var(--cream);padding:11px 20px;border-radius:100px;font-size:13px;font-weight:700;box-shadow:var(--shadow-lg);transition:opacity .25s var(--ease),transform .25s var(--ease);white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis;}
+  .toast.show{opacity:1;transform:translate(-50%,0);}
+  .banner{background:rgba(232,163,61,.15);border:1px solid rgba(232,163,61,.4);color:#744a0e;border-radius:14px;padding:11px 14px;font-size:12.5px;margin-bottom:14px;}
+  .banner b{display:block;font-size:13px;margin-bottom:2px;}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-row">
+        <div class="brand-mark">AT</div>
+        <h1 id="pageTitle">Aryan Trades</h1>
+      </div>
+      <label class="date-chip" aria-label="Change date">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+        <span id="dateLabel"></span>
+        <input type="date" id="datePick">
+      </label>
+    </div>
+  </header>
+  <main class="view" id="view"></main>
+  <button class="fab" id="fab" aria-label="Add">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+  </button>
+  <nav class="tabbar">
+    <button class="tab active" data-tab="today">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v10h4.5v-6h3v6H18V10"/></svg>
+      <span>Today</span>
+    </button>
+    <button class="tab" data-tab="truck">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.5h11v9.5h-11zM13.5 10h4l3.5 3.5V16h-7.5"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>
+      <span>Truck</span>
+    </button>
+    <button class="tab" data-tab="jeeps">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15.5V11l2.5-4.5h9L17 11h3.5v4.5z"/><path d="M3 11h17.5"/><circle cx="7" cy="16.5" r="1.9"/><circle cx="16.5" cy="16.5" r="1.9"/></svg>
+      <span>Jeeps</span>
+    </button>
+    <button class="tab" data-tab="udhar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h11l3 3V20.5H5z"/><path d="M8.5 9h7M8.5 12.5h7M8.5 16h4.5"/></svg>
+      <span>Udhar</span>
+    </button>
+    <button class="tab" data-tab="expenses">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3.5" y="7" width="17" height="12.5" rx="2.5"/><path d="M3.5 10.5h17M14.5 15h3"/></svg>
+      <span>Expenses</span>
+    </button>
+    <button class="tab" data-tab="more">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5h16M7 16V11M12 16V6.5M17 16v-7"/></svg>
+      <span>Reports</span>
+    </button>
+  </nav>
+</div>
+<div class="sheet-overlay" id="sheetOverlay"></div>
+<div class="sheet" id="sheet"><div class="sheet-handle"></div><div id="sheetContent"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ================= storage ================= */
+  var DB_KEY = 'aryanTradesDB_v1';
+  var BACKUP_KEY = 'aryanTradesLastBackup';
+  var COLLS = ['clients','jeeps','trucks','farmPays','loads','sales','receipts','dead','stock','handovers','expenses','transfers'];
+
+  function defaultDB(){
+    var d = { settings:{ company:'Aryan Trades', labourPer100:0, openingCash:0, openingBank:0 }, rates:{} };
+    COLLS.forEach(function(c){ d[c] = []; });
+    return d;
+  }
+  function load(){
+    try{
+      var raw = localStorage.getItem(DB_KEY);
+      if(!raw) return defaultDB();
+      return normalize(JSON.parse(raw));
+    }catch(e){ return defaultDB(); }
+  }
+  function normalize(p){
+    var d = defaultDB();
+    if(p && typeof p === 'object'){
+      COLLS.forEach(function(c){ if(Array.isArray(p[c])) d[c] = p[c]; });
+      if(p.settings && typeof p.settings === 'object') for(var k in p.settings) d.settings[k] = p.settings[k];
+      if(p.rates && typeof p.rates === 'object') d.rates = p.rates;
+    }
+    return d;
+  }
+  var db = load();
+  function save(){
+    _stock = null;
+    try{ localStorage.setItem(DB_KEY, JSON.stringify(db)); return true; }
+    catch(e){ toast('Save failed — storage full. Download a backup!'); return false; }
+  }
+  function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+  /* ================= formatting ================= */
+  function todayISO(){ var d = new Date(); return new Date(d - d.getTimezoneOffset()*60000).toISOString().slice(0,10); }
+  function addDays(iso, n){ var p = iso.split('-'); return new Date(Date.UTC(+p[0], +p[1]-1, +p[2]+n)).toISOString().slice(0,10); }
+  function addMonths(iso, n){ var p = iso.split('-'); var d = new Date(Date.UTC(+p[0], +p[1]-1+n, 1)); return d.toISOString().slice(0,10); }
+  function r2(n){ return Math.round((Number(n)||0)*100)/100; }
+  function num(v){ var n = parseFloat(v); return isFinite(n) ? n : 0; }
+  function money(n){
+    n = r2(n); var neg = n < 0; n = Math.abs(n);
+    return (neg?'-':'') + '₹' + n.toLocaleString('en-IN', {maximumFractionDigits:2, minimumFractionDigits:(n%1===0?0:2)});
+  }
+  function kg(n){ return r2(n).toLocaleString('en-IN', {maximumFractionDigits:2}) + ' kg'; }
+  function birds(n){ n = Math.round(Number(n)||0); return n.toLocaleString('en-IN') + ' bird' + (n===1?'':'s'); }
+  function pct(part, whole){ return whole > 0 ? (Math.round(part/whole*1000)/10) + '%' : '—'; }
+  function dateLabel(iso){ return new Date(iso+'T00:00:00').toLocaleDateString('en-IN', {weekday:'short', day:'2-digit', month:'short', year:'numeric'}); }
+  function dateShort(iso){ return new Date(iso+'T00:00:00').toLocaleDateString('en-IN', {day:'2-digit', month:'short'}); }
+  function chipLabel(iso){ return new Date(iso+'T00:00:00').toLocaleDateString('en-IN', {weekday:'short', day:'2-digit', month:'short'}); }
+  function monthLabel(ym){ var p = ym.split('-'); return new Date(+p[0], +p[1]-1, 1).toLocaleDateString('en-IN', {month:'long', year:'numeric'}); }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function sum(list, f){ return list.reduce(function(s,x){ return s + (Number(typeof f==='function' ? f(x) : x[f])||0); }, 0); }
+  function byDateDesc(a,b){ return a.date < b.date ? 1 : (a.date > b.date ? -1 : 0); }
+
+  var EXP_CATS = [
+    ['diesel','Diesel / fuel'], ['repair','Jeep repair'], ['driver','Driver salary'], ['helper','Helper salary'],
+    ['food','Food (staff)'], ['farmwage','Farm staff wages'], ['labour','Labour (other)'], ['house','House expense'], ['other','Other']
+  ];
+  function catLabel(k){ var c = EXP_CATS.find(function(x){ return x[0]===k; }); return c ? c[1] : 'Other'; }
+
+  /* ================= lookups ================= */
+  function clientById(id){ return db.clients.find(function(c){ return c.id===id; }); }
+  function jeepById(id){ return db.jeeps.find(function(j){ return j.id===id; }); }
+  function rateFor(clientId, date){
+    var c = clientById(clientId);
+    if(c && num(c.fixedRate) > 0) return num(c.fixedRate);
+    return num(db.rates[date]) || '';
+  }
+  function farmNames(){
+    var s = {}; db.trucks.forEach(function(t){ if(t.farm) s[t.farm] = 1; }); db.farmPays.forEach(function(p){ if(p.farm) s[p.farm] = 1; });
+    return Object.keys(s).sort();
+  }
+
+  /* ================= stock (weight) tally =================
+     Farm stock carries over day to day. For each day with activity:
+       expected closing = opening + truck in − sent in jeeps (net of returns) − dead
+     If the user counted/weighed the stock that day, the counted figure becomes
+     the closing stock and the gap is recorded as weight loss. */
+  var _stock = null;
+  function computeDay(d, open){
+    var tr = db.trucks.filter(function(x){ return x.date===d; });
+    var ld = db.loads.filter(function(x){ return x.date===d; });
+    var dd = db.dead.filter(function(x){ return x.date===d; });
+    var loads = ld.filter(function(x){ return x.type!=='return'; }), rets = ld.filter(function(x){ return x.type==='return'; });
+    var o = {
+      open: open,
+      inB: sum(tr,'birds'), inK: r2(sum(tr,'kg')),
+      outB: sum(loads,'birds') - sum(rets,'birds'), outK: r2(sum(loads,'kg') - sum(rets,'kg')),
+      deadB: sum(dd,'birds'), deadK: r2(sum(dd,'kg'))
+    };
+    o.exp = { birds: open.birds + o.inB - o.outB - o.deadB, kg: r2(open.kg + o.inK - o.outK - o.deadK) };
+    o.birdsKnown = ld.concat(dd).every(function(x){ return num(x.birds) > 0 || !(num(x.kg) > 0); });
+    if(!o.birdsKnown) o.exp.birds = 0;
+    var cnt = db.stock.find(function(x){ return x.date===d; });
+    o.counted = cnt || null;
+    o.close = cnt ? { birds: num(cnt.birds), kg: num(cnt.kg) } : o.exp;
+    o.lossK = cnt ? r2(o.exp.kg - o.close.kg) : 0;
+    o.lossB = cnt ? o.exp.birds - o.close.birds : 0;
+    return o;
+  }
+  function stockSeries(){
+    if(_stock) return _stock;
+    var set = {};
+    ['trucks','loads','dead','stock'].forEach(function(c){ db[c].forEach(function(x){ set[x.date] = 1; }); });
+    var dates = Object.keys(set).sort(), out = {}, cur = { birds:0, kg:0 };
+    dates.forEach(function(d){ var o = computeDay(d, cur); out[d] = o; cur = { birds:o.close.birds, kg:o.close.kg }; });
+    _stock = { dates:dates, byDate:out };
+    return _stock;
+  }
+  function stockBefore(d){
+    var s = stockSeries();
+    for(var i=s.dates.length-1;i>=0;i--) if(s.dates[i] < d) return s.byDate[s.dates[i]].close;
+    return { birds:0, kg:0 };
+  }
+  function stockOn(d){
+    var s = stockSeries();
+    return s.byDate[d] || computeDay(d, stockBefore(d));
+  }
+
+  /* ================= jeep day =================
+     Cash the driver should hand over = cash sales + udhar collected in cash on
+     the road − expenses the driver paid from that cash (diesel etc). */
+  function jeepDay(jeepId, d){
+    function mine(x){ return x.date===d && x.jeepId===jeepId; }
+    var ld = db.loads.filter(mine);
+    var loads = ld.filter(function(x){ return x.type!=='return'; }), rets = ld.filter(function(x){ return x.type==='return'; });
+    var sales = db.sales.filter(mine);
+    var rc = db.receipts.filter(function(x){ return mine(x) && x.mode==='cash'; });
+    var ex = db.expenses.filter(function(x){ return mine(x) && x.mode==='driver'; });
+    var hv = db.handovers.filter(mine);
+    var o = {
+      ld: ld, sales: sales, hv: hv, rc: rc, ex: ex,
+      loadK: r2(sum(loads,'kg')), loadB: sum(loads,'birds'), retK: r2(sum(rets,'kg')), retB: sum(rets,'birds'),
+      soldK: r2(sum(sales,'kg')), soldB: sum(sales,'birds'),
+      amt: r2(sum(sales,'amount')), cash: r2(sum(sales,'cash')), online: r2(sum(sales,'online')), udhar: r2(sum(sales,'udhar')),
+      rcash: r2(sum(rc,'amount')), exCash: r2(sum(ex,'amount')), handed: r2(sum(hv,'amount'))
+    };
+    o.netK = r2(o.loadK - o.retK);
+    o.lossK = r2(o.netK - o.soldK);
+    o.toHand = r2(o.cash + o.rcash - o.exCash);
+    o.diff = r2(o.handed - o.toHand);
+    o.active = ld.length || sales.length || hv.length || rc.length || ex.length;
+    return o;
+  }
+
+  /* ================= money ================= */
+  function balances(d){
+    function le(x){ return x.date <= d; }
+    var cash = num(db.settings.openingCash), bank = num(db.settings.openingBank);
+    cash += sum(db.handovers.filter(le), 'amount');
+    bank += sum(db.sales.filter(le), 'online');
+    db.receipts.filter(le).forEach(function(r){ if(r.mode==='online') bank += num(r.amount); else if(!r.jeepId) cash += num(r.amount); });
+    db.trucks.filter(le).forEach(function(t){
+      if(t.payMode==='bank') bank -= num(t.paid); else cash -= num(t.paid);
+      cash -= num(t.freight) + num(t.labour);
+    });
+    db.farmPays.filter(le).forEach(function(p){ if(p.mode==='bank') bank -= num(p.amount); else cash -= num(p.amount); });
+    db.expenses.filter(le).forEach(function(e){ if(e.mode==='bank') bank -= num(e.amount); else if(e.mode==='cash') cash -= num(e.amount); });
+    db.transfers.filter(le).forEach(function(t){ var a = num(t.amount); if(t.dir==='c2b'){ cash -= a; bank += a; } else { cash += a; bank -= a; } });
+    return { cash:r2(cash), bank:r2(bank) };
+  }
+  function clientBalance(cid){
+    var c = clientById(cid);
+    var bal = num(c && c.openingUdhar);
+    db.sales.forEach(function(s){ if(s.clientId===cid) bal += num(s.udhar); });
+    db.receipts.forEach(function(r){ if(r.clientId===cid) bal -= num(r.amount); });
+    return r2(bal);
+  }
+  function udharTotals(){
+    var owed = 0, adv = 0;
+    db.clients.forEach(function(c){ var b = clientBalance(c.id); if(b > 0) owed += b; else adv -= b; });
+    return { owed:r2(owed), adv:r2(adv) };
+  }
+  function farmBalances(){
+    var m = {};
+    db.trucks.forEach(function(t){ var f = t.farm||'Unknown farm'; m[f] = (m[f]||0) + num(t.amount) - num(t.paid); });
+    db.farmPays.forEach(function(p){ var f = p.farm||'Unknown farm'; m[f] = (m[f]||0) - num(p.amount); });
+    return Object.keys(m).map(function(f){ return { farm:f, due:r2(m[f]) }; }).filter(function(x){ return Math.abs(x.due) > 0.004; })
+      .sort(function(a,b){ return b.due - a.due; });
+  }
+
+  /* ================= monthly report ================= */
+  function monthReport(ym){
+    function inM(x){ return x.date.slice(0,7)===ym; }
+    var tr = db.trucks.filter(inM), sa = db.sales.filter(inM), ex = db.expenses.filter(inM);
+    var ld = db.loads.filter(inM), dd = db.dead.filter(inM);
+    var r = {
+      buyK: r2(sum(tr,'kg')), buyB: sum(tr,'birds'), buyAmt: r2(sum(tr,'amount')),
+      freight: r2(sum(tr,'freight')), labour: r2(sum(tr,'labour')), trucks: tr.length,
+      sellK: r2(sum(sa,'kg')), sellAmt: r2(sum(sa,'amount')),
+      cash: r2(sum(sa,'cash')), online: r2(sum(sa,'online')), udhar: r2(sum(sa,'udhar')),
+      collected: r2(sum(db.receipts.filter(inM),'amount')),
+      deadK: r2(sum(dd,'kg')), deadB: sum(dd,'birds')
+    };
+    r.avgBuy = r.buyK > 0 ? r.buyAmt / r.buyK : 0;
+    r.avgSell = r.sellK > 0 ? r.sellAmt / r.sellK : 0;
+    var lastTruck = db.trucks.filter(function(t){ return t.date.slice(0,7) <= ym; }).sort(byDateDesc)[0];
+    var valRate = r.avgBuy || (lastTruck ? num(lastTruck.rate) : 0);
+    var first = ym + '-01', next = addMonths(first, 1);
+    r.openStock = stockBefore(first); r.closeStock = stockBefore(next);
+    r.stockChange = r2((r.closeStock.kg - r.openStock.kg) * valRate);
+    r.jeepLossK = r2(sum(ld, function(x){ return x.type==='return' ? -num(x.kg) : num(x.kg); }) - r.sellK);
+    var s = stockSeries();
+    r.farmLossK = r2(s.dates.filter(function(d){ return d.slice(0,7)===ym; }).reduce(function(t,d){ return t + s.byDate[d].lossK; }, 0));
+    r.totalLossK = r2(r.jeepLossK + r.farmLossK + r.deadK);
+    r.cats = EXP_CATS.map(function(c){ return { key:c[0], label:c[1], amt: r2(sum(ex.filter(function(e){ return e.cat===c[0]; }),'amount')) }; })
+      .filter(function(c){ return c.amt; });
+    r.house = r2(sum(ex.filter(function(e){ return e.cat==='house'; }),'amount'));
+    r.business = r2(sum(ex,'amount') - r.house);
+    r.gross = r2(r.sellAmt - r.buyAmt + r.stockChange);
+    r.profit = r2(r.gross - r.freight - r.labour - r.business);
+    r.net = r2(r.profit - r.house);
+    return r;
+  }
+
+  /* ================= dom / ui helpers ================= */
+  var $view = document.getElementById('view');
+  var $title = document.getElementById('pageTitle');
+  var $fab = document.getElementById('fab');
+  var $sheet = document.getElementById('sheet');
+  var $overlay = document.getElementById('sheetOverlay');
+  var $sheetContent = document.getElementById('sheetContent');
+  var $toast = document.getElementById('toast');
+  var $dateLabel = document.getElementById('dateLabel');
+  var $datePick = document.getElementById('datePick');
+  var state = { tab:'today', date:todayISO() };
+  var TITLES = { today:null, truck:'Truck Supply', jeeps:'Jeeps & Sales', udhar:'Udhar', expenses:'Expenses', more:'Reports' };
+
+  var toastTimer;
+  function toast(msg){
+    $toast.textContent = msg; $toast.classList.add('show');
+    clearTimeout(toastTimer); toastTimer = setTimeout(function(){ $toast.classList.remove('show'); }, 2400);
+  }
+  function openSheet(html, onMount){
+    $sheetContent.innerHTML = html;
+    $sheet.scrollTop = 0;
+    $sheet.classList.add('open'); $overlay.classList.add('open');
+    if(onMount) onMount($sheetContent);
+  }
+  function closeSheet(){ $sheet.classList.remove('open'); $overlay.classList.remove('open'); }
+  $overlay.addEventListener('click', closeSheet);
+  function confirmThen(title, msg, okLabel, fn){
+    openSheet('<h2>'+esc(title)+'</h2><p style="font-size:13.5px;color:var(--ink-soft);margin-bottom:18px;">'+esc(msg)+'</p>' +
+      '<div class="btn-row"><button class="btn btn-ghost" id="cfNo">Cancel</button><button class="btn btn-danger" id="cfYes">'+esc(okLabel||'Delete')+'</button></div>',
+      function(root){
+        root.querySelector('#cfNo').onclick = closeSheet;
+        root.querySelector('#cfYes').onclick = function(){ fn(); closeSheet(); };
+      });
+  }
+  function removeRec(coll, id, label){
+    confirmThen('Delete '+(label||'entry')+'?', 'This will be permanently removed.', 'Delete', function(){
+      db[coll] = db[coll].filter(function(x){ return x.id!==id; });
+      save(); toast('Deleted'); render();
+    });
+  }
+  function upsert(coll, rec){
+    var i = db[coll].findIndex(function(x){ return x.id===rec.id; });
+    if(i < 0) db[coll].push(rec); else db[coll][i] = rec;
+    save();
+  }
+  function segmented(id, opts, cur){
+    return '<div class="segmented" id="'+id+'">' + opts.map(function(o){
+      return '<button type="button" data-v="'+o[0]+'"'+(o[0]===cur?' class="active"':'')+'>'+esc(o[1])+'</button>';
+    }).join('') + '</div>';
+  }
+  function wireSeg(root, id, onChange){
+    var wrap = root.querySelector('#'+id);
+    var val = (wrap.querySelector('.active')||{}).getAttribute ? wrap.querySelector('.active').getAttribute('data-v') : null;
+    wrap.querySelectorAll('button').forEach(function(b){
+      b.addEventListener('click', function(){
+        wrap.querySelectorAll('button').forEach(function(x){ x.classList.remove('active'); });
+        b.classList.add('active'); val = b.getAttribute('data-v'); if(onChange) onChange(val);
+      });
+    });
+    return function(){ return val; };
+  }
+  function jeepOptions(sel, allowNone){
+    return (allowNone ? '<option value="">— none —</option>' : '') + db.jeeps.map(function(j){
+      return '<option value="'+j.id+'"'+(j.id===sel?' selected':'')+'>'+esc(j.name)+(j.driver?' · '+esc(j.driver):'')+'</option>';
+    }).join('');
+  }
+  function clientOptions(sel){
+    return db.clients.slice().sort(function(a,b){ return a.name.localeCompare(b.name); }).map(function(c){
+      return '<option value="'+c.id+'"'+(c.id===sel?' selected':'')+'>'+esc(c.name)+'</option>';
+    }).join('');
+  }
+  function f(root, id){ return root.querySelector('#'+id); }
+  function emptyState(t, s){ return '<div class="empty"><h3>'+esc(t)+'</h3><p>'+esc(s)+'</p></div>'; }
+  function dateNav(){
+    var isToday = state.date === todayISO();
+    return '<div class="date-nav"><button data-dnav="-1" aria-label="Previous day">‹</button>' +
+      '<div class="dn-label">'+esc(dateLabel(state.date))+(isToday?'<span class="dn-sub">Today</span>':'<span class="dn-sub" data-dtoday style="cursor:pointer">Go to today ›</span>')+'</div>' +
+      '<button data-dnav="1" aria-label="Next day">›</button></div>';
+  }
+  function monthNav(){
+    return '<div class="date-nav"><button data-mnav="-1" aria-label="Previous month">‹</button>' +
+      '<div class="dn-label">'+esc(monthLabel(state.date.slice(0,7)))+'</div>' +
+      '<button data-mnav="1" aria-label="Next month">›</button></div>';
+  }
+  function wireNav(){
+    $view.querySelectorAll('[data-dnav]').forEach(function(b){ b.onclick = function(){ setDate(addDays(state.date, +b.getAttribute('data-dnav'))); }; });
+    $view.querySelectorAll('[data-mnav]').forEach(function(b){ b.onclick = function(){ setDate(addMonths(state.date, +b.getAttribute('data-mnav'))); }; });
+    $view.querySelectorAll('[data-dtoday]').forEach(function(b){ b.onclick = function(){ setDate(todayISO()); }; });
+  }
+  function setDate(d){ if(!d) return; state.date = d; render(); }
+  $datePick.addEventListener('change', function(){ setDate($datePick.value); });
+
+  /* ================= TODAY ================= */
+  function renderToday(){
+    var d = state.date, st = stockOn(d), rate = db.rates[d];
+    var html = dateNav();
+    if(!db.jeeps.length){
+      html += '<div class="banner"><b>Welcome to Aryan Trades</b>Start in the <b style="display:inline">Reports</b> tab → add your jeeps and set the loading/unloading wage per 100 kg. Then add clients in the Udhar tab.</div>';
+    }
+    html += '<div class="rate-card"><div><div class="kpi-label">Daily rate</div><div class="rv num">'+(rate ? money(rate)+'/kg' : 'Not set')+'</div></div>' +
+      '<button class="pill-btn" id="setRate">'+(rate?'Change':'Set rate')+'</button></div>';
+
+    html += '<div class="actions">' +
+      act('truck','🚚','Truck in') + act('load','⬆','Load jeep') + act('sale','₹','Sale') +
+      act('dead','✕','Dead birds') + act('expense','−','Expense') + act('count','⚖','Count stock') +
+      '</div>';
+
+    // weight tally
+    var jd = db.jeeps.map(function(j){ return jeepDay(j.id, d); });
+    var jNet = r2(sum(jd,'netK')), jSold = r2(sum(jd,'soldK')), jLoss = r2(jNet - jSold);
+    var base = st.open.kg + st.inK;
+    html += '<div class="section-title">Weight tally</div><div class="card">' +
+      ms('Opening stock at farm', bk(st.open)) +
+      ms('+ Truck in', bk({birds:st.inB, kg:st.inK})) +
+      ms('− Sent in jeeps <small>after returns</small>', bk({birds:st.outB, kg:st.outK})) +
+      ms('− Dead birds', bk({birds:st.deadB, kg:st.deadK})) +
+      '<div class="ms total"><span>Should be at farm</span><b class="num">'+bk(st.exp)+'</b></div>' +
+      (st.counted
+        ? ms('Counted at farm', bk(st.close)) + ms('Farm weight loss', '<span class="'+(st.lossK>0?'bad':'good')+'">'+kg(st.lossK)+' · '+pct(st.lossK, base)+'</span>')
+        : '<div class="ms"><span>Counted at farm <small>weigh/count the leftover stock to find weight loss</small></span><button class="link" data-act="count">Count</button></div>') +
+      '</div>';
+    html += '<div class="card">' +
+      ms('Jeeps: sent out (net)', kg(jNet)) + ms('Jeeps: sold', kg(jSold)) +
+      ms('Jeep weight loss', '<span class="'+(jLoss>0.004?'bad':'good')+'">'+kg(jLoss)+' · '+pct(jLoss, jNet)+'</span>') +
+      '</div>';
+
+    // money tally
+    var tAmt = r2(sum(jd,'amt')), tCash = r2(sum(jd,'cash')), tOn = r2(sum(jd,'online')), tUd = r2(sum(jd,'udhar'));
+    var dayRc = db.receipts.filter(function(r){ return r.date===d; });
+    html += '<div class="section-title">Money tally</div><div class="card">' +
+      ms('Sales ('+kg(jSold)+')', money(tAmt)) +
+      ms('Cash', money(tCash)) + ms('Online', money(tOn)) + ms('New udhar', money(tUd)) +
+      '<div class="ms total"><span>Cash + Online + Udhar</span><b class="num '+(Math.abs(tCash+tOn+tUd-tAmt)<0.01?'good':'bad')+'">'+money(tCash+tOn+tUd)+'</b></div>' +
+      (dayRc.length ? ms('Old udhar collected', money(sum(dayRc,'amount'))) : '') +
+      '</div>';
+    var active = db.jeeps.map(function(j,i){ return { j:j, o:jd[i] }; }).filter(function(x){ return x.o.active; });
+    if(active.length){
+      html += '<div class="card">';
+      active.forEach(function(x){
+        html += '<div class="ms"><span>'+esc(x.j.name)+' <small>should hand over '+money(x.o.toHand)+' · got '+money(x.o.handed)+'</small></span>'+handBadge(x.o)+'</div>';
+      });
+      html += '</div>';
+    }
+
+    // balances
+    var bal = balances(d), ud = udharTotals(), farmDue = r2(sum(farmBalances().filter(function(x){ return x.due>0; }),'due'));
+    html += '<div class="section-title">Balances <span style="text-transform:none;letter-spacing:0;font-weight:600">end of '+esc(dateShort(d))+'</span></div><div class="kpi-grid">' +
+      kpi('Cash in hand', money(bal.cash), 'from handovers & payments', '') +
+      kpi('Bank / GPay', money(bal.bank), 'match with your statement', 'gold') +
+      kpi('Udhar to collect', money(ud.owed), ud.adv ? money(ud.adv)+' advance held' : 'all clients', 'accent') +
+      kpi('Owed to farms', money(farmDue), 'Punjab farms', 'light') +
+      '</div>';
+
+    $view.innerHTML = html;
+    wireNav();
+    f($view,'setRate').onclick = function(){ openRateForm(d); };
+    $view.querySelectorAll('[data-act]').forEach(function(b){ b.onclick = function(){ quickAction(b.getAttribute('data-act')); }; });
+  }
+  function act(k, ic, label){ return '<button class="act" data-act="'+k+'"><span class="ic">'+ic+'</span>'+esc(label)+'</button>'; }
+  function ms(label, val){ return '<div class="ms"><span>'+label+'</span><b class="num">'+val+'</b></div>'; }
+  function bk(o){ return (o.birds ? esc(birds(o.birds))+' · ' : '') + kg(o.kg); }
+  function kpi(label, val, sub, cls){ return '<div class="kpi-card '+(cls||'')+'"><div class="kpi-label">'+esc(label)+'</div><div class="kpi-value num">'+val+'</div><div class="kpi-sub">'+esc(sub)+'</div></div>'; }
+  function handBadge(o){
+    if(!o.hv.length && o.toHand > 0) return '<span class="badge warn">Pending</span>';
+    if(Math.abs(o.diff) < 1) return '<span class="badge good">Tallied</span>';
+    return o.diff < 0 ? '<span class="badge bad">Short '+money(-o.diff)+'</span>' : '<span class="badge warn">Extra '+money(o.diff)+'</span>';
+  }
+  function quickAction(k){
+    if(k==='truck') return openTruckForm();
+    if(k==='load') return openLoadForm(null, null, 'load');
+    if(k==='sale') return openSaleForm();
+    if(k==='dead') return openDeadForm();
+    if(k==='expense') return openExpenseForm();
+    if(k==='count') return openStockForm(state.date);
+  }
+
+  /* ================= TRUCK ================= */
+  function renderTruck(){
+    var ym = state.date.slice(0,7);
+    var trucks = db.trucks.filter(function(t){ return t.date.slice(0,7)===ym; }).sort(byDateDesc);
+    var pays = db.farmPays.filter(function(p){ return p.date.slice(0,7)===ym; }).sort(byDateDesc);
+    var html = monthNav();
+    var fb = farmBalances();
+    html += '<div class="section-title">Owed to farms</div>';
+    if(!fb.length) html += '<div class="card"><div class="ms"><span>Nothing pending</span><b>—</b></div></div>';
+    else {
+      html += '<div class="card">';
+      fb.forEach(function(x){
+        html += '<div class="ms"><span>'+esc(x.farm)+(x.due<0?' <small>advance paid</small>':'')+'</span><span style="display:flex;align-items:center;gap:8px;"><b class="num '+(x.due>0?'bad':'good')+'">'+money(Math.abs(x.due))+'</b>' +
+          '<button class="link" data-payfarm="'+esc(x.farm)+'">Pay</button></span></div>';
+      });
+      html += '</div>';
+    }
+    html += '<div class="section-title">Trucks — '+esc(monthLabel(ym))+'</div>';
+    if(!trucks.length) html += emptyState('No trucks this month', 'Tap + when a truck arrives from Punjab.');
+    else {
+      html += '<div class="card" style="margin-bottom:10px;">' + ms(trucks.length+' truck'+(trucks.length===1?'':'s'), bk({birds:sum(trucks,'birds'), kg:sum(trucks,'kg')})) +
+        ms('Chicken cost', money(sum(trucks,'amount'))) + ms('Freight + loading labour', money(sum(trucks,'freight')+sum(trucks,'labour'))) + '</div>';
+      html += '<div class="list">' + trucks.map(function(t){
+        return '<div class="row" data-truck="'+t.id+'"><div class="row-main"><div class="row-title">'+esc(t.farm||'Truck')+'</div>' +
+          '<div class="row-sub">'+esc(dateShort(t.date))+' · '+bk(t)+' @ '+money(t.rate)+'/kg</div></div>' +
+          '<div class="row-end"><div class="row-amt num">'+money(t.amount)+'</div>' +
+          (num(t.paid) >= num(t.amount)-0.01 ? '<span class="badge good">Paid</span>' : (num(t.paid)>0 ? '<span class="badge warn">Part paid</span>' : '<span class="badge bad">Unpaid</span>')) + '</div></div>';
+      }).join('') + '</div>';
+    }
+    if(pays.length){
+      html += '<div class="section-title">Farm payments — '+esc(monthLabel(ym))+'</div><div class="list">' + pays.map(function(p){
+        return '<div class="row" data-fpay="'+p.id+'"><div class="row-main"><div class="row-title">'+esc(p.farm)+'</div><div class="row-sub">'+esc(dateShort(p.date))+' · '+(p.mode==='bank'?'Bank':'Cash')+'</div></div>' +
+          '<div class="row-end"><div class="row-amt num">'+money(p.amount)+'</div></div></div>';
+      }).join('') + '</div>';
+    }
+    $view.innerHTML = html;
+    wireNav();
+    $view.querySelectorAll('[data-truck]').forEach(function(r){ r.onclick = function(){ openTruckForm(r.getAttribute('data-truck')); }; });
+    $view.querySelectorAll('[data-payfarm]').forEach(function(b){ b.onclick = function(){ openFarmPayForm(null, b.getAttribute('data-payfarm')); }; });
+    $view.querySelectorAll('[data-fpay]').forEach(function(r){ r.onclick = function(){ openFarmPayForm(r.getAttribute('data-fpay')); }; });
+  }
+
+  function openTruckForm(id){
+    var t = id ? db.trucks.find(function(x){ return x.id===id; }) : null;
+    var per100 = num(db.settings.labourPer100);
+    var html = '<h2>'+(t?'Edit':'Truck')+' Arrival</h2>' +
+      '<datalist id="farmList">'+farmNames().map(function(n){ return '<option value="'+esc(n)+'">'; }).join('')+'</datalist>' +
+      '<div class="field-row"><div class="field"><label>Date</label><input type="date" id="tDate" value="'+(t?t.date:state.date)+'"></div>' +
+      '<div class="field"><label>Farm (Punjab)</label><input type="text" id="tFarm" list="farmList" value="'+esc(t?t.farm:'')+'" placeholder="Farm name"></div></div>' +
+      '<div class="field-row"><div class="field"><label>Birds</label><input type="number" id="tBirds" inputmode="numeric" value="'+(t&&t.birds?t.birds:'')+'"></div>' +
+      '<div class="field"><label>Weight (kg)</label><input type="number" id="tKg" inputmode="decimal" step="0.01" value="'+(t?t.kg:'')+'"></div></div>' +
+      '<div class="field-row"><div class="field"><label>Rate (₹/kg)</label><input type="number" id="tRate" inputmode="decimal" step="0.01" value="'+(t?t.rate:'')+'"></div>' +
+      '<div class="field"><label>Chicken cost</label><input type="number" id="tAmt" readonly></div></div>' +
+      '<div class="field-row"><div class="field"><label>Truck freight</label><input type="number" id="tFreight" inputmode="decimal" value="'+(t&&t.freight?t.freight:'')+'"></div>' +
+      '<div class="field"><label>Loading labour</label><input type="number" id="tLabour" inputmode="decimal" value="'+(t?(t.labour||''):'')+'"></div></div>' +
+      '<div class="hint" style="margin:-6px 0 12px;">'+(per100 ? 'Loading/unloading labour is worked out at '+money(per100)+' per 100 kg — change it if needed.' : 'Set the loading/unloading wage per 100 kg in Reports → Settings to fill this in automatically.')+' Freight &amp; labour are counted as paid in cash.</div>' +
+      '<div class="field-row"><div class="field"><label>Paid to farm now</label><input type="number" id="tPaid" inputmode="decimal" value="'+(t&&t.paid?t.paid:'')+'" placeholder="0"></div>' +
+      '<div class="field"><label>Paid from</label>'+segmented('tMode', [['bank','Bank'],['cash','Cash']], t?t.payMode||'bank':'bank')+'</div></div>' +
+      '<div class="field"><label>Note (optional)</label><input type="text" id="tNote" value="'+esc(t?t.note||'':'')+'" placeholder="Truck no., driver…"></div>' +
+      '<div class="btn-row">'+(t?'<button class="btn btn-danger" id="tDel">Delete</button>':'')+'<button class="btn btn-primary" id="tSave">Save</button></div>';
+    openSheet(html, function(root){
+      var mode = wireSeg(root, 'tMode');
+      var labourTouched = !!(t && t.labour);
+      function calc(){
+        f(root,'tAmt').value = r2(num(f(root,'tKg').value) * num(f(root,'tRate').value));
+        if(!labourTouched && per100) f(root,'tLabour').value = r2(num(f(root,'tKg').value)/100*per100) || '';
+      }
+      ['tKg','tRate'].forEach(function(i){ f(root,i).addEventListener('input', calc); });
+      f(root,'tLabour').addEventListener('input', function(){ labourTouched = true; });
+      calc();
+      f(root,'tSave').onclick = function(){
+        var kgV = num(f(root,'tKg').value);
+        if(kgV <= 0){ toast('Enter the weight'); return; }
+        var rec = t || { id:uid() };
+        rec.date = f(root,'tDate').value || state.date;
+        rec.farm = f(root,'tFarm').value.trim();
+        rec.birds = Math.round(num(f(root,'tBirds').value));
+        rec.kg = kgV; rec.rate = num(f(root,'tRate').value);
+        rec.amount = r2(rec.kg * rec.rate);
+        rec.freight = num(f(root,'tFreight').value); rec.labour = num(f(root,'tLabour').value);
+        rec.paid = Math.min(num(f(root,'tPaid').value), rec.amount); rec.payMode = mode();
+        rec.note = f(root,'tNote').value.trim();
+        upsert('trucks', rec); closeSheet(); toast('Truck saved'); render();
+      };
+      if(t) f(root,'tDel').onclick = function(){ removeRec('trucks', t.id, 'truck'); };
+    });
+  }
+
+  function openFarmPayForm(id, farm){
+    var p = id ? db.farmPays.find(function(x){ return x.id===id; }) : null;
+    var fname = p ? p.farm : (farm||'');
+    var due = farmBalances().find(function(x){ return x.farm===fname; });
+    var html = '<h2>'+(p?'Edit':'Pay')+' Farm</h2>' +
+      '<datalist id="farmList2">'+farmNames().map(function(n){ return '<option value="'+esc(n)+'">'; }).join('')+'</datalist>' +
+      '<div class="field"><label>Farm</label><input type="text" id="pFarm" list="farmList2" value="'+esc(fname)+'"></div>' +
+      (due && !p ? '<div class="calc-line"><span>Currently owed</span><b class="num">'+money(due.due)+'</b></div>' : '') +
+      '<div class="field-row"><div class="field"><label>Date</label><input type="date" id="pDate" value="'+(p?p.date:state.date)+'"></div>' +
+      '<div class="field"><label>Amount</label><input type="number" id="pAmt" inputmode="decimal" value="'+(p?p.amount:(due&&due.due>0?due.due:''))+'"></div></div>' +
+      '<div class="field"><label>Paid from</label>'+segmented('pMode', [['bank','Bank / GPay'],['cash','Cash']], p?p.mode:'bank')+'</div>' +
+      '<div class="btn-row">'+(p?'<button class="btn btn-danger" id="pDel">Delete</button>':'')+'<button class="btn btn-primary" id="pSave">Save</button></div>';
+    openSheet(html, function(root){
+      var mode = wireSeg(root, 'pMode');
+      f(root,'pSave').onclick = function(){
+        var amt = num(f(root,'pAmt').value), farmV = f(root,'pFarm').value.trim();
+        if(amt <= 0 || !farmV){ toast('Enter farm and amount'); return; }
+        var rec = p || { id:uid() };
+        rec.farm = farmV; rec.date = f(root,'pDate').value || state.date; rec.amount = amt; rec.mode = mode();
+        upsert('farmPays', rec); closeSheet(); toast('Payment saved'); render();
+      };
+      if(p) f(root,'pDel').onclick = function(){ removeRec('farmPays', p.id, 'payment'); };
+    });
+  }
+
+  /* ================= JEEPS ================= */
+  function renderJeeps(){
+    var d = state.date;
+    var html = dateNav();
+    if(!db.jeeps.length){
+      $view.innerHTML = html + emptyState('No jeeps yet', 'Add your jeeps in Reports → Jeeps.');
+      wireNav(); return;
+    }
+    db.jeeps.forEach(function(j){
+      var o = jeepDay(j.id, d);
+      html += '<div class="jeep-card"><div class="jeep-head"><div><h3>'+esc(j.name)+'</h3><div class="row-sub">'+esc([j.driver, j.helper].filter(Boolean).join(' · ')||'No driver set')+'</div></div>'+(o.active?handBadge(o):'')+'</div>';
+      html += '<div class="stat3"><div><span>Loaded</span><b class="num">'+kg(o.netK)+'</b></div><div><span>Sold</span><b class="num">'+kg(o.soldK)+'</b></div>' +
+        '<div><span>Loss</span><b class="num" style="color:'+(o.lossK>0.004?'var(--bad)':'var(--good)')+'">'+kg(o.lossK)+'</b></div></div>';
+      html += '<div class="stat3"><div><span>Cash</span><b class="num">'+money(o.cash)+'</b></div><div><span>Online</span><b class="num">'+money(o.online)+'</b></div><div><span>Udhar</span><b class="num">'+money(o.udhar)+'</b></div></div>';
+      html += '<div class="calc-line" style="margin-bottom:0"><span>Hand over '+money(o.toHand)+(o.rcash?' <small>(incl. '+money(o.rcash)+' udhar collected)</small>':'')+(o.exCash?' <small>(after '+money(o.exCash)+' spent)</small>':'')+'</span><b class="num">got '+money(o.handed)+'</b></div>';
+      var rows = '';
+      o.ld.forEach(function(l){ rows += '<div class="sub-row" data-load="'+l.id+'"><span class="l">'+(l.type==='return'?'↩ Returned to farm':'⬆ Loaded')+'</span><span class="r num">'+bk(l)+'</span></div>'; });
+      o.sales.forEach(function(s){
+        var c = clientById(s.clientId);
+        rows += '<div class="sub-row" data-sale="'+s.id+'"><span class="l">'+esc(c?c.name:'Unknown')+' <small>'+kg(s.kg)+' × '+money(s.rate)+'</small></span><span class="r num">'+money(s.amount)+' '+payBadge(s)+'</span></div>';
+      });
+      o.rc.forEach(function(r){ var c = clientById(r.clientId); rows += '<div class="sub-row" data-receipt="'+r.id+'"><span class="l">Udhar collected <small>'+esc(c?c.name:'')+'</small></span><span class="r num">'+money(r.amount)+'</span></div>'; });
+      o.ex.forEach(function(e){ rows += '<div class="sub-row" data-exp="'+e.id+'"><span class="l">Spent: '+esc(catLabel(e.cat))+'</span><span class="r num">−'+money(e.amount)+'</span></div>'; });
+      o.hv.forEach(function(h){ rows += '<div class="sub-row" data-hand="'+h.id+'"><span class="l">Cash handed over</span><span class="r num">'+money(h.amount)+'</span></div>'; });
+      if(rows) html += '<div class="sub-list">'+rows+'</div>';
+      html += '<div class="jeep-btns"><button data-jload="'+j.id+'">Load</button><button data-jsale="'+j.id+'">Sale</button><button class="alt" data-jret="'+j.id+'">Return</button><button class="alt" data-jhand="'+j.id+'">Hand over</button></div>';
+      html += '</div>';
+    });
+    $view.innerHTML = html;
+    wireNav();
+    $view.querySelectorAll('[data-jload]').forEach(function(b){ b.onclick = function(){ openLoadForm(null, b.getAttribute('data-jload'), 'load'); }; });
+    $view.querySelectorAll('[data-jret]').forEach(function(b){ b.onclick = function(){ openLoadForm(null, b.getAttribute('data-jret'), 'return'); }; });
+    $view.querySelectorAll('[data-jsale]').forEach(function(b){ b.onclick = function(){ openSaleForm(null, b.getAttribute('data-jsale')); }; });
+    $view.querySelectorAll('[data-jhand]').forEach(function(b){ b.onclick = function(){ openHandoverForm(null, b.getAttribute('data-jhand')); }; });
+    $view.querySelectorAll('[data-load]').forEach(function(r){ r.onclick = function(){ openLoadForm(r.getAttribute('data-load')); }; });
+    $view.querySelectorAll('[data-sale]').forEach(function(r){ r.onclick = function(){ openSaleForm(r.getAttribute('data-sale')); }; });
+    $view.querySelectorAll('[data-receipt]').forEach(function(r){ r.onclick = function(){ openReceiptForm(r.getAttribute('data-receipt')); }; });
+    $view.querySelectorAll('[data-exp]').forEach(function(r){ r.onclick = function(){ openExpenseForm(r.getAttribute('data-exp')); }; });
+    $view.querySelectorAll('[data-hand]').forEach(function(r){ r.onclick = function(){ openHandoverForm(r.getAttribute('data-hand')); }; });
+  }
+  function payMode(s){
+    var a = num(s.amount);
+    if(a <= 0) return 'cash';
+    if(Math.abs(num(s.cash)-a) < 0.01) return 'cash';
+    if(Math.abs(num(s.online)-a) < 0.01) return 'online';
+    if(Math.abs(num(s.udhar)-a) < 0.01) return 'udhar';
+    return 'split';
+  }
+  function payBadge(s){
+    var m = payMode(s);
+    return m==='cash' ? '<span class="badge good">Cash</span>' : m==='online' ? '<span class="badge plain">Online</span>' : m==='udhar' ? '<span class="badge bad">Udhar</span>' : '<span class="badge warn">Split</span>';
+  }
+
+  function needJeeps(){ if(!db.jeeps.length){ toast('Add a jeep first (Reports → Jeeps)'); return true; } return false; }
+
+  function openLoadForm(id, jeepId, type){
+    var l = id ? db.loads.find(function(x){ return x.id===id; }) : null;
+    if(!l && needJeeps()) return;
+    type = l ? l.type : type;
+    var html = '<h2>'+(l?'Edit ':'')+(type==='return'?'Return to Farm':'Load Jeep')+'</h2>' +
+      '<div class="field-row"><div class="field"><label>Date</label><input type="date" id="lDate" value="'+(l?l.date:state.date)+'"></div>' +
+      '<div class="field"><label>Jeep</label><select id="lJeep">'+jeepOptions(l?l.jeepId:(jeepId||(db.jeeps[0]&&db.jeeps[0].id)))+'</select></div></div>' +
+      '<div class="field">'+segmented('lType', [['load','Loaded onto jeep'],['return','Returned to farm']], type||'load')+'</div>' +
+      '<div class="field-row"><div class="field"><label>Birds</label><input type="number" id="lBirds" inputmode="numeric" value="'+(l&&l.birds?l.birds:'')+'"></div>' +
+      '<div class="field"><label>Weight (kg)</label><input type="number" id="lKg" inputmode="decimal" step="0.01" value="'+(l?l.kg:'')+'"></div></div>' +
+      '<div class="btn-row">'+(l?'<button class="btn btn-danger" id="lDel">Delete</button>':'')+'<button class="btn btn-primary" id="lSave">Save</button></div>';
+    openSheet(html, function(root){
+      var tp = wireSeg(root, 'lType');
+      f(root,'lSave').onclick = function(){
+        var kgV = num(f(root,'lKg').value);
+        if(kgV <= 0){ toast('Enter the weight'); return; }
+        var rec = l || { id:uid() };
+        rec.date = f(root,'lDate').value || state.date; rec.jeepId = f(root,'lJeep').value; rec.type = tp();
+        rec.birds = Math.round(num(f(root,'lBirds').value)); rec.kg = kgV;
+        upsert('loads', rec); closeSheet(); toast('Saved'); render();
+      };
+      if(l) f(root,'lDel').onclick = function(){ removeRec('loads', l.id); };
+      f(root,'lKg').focus();
+    });
+  }
+
+  function openSaleForm(id, jeepId, keepDate){
+    var s = id ? db.sales.find(function(x){ return x.id===id; }) : null;
+    if(!s && needJeeps()) return;
+    var date = s ? s.date : (keepDate || state.date);
+    var mode0 = s ? payMode(s) : 'cash';
+    var html = '<h2>'+(s?'Edit':'New')+' Sale</h2>' +
+      '<div class="field-row"><div class="field"><label>Date</label><input type="date" id="sDate" value="'+date+'"></div>' +
+      '<div class="field"><label>Jeep</label><select id="sJeep">'+jeepOptions(s?s.jeepId:(jeepId||(db.jeeps[0]&&db.jeeps[0].id)))+'</select></div></div>' +
+      '<div class="field"><label>Client</label><select id="sClient"><option value="">Select client…</option>'+clientOptions(s?s.clientId:'')+'<option value="__new">+ New client</option></select></div>' +
+      '<div class="field" id="sNewWrap" style="display:none;"><label>New client name</label><input type="text" id="sNewName" placeholder="Shop / person name"></div>' +
+      '<div class="calc-line" id="sBalLine" style="display:none;"></div>' +
+      '<div class="field-row"><div class="field"><label>Birds</label><input type="number" id="sBirds" inputmode="numeric" value="'+(s&&s.birds?s.birds:'')+'"></div>' +
+      '<div class="field"><label>Weight (kg)</label><input type="number" id="sKg" inputmode="decimal" step="0.01" value="'+(s?s.kg:'')+'"></div></div>' +
+      '<div class="field-row"><div class="field"><label>Rate (₹/kg)</label><input type="number" id="sRate" inputmode="decimal" step="0.01" value="'+(s?s.rate:'')+'"></div>' +
+      '<div class="field"><label>Amount</label><input type="number" id="sAmt" readonly></div></div>' +
+      '<div class="field"><label>Payment</label>'+segmented('sMode', [['cash','Cash'],['online','Online'],['udhar','Udhar'],['split','Split']], mode0)+'</div>' +
+      '<div class="field-row" id="sSplit" style="display:none;"><div class="field"><label>Cash</label><input type="number" id="sCash" inputmode="decimal" value="'+(s?s.cash||'':'')+'"></div>' +
+      '<div class="field"><label>Online</label><input type="number" id="sOnline" inputmode="decimal" value="'+(s?s.online||'':'')+'"></div></div>' +
+      '<div class="calc-line" id="sUdLine" style="display:none;"><span>Goes to udhar</span><b class="num" id="sUd"></b></div>' +
+      '<div class="btn-row">'+(s?'<button class="btn btn-danger" id="sDel">Delete</button><button class="btn btn-primary" id="sSave">Save</button>'
+        : '<button class="btn btn-ghost" id="sSave">Save</button><button class="btn btn-primary" id="sNext">Save &amp; next</button>')+'</div>';
+    openSheet(html, function(root){
+      var mode = wireSeg(root, 'sMode', sync);
+      var cSel = f(root,'sClient');
+      function amt(){ return r2(num(f(root,'sKg').value) * num(f(root,'sRate').value)); }
+      function sync(){
+        var a = amt(); f(root,'sAmt').value = a;
+        var m = mode();
+        f(root,'sSplit').style.display = m==='split' ? '' : 'none';
+        f(root,'sUdLine').style.display = (m==='split' || m==='udhar') ? '' : 'none';
+        f(root,'sUd').textContent = money(m==='udhar' ? a : Math.max(0, a - num(f(root,'sCash').value) - num(f(root,'sOnline').value)));
+      }
+      function clientChanged(fillRate){
+        var v = cSel.value;
+        f(root,'sNewWrap').style.display = v==='__new' ? '' : 'none';
+        var line = f(root,'sBalLine');
+        if(v && v!=='__new'){
+          var b = clientBalance(v);
+          line.style.display = Math.abs(b) > 0.004 ? '' : 'none';
+          line.innerHTML = '<span>'+(b>0?'Old udhar':'Advance with you')+'</span><b class="num" style="color:'+(b>0?'var(--bad)':'var(--good)')+'">'+money(Math.abs(b))+'</b>';
+          if(fillRate){ var r = rateFor(v, f(root,'sDate').value); if(r) f(root,'sRate').value = r; }
+        } else {
+          line.style.display = 'none';
+          if(fillRate && v==='__new'){ var dr = num(db.rates[f(root,'sDate').value]); if(dr) f(root,'sRate').value = dr; }
+        }
+        sync();
+      }
+      cSel.addEventListener('change', function(){ clientChanged(true); if(cSel.value==='__new') f(root,'sNewName').focus(); else f(root,'sKg').focus(); });
+      ['sKg','sRate','sCash','sOnline'].forEach(function(i){ f(root,i).addEventListener('input', sync); });
+      clientChanged(false);
+      if(!s){ var dr = num(db.rates[date]); if(dr) f(root,'sRate').value = dr; sync(); }
+
+      function doSave(next){
+        var a = amt();
+        if(num(f(root,'sKg').value) <= 0){ toast('Enter the weight'); return; }
+        var cid = cSel.value;
+        if(!cid){ toast('Pick a client'); return; }
+        if(cid==='__new'){
+          var nm = f(root,'sNewName').value.trim();
+          if(!nm){ toast('Enter the new client name'); return; }
+          var nc = { id:uid(), name:nm, phone:'', fixedRate:0, openingUdhar:0 };
+          db.clients.push(nc); cid = nc.id;
+        }
+        var rec = s || { id:uid() };
+        rec.date = f(root,'sDate').value || state.date; rec.jeepId = f(root,'sJeep').value; rec.clientId = cid;
+        rec.birds = Math.round(num(f(root,'sBirds').value)); rec.kg = num(f(root,'sKg').value); rec.rate = num(f(root,'sRate').value); rec.amount = a;
+        var m = mode();
+        if(m==='cash'){ rec.cash = a; rec.online = 0; }
+        else if(m==='online'){ rec.cash = 0; rec.online = a; }
+        else if(m==='udhar'){ rec.cash = 0; rec.online = 0; }
+        else { rec.cash = Math.min(num(f(root,'sCash').value), a); rec.online = Math.min(num(f(root,'sOnline').value), r2(a - rec.cash)); }
+        rec.udhar = r2(a - rec.cash - rec.online);
+        upsert('sales', rec); render();
+        if(next){ toast('Saved — next sale'); openSaleForm(null, rec.jeepId, rec.date); f($sheetContent,'sClient').focus(); }
+        else { closeSheet(); toast('Sale saved'); }
+      }
+      f(root,'sSave').onclick = function(){ doSave(false); };
+      if(!s) f(root,'sNext').onclick = function(){ doSave(true); };
+      if(s) f(root,'sDel').onclick = function(){ removeRec('sales', s.id, 'sale'); };
+    });
+  }
+
+  function openHandoverForm(id, jeepId){
+    var h = id ? db.handovers.find(function(x){ return x.id===id; }) : null;
+    var jid = h ? h.jeepId : jeepId, d = h ? h.date : state.date;
+    var o = jeepDay(jid, d), j = jeepById(jid);
+    var remaining = r2(o.toHand - o.handed + (h ? num(h.amount) : 0));
+    var html = '<h2>Cash Hand Over — '+esc(j?j.name:'')+'</h2>' +
+      '<div class="calc-line"><span>Should hand over today</span><b class="num">'+money(o.toHand)+'</b></div>' +
+      '<div class="field-row"><div class="field"><label>Date</label><input type="date" id="hDate" value="'+d+'"></div>' +
+      '<div class="field"><label>Cash received</label><input type="number" id="hAmt" inputmode="decimal" value="'+(h?h.amount:(remaining>0?remaining:''))+'"></div></div>' +
+      '<div class="btn-row">'+(h?'<button class="btn btn-danger" id="hDel">Delete</button>':'')+'<button class="btn btn-primary" id="hSave">Save</button></div>';
+    openSheet(html, function(root){
+      f(root,'hSave').onclick = function(){
+        var a = num(f(root,'hAmt').value);
+        if(a <= 0){ toast('Enter the amount'); return; }
+        var rec = h || { id:uid(), jeepId:jid };
+        rec.date = f(root,'hDate').value || d; rec.amount = a;
+        upsert('handovers', rec); closeSheet();
+        var after = jeepDay(jid, rec.date);
+        toast(Math.abs(after.diff) < 1 ? 'Tallied ✓' : (after.diff < 0 ? 'Short by '+money(-after.diff) : 'Extra '+money(after.diff)));
+        render();
+      };
+      if(h) f(root,'hDel').onclick = function(){ removeRec('handovers', h.id); };
+    });
+  }
+
+  function openDeadForm(id){
+    var x = id ? db.dead.find(function(r){ return r.id===id; }) : null;
+    var html = '<h2>'+(x?'Edit ':'')+'Dead Birds</h2>' +
+      '<div class="field"><label>Date</label><input type="date" id="dDate" value="'+(x?x.date:state.date)+'"></div>' +
+      '<div class="field-row"><div class="field"><label>Birds</label><input type="number" id="dBirds" inputmode="numeric" value="'+(x?x.birds||'':'')+'"></div>' +
+      '<div class="field"><label>Weight (kg)</label><input type="number" id="dKg" inputmode="decimal" value="'+(x?x.kg||'':'')+'"></div></div>' +
+      '<div class="field"><label>Note (optional)</label><input type="text" id="dNote" value="'+esc(x?x.note||'':'')+'"></div>' +
+      '<div class="btn-row">'+(x?'<button class="btn btn-danger" id="dDel">Delete</button>':'')+'<button class="btn btn-primary" id="dSave">Save</button></div>';
+    openSheet(html, function(root){
+      f(root,'dSave').onclick = function(){
+        var b = Math.round(num(f(root,'dBirds').value)), k = num(f(root,'dKg').value);
+        if(b <= 0 && k <= 0){ toast('Enter birds or weight'); return; }
+        var rec = x || { id:uid() };
+        rec.date = f(root,'dDate').value || state.date; rec.birds = b; rec.kg = k; rec.note = f(root,'dNote').value.trim();
+        upsert('dead', rec); closeSheet(); toast('Saved'); render();
+      };
+      if(x) f(root,'dDel').onclick = function(){ removeRec('dead', x.id); };
+    });
+  }
+
+  function openStockForm(d){
+    var cur = db.stock.find(function(x){ return x.date===d; });
+    var st = stockOn(d);
+    var html = '<h2>Count Stock at Farm</h2>' +
+      '<p class="hint" style="margin:-6px 0 12px;font-size:12.5px;">Weigh / count the chicken left at the farm at the end of '+esc(dateShort(d))+'. The difference from what should be there is the weight loss.</p>' +
+      '<div class="calc-line"><span>Should be at farm</span><b class="num">'+bk(st.exp)+'</b></div>' +
+      '<div class="field-row"><div class="field"><label>Birds counted</label><input type="number" id="kBirds" inputmode="numeric" value="'+(cur?cur.birds||'':'')+'"></div>' +
+      '<div class="field"><label>Weight (kg)</label><input type="number" id="kKg" inputmode="decimal" value="'+(cur?cur.kg:'')+'"></div></div>' +
+      '<div class="btn-row">'+(cur?'<button class="btn btn-danger" id="kDel">Clear count</button>':'')+'<button class="btn btn-primary" id="kSave">Save</button></div>';
+    openSheet(html, function(root){
+      f(root,'kSave').onclick = function(){
+        var k = f(root,'kKg').value;
+        if(k===''){ toast('Enter the weight (0 if nothing left)'); return; }
+        var rec = cur || { id:'stock_'+d, date:d };
+        rec.birds = Math.round(num(f(root,'kBirds').value)); rec.kg = num(k);
+        upsert('stock', rec); closeSheet();
+        var after = stockOn(d);
+        toast('Weight loss: '+kg(after.lossK)); render();
+      };
+      if(cur) f(root,'kDel').onclick = function(){ removeRec('stock', cur.id, 'count'); };
+      f(root,'kKg').focus();
+    });
+  }
+
+  function openRateForm(d){
+    var html = '<h2>Daily Rate — '+esc(dateShort(d))+'</h2>' +
+      '<div class="field"><label>Rate (₹/kg)</label><input type="number" id="rRate" inputmode="decimal" step="0.01" value="'+(db.rates[d]||'')+'"></div>' +
+      '<p class="hint" style="margin:-6px 0 14px;">Used for every client except those with their own fixed rate.</p>' +
+      '<button class="btn btn-primary" id="rSave">Save</button>';
+    openSheet(html, function(root){
+      f(root,'rSave').onclick = function(){
+        var v = num(f(root,'rRate').value);
+        if(v > 0) db.rates[d] = v; else delete db.rates[d];
+        save(); closeSheet(); toast('Rate saved'); render();
+      };
+      f(root,'rRate').focus();
+    });
+  }
+
+  /* ================= UDHAR ================= */
+  function renderUdhar(){
+    var ut = udharTotals();
+    var html = '<div class="kpi-grid" style="margin-bottom:14px;">' +
+      kpi('Udhar to collect', money(ut.owed), (function(n){ return n+' client'+(n===1?'':'s'); })(db.clients.filter(function(c){ return clientBalance(c.id) > 0.004; }).length), 'accent') +
+      kpi('Advance held', money(ut.adv), 'paid ahead by clients', 'light') + '</div>';
+    html += '<input type="search" class="search" id="uSearch" placeholder="Search client…">';
+    html += '<div class="btn-row" style="margin-bottom:12px;"><button class="btn btn-ghost" id="uAdd">+ Add client</button><button class="btn btn-primary" id="uPay">Receive payment</button></div>';
+    if(!db.clients.length) html += emptyState('No clients yet', 'Add your clients to track their udhar.');
+    else {
+      var list = db.clients.map(function(c){ return { c:c, b:clientBalance(c.id) }; }).sort(function(a,b){ return b.b - a.b || a.c.name.localeCompare(b.c.name); });
+      html += '<div class="list" id="uList">' + list.map(function(x){
+        return '<div class="row" data-client="'+x.c.id+'" data-name="'+esc(x.c.name.toLowerCase())+'"><div class="row-main"><div class="row-title">'+esc(x.c.name)+'</div>' +
+          '<div class="row-sub">'+(num(x.c.fixedRate)>0 ? 'Fixed rate '+money(x.c.fixedRate)+'/kg' : 'Daily rate')+(x.c.phone?' · '+esc(x.c.phone):'')+'</div></div>' +
+          '<div class="row-end"><div class="row-amt num" style="color:'+(x.b>0.004?'var(--bad)':'var(--good)')+'">'+money(Math.abs(x.b))+'</div>' +
+          (x.b>0.004 ? '<span class="badge bad">Udhar</span>' : x.b < -0.004 ? '<span class="badge good">Advance</span>' : '<span class="badge plain">Clear</span>') + '</div></div>';
+      }).join('') + '</div>';
+    }
+    $view.innerHTML = html;
+    f($view,'uAdd').onclick = function(){ openClientForm(); };
+    f($view,'uPay').onclick = function(){ openReceiptForm(); };
+    f($view,'uSearch').addEventListener('input', function(e){
+      var q = e.target.value.trim().toLowerCase();
+      $view.querySelectorAll('[data-client]').forEach(function(r){ r.style.display = !q || r.getAttribute('data-name').indexOf(q) >= 0 ? '' : 'none'; });
+    });
+    $view.querySelectorAll('[data-client]').forEach(function(r){ r.onclick = function(){ openClientDetail(r.getAttribute('data-client')); }; });
+  }
+
+  function openClientDetail(cid){
+    var c = clientById(cid); if(!c) return;
+    var b = clientBalance(cid);
+    var items = db.sales.filter(function(s){ return s.clientId===cid; }).map(function(s){ return { t:'s', date:s.date, r:s }; })
+      .concat(db.receipts.filter(function(r){ return r.clientId===cid; }).map(function(r){ return { t:'r', date:r.date, r:r }; }))
+      .sort(byDateDesc).slice(0, 60);
+    var html = '<h2>'+esc(c.name)+'</h2>' +
+      '<div class="calc-line"><span>'+(b>0.004?'Udhar balance':b<-0.004?'Advance with you':'Balance')+'</span><b class="num" style="color:'+(b>0.004?'var(--bad)':'var(--good)')+'">'+money(Math.abs(b))+'</b></div>' +
+      '<div class="btn-row" style="margin-bottom:14px;"><button class="btn btn-ghost" id="cdEdit">Edit client</button><button class="btn btn-primary" id="cdPay">Receive payment</button></div>';
+    if(num(c.openingUdhar)) html += '<div class="sub-row"><span class="l">Opening udhar</span><span class="r num">'+money(c.openingUdhar)+'</span></div>';
+    if(!items.length) html += '<p class="hint">No sales or payments yet.</p>';
+    else html += '<div>' + items.map(function(it){
+      if(it.t==='s'){
+        var s = it.r;
+        return '<div class="sub-row" data-sale="'+s.id+'"><span class="l">'+esc(dateShort(s.date))+' · '+kg(s.kg)+' × '+money(s.rate)+' <small>'+money(s.amount)+'</small></span><span class="r num">'+(num(s.udhar)>0?'<span style="color:var(--bad)">+'+money(s.udhar)+'</span>':'')+' '+payBadge(s)+'</span></div>';
+      }
+      var r = it.r;
+      return '<div class="sub-row" data-receipt="'+r.id+'"><span class="l">'+esc(dateShort(r.date))+' · Payment <small>'+(r.mode==='online'?'online':'cash')+'</small></span><span class="r num" style="color:var(--good)">−'+money(r.amount)+'</span></div>';
+    }).join('') + '</div>';
+    openSheet(html, function(root){
+      f(root,'cdEdit').onclick = function(){ openClientForm(cid); };
+      f(root,'cdPay').onclick = function(){ openReceiptForm(null, cid); };
+      root.querySelectorAll('[data-sale]').forEach(function(r){ r.onclick = function(){ openSaleForm(r.getAttribute('data-sale')); }; });
+      root.querySelectorAll('[data-receipt]').forEach(function(r){ r.onclick = function(){ openReceiptForm(r.getAttribute('data-receipt')); }; });
+    });
+  }
+
+  function openClientForm(id){
+    var c = id ? clientById(id) : null;
+    var html = '<h2>'+(c?'Edit':'Add')+' Client</h2>' +
+      '<div class="field"><label>Name</label><input type="text" id="cName" value="'+esc(c?c.name:'')+'" placeholder="Shop / person name"></div>' +
+      '<div class="field"><label>Phone (optional)</label><input type="tel" id="cPhone" value="'+esc(c?c.phone||'':'')+'"></div>' +
+      '<div class="field"><label>Fixed rate ₹/kg (optional)</label><input type="number" id="cRate" inputmode="decimal" value="'+(c&&num(c.fixedRate)>0?c.fixedRate:'')+'" placeholder="Leave blank to use the daily rate"></div>' +
+      '<div class="field"><label>Old udhar already pending</label><input type="number" id="cOpen" inputmode="decimal" value="'+(c&&num(c.openingUdhar)?c.openingUdhar:'')+'" placeholder="0"></div>' +
+      '<div class="btn-row">'+(c?'<button class="btn btn-danger" id="cDel">Delete</button>':'')+'<button class="btn btn-primary" id="cSave">Save</button></div>';
+    openSheet(html, function(root){
+      f(root,'cSave').onclick = function(){
+        var n = f(root,'cName').value.trim();
+        if(!n){ toast('Enter a name'); return; }
+        var rec = c || { id:uid() };
+        rec.name = n; rec.phone = f(root,'cPhone').value.trim(); rec.fixedRate = num(f(root,'cRate').value); rec.openingUdhar = num(f(root,'cOpen').value);
+        upsert('clients', rec); closeSheet(); toast('Client saved'); render();
+      };
+      if(c) f(root,'cDel').onclick = function(){
+        var used = db.sales.some(function(s){ return s.clientId===c.id; }) || db.receipts.some(function(r){ return r.clientId===c.id; });
+        if(used){ toast('This client has sales — can\'t delete'); return; }
+        removeRec('clients', c.id, 'client');
+      };
+      f(root,'cName').focus();
+    });
+  }
+
+  function openReceiptForm(id, clientId){
+    var r = id ? db.receipts.find(function(x){ return x.id===id; }) : null;
+    if(!r && !db.clients.length){ toast('Add a client first'); return; }
+    var cid = r ? r.clientId : (clientId||'');
+    var html = '<h2>'+(r?'Edit':'Receive')+' Payment</h2>' +
+      '<div class="field"><label>Client</label><select id="rClient"><option value="">Select client…</option>'+clientOptions(cid)+'</select></div>' +
+      '<div class="calc-line" id="rBal" style="display:none;"></div>' +
+      '<div class="field-row"><div class="field"><label>Date</label><input type="date" id="rDate" value="'+(r?r.date:state.date)+'"></div>' +
+      '<div class="field"><label>Amount</label><input type="number" id="rAmt" inputmode="decimal" value="'+(r?r.amount:'')+'"></div></div>' +
+      '<div class="field"><label>Paid by</label>'+segmented('rMode', [['cash','Cash'],['online','Online / GPay']], r?r.mode:'cash')+'</div>' +
+      '<div class="field" id="rJeepWrap"><label>Collected by jeep driver? (optional)</label><select id="rJeep">'+jeepOptions(r?r.jeepId:'', true)+'</select>' +
+      '<div class="hint">If a driver collected this cash, it gets added to what he must hand over.</div></div>' +
+      '<div class="btn-row">'+(r?'<button class="btn btn-danger" id="rDel">Delete</button>':'')+'<button class="btn btn-primary" id="rSave">Save</button></div>';
+    openSheet(html, function(root){
+      var mode = wireSeg(root, 'rMode', function(m){ f(root,'rJeepWrap').style.display = m==='cash' ? '' : 'none'; });
+      f(root,'rJeepWrap').style.display = mode()==='cash' ? '' : 'none';
+      function showBal(){
+        var v = f(root,'rClient').value, line = f(root,'rBal');
+        if(!v){ line.style.display = 'none'; return; }
+        var b = clientBalance(v) + (r && r.clientId===v ? num(r.amount) : 0);
+        line.style.display = ''; line.innerHTML = '<span>'+(b>=0?'Udhar pending':'Advance already')+'</span><b class="num">'+money(Math.abs(b))+'</b>';
+        if(!r && b > 0 && !f(root,'rAmt').value) f(root,'rAmt').value = r2(b);
+      }
+      f(root,'rClient').addEventListener('change', showBal); showBal();
+      f(root,'rSave').onclick = function(){
+        var a = num(f(root,'rAmt').value), c = f(root,'rClient').value;
+        if(!c){ toast('Pick a client'); return; }
+        if(a <= 0){ toast('Enter the amount'); return; }
+        var rec = r || { id:uid() };
+        rec.clientId = c; rec.date = f(root,'rDate').value || state.date; rec.amount = a; rec.mode = mode();
+        rec.jeepId = rec.mode==='cash' ? f(root,'rJeep').value : '';
+        upsert('receipts', rec); closeSheet();
+        var nb = clientBalance(c);
+        toast(nb > 0.004 ? 'Saved — '+money(nb)+' still pending' : nb < -0.004 ? 'Saved — '+money(-nb)+' advance' : 'Saved — udhar cleared');
+        render();
+      };
+      if(r) f(root,'rDel').onclick = function(){ removeRec('receipts', r.id, 'payment'); };
+    });
+  }
+
+  /* ================= EXPENSES ================= */
+  function renderExpenses(){
+    var ym = state.date.slice(0,7);
+    var ex = db.expenses.filter(function(e){ return e.date.slice(0,7)===ym; }).sort(byDateDesc);
+    var html = monthNav();
+    var house = sum(ex.filter(function(e){ return e.cat==='house'; }),'amount');
+    html += '<div class="kpi-grid" style="margin-bottom:6px;">' + kpi('Business', money(sum(ex,'amount') - house), 'jeeps, wages, farm…', '') + kpi('House', money(house), 'kept separate', 'light') + '</div>';
+    var cats = EXP_CATS.map(function(c){ return [c[1], sum(ex.filter(function(e){ return e.cat===c[0]; }),'amount')]; }).filter(function(c){ return c[1]; });
+    if(cats.length) html += '<div class="section-title">By type</div><div class="card">' + cats.map(function(c){ return ms(esc(c[0]), money(c[1])); }).join('') + '</div>';
+    html += '<div class="section-title">Entries — '+esc(monthLabel(ym))+'</div>';
+    if(!ex.length) html += emptyState('No expenses this month', 'Tap + to add diesel, salaries, repairs, house expenses…');
+    else {
+      var last = null;
+      html += '<div class="list">';
+      ex.forEach(function(e){
+        if(e.date !== last){ html += '<div class="date-heading">'+esc(dateLabel(e.date))+'</div>'; last = e.date; }
+        var j = e.jeepId ? jeepById(e.jeepId) : null;
+        html += '<div class="row" data-exp="'+e.id+'"><div class="row-main"><div class="row-title">'+esc(catLabel(e.cat))+'</div>' +
+          '<div class="row-sub">'+esc([j?j.name:'', e.note||''].filter(Boolean).join(' · ')||'—')+'</div></div>' +
+          '<div class="row-end"><div class="row-amt num">'+money(e.amount)+'</div><span class="badge plain">'+(e.mode==='bank'?'Bank':e.mode==='driver'?'Driver cash':'Cash')+'</span></div></div>';
+      });
+      html += '</div>';
+    }
+    $view.innerHTML = html;
+    wireNav();
+    $view.querySelectorAll('[data-exp]').forEach(function(r){ r.onclick = function(){ openExpenseForm(r.getAttribute('data-exp')); }; });
+  }
+
+  function openExpenseForm(id){
+    var e = id ? db.expenses.find(function(x){ return x.id===id; }) : null;
+    var html = '<h2>'+(e?'Edit':'Add')+' Expense</h2>' +
+      '<div class="field-row"><div class="field"><label>Date</label><input type="date" id="eDate" value="'+(e?e.date:state.date)+'"></div>' +
+      '<div class="field"><label>Amount</label><input type="number" id="eAmt" inputmode="decimal" value="'+(e?e.amount:'')+'"></div></div>' +
+      '<div class="field"><label>Type</label><select id="eCat">'+EXP_CATS.map(function(c){ return '<option value="'+c[0]+'"'+(e&&e.cat===c[0]?' selected':'')+'>'+c[1]+'</option>'; }).join('')+'</select></div>' +
+      '<div class="field"><label>Jeep (optional)</label><select id="eJeep">'+jeepOptions(e?e.jeepId:'', true)+'</select></div>' +
+      '<div class="field"><label>Paid from</label><div id="eModeWrap"></div></div>' +
+      '<div class="field"><label>Note (optional)</label><input type="text" id="eNote" value="'+esc(e?e.note||'':'')+'" placeholder="e.g. Ramesh — Sept salary"></div>' +
+      '<div class="btn-row">'+(e?'<button class="btn btn-danger" id="eDel">Delete</button>':'')+'<button class="btn btn-primary" id="eSave">Save</button></div>';
+    openSheet(html, function(root){
+      var mode = function(){ return 'cash'; }, cur = e ? e.mode : 'cash';
+      function drawMode(){
+        var hasJeep = !!f(root,'eJeep').value;
+        var opts = [['cash','Cash'],['bank','Bank / GPay']];
+        if(hasJeep) opts.push(['driver','Driver\'s collection']);
+        if(!hasJeep && cur==='driver') cur = 'cash';
+        f(root,'eModeWrap').innerHTML = segmented('eMode', opts, cur);
+        mode = wireSeg(root, 'eMode', function(v){ cur = v; });
+      }
+      f(root,'eJeep').addEventListener('change', drawMode); drawMode();
+      f(root,'eSave').onclick = function(){
+        var a = num(f(root,'eAmt').value);
+        if(a <= 0){ toast('Enter the amount'); return; }
+        var rec = e || { id:uid() };
+        rec.date = f(root,'eDate').value || state.date; rec.amount = a; rec.cat = f(root,'eCat').value;
+        rec.jeepId = f(root,'eJeep').value; rec.mode = mode(); rec.note = f(root,'eNote').value.trim();
+        upsert('expenses', rec); closeSheet(); toast('Expense saved'); render();
+      };
+      if(e) f(root,'eDel').onclick = function(){ removeRec('expenses', e.id, 'expense'); };
+    });
+  }
+
+  /* ================= REPORTS / SETTINGS ================= */
+  function renderMore(){
+    var ym = state.date.slice(0,7), r = monthReport(ym);
+    var html = monthNav();
+    html += '<div class="kpi-grid">' +
+      kpi('Business profit', money(r.profit), 'before house expenses', r.profit >= 0 ? '' : 'accent') +
+      kpi('Left after house', money(r.net), 'house: '+money(r.house), 'gold') + '</div>';
+    html += '<div class="section-title">Profit — '+esc(monthLabel(ym))+'</div><div class="card">' +
+      ms('Sales <small>'+kg(r.sellK)+(r.avgSell?' · avg '+money(r.avgSell)+'/kg':'')+'</small>', money(r.sellAmt)) +
+      ms('− Chicken bought <small>'+kg(r.buyK)+(r.avgBuy?' · avg '+money(r.avgBuy)+'/kg':'')+'</small>', money(r.buyAmt)) +
+      (r.stockChange ? ms((r.stockChange>0?'+':'−')+' Stock change at farm <small>'+kg(r.openStock.kg)+' → '+kg(r.closeStock.kg)+'</small>', money(Math.abs(r.stockChange))) : '') +
+      '<div class="ms total"><span>Margin on chicken</span><b class="num">'+money(r.gross)+'</b></div>' +
+      ms('− Truck freight', money(r.freight)) + ms('− Loading/unloading labour', money(r.labour)) +
+      r.cats.filter(function(c){ return c.key!=='house'; }).map(function(c){ return ms('− '+esc(c.label), money(c.amt)); }).join('') +
+      '<div class="ms total"><span>Business profit</span><b class="num '+(r.profit>=0?'good':'bad')+'">'+money(r.profit)+'</b></div>' +
+      ms('− House expenses', money(r.house)) +
+      '<div class="ms total"><span>Left after house</span><b class="num '+(r.net>=0?'good':'bad')+'">'+money(r.net)+'</b></div></div>';
+    html += '<div class="section-title">Weight — '+esc(monthLabel(ym))+'</div><div class="card">' +
+      ms('Bought ('+r.trucks+' truck'+(r.trucks===1?'':'s')+')', kg(r.buyK)) + ms('Sold', kg(r.sellK)) +
+      ms('Dead birds', (r.deadB?esc(birds(r.deadB))+' · ':'')+kg(r.deadK)) +
+      ms('Jeep weight loss', kg(r.jeepLossK)) + ms('Farm weight loss <small>on days stock was counted</small>', kg(r.farmLossK)) +
+      '<div class="ms total"><span>Total loss</span><b class="num">'+kg(r.totalLossK)+' · '+pct(r.totalLossK, r.buyK)+'</b></div></div>';
+    html += '<div class="section-title">Money in — '+esc(monthLabel(ym))+'</div><div class="card">' +
+      ms('Cash sales', money(r.cash)) + ms('Online sales', money(r.online)) + ms('Given on udhar', money(r.udhar)) + ms('Udhar collected', money(r.collected)) + '</div>';
+
+    html += '<div class="section-title">Jeeps <button id="mAddJeep">+ Add jeep</button></div>';
+    if(!db.jeeps.length) html += '<div class="card"><div class="ms"><span>No jeeps yet</span><b>—</b></div></div>';
+    else html += '<div class="list">' + db.jeeps.map(function(j){
+      return '<div class="row" data-jeep="'+j.id+'"><div class="row-main"><div class="row-title">'+esc(j.name)+'</div><div class="row-sub">'+esc([j.driver?'Driver: '+j.driver:'', j.helper?'Helper: '+j.helper:''].filter(Boolean).join(' · ')||'—')+'</div></div><div class="row-end"><span class="badge plain">Edit</span></div></div>';
+    }).join('') + '</div>';
+
+    var last = null; try{ last = localStorage.getItem(BACKUP_KEY); }catch(e){}
+    html += '<div class="section-title">Settings &amp; data</div><div class="list">' +
+      '<button class="row" id="mSettings"><div class="row-main"><div class="row-title">Settings</div><div class="row-sub">Labour wage per 100 kg, opening cash &amp; bank</div></div></button>' +
+      '<button class="row" id="mTransfer"><div class="row-main"><div class="row-title">Cash ↔ Bank transfer</div><div class="row-sub">Deposit cash to bank or withdraw</div></div></button>' +
+      '<button class="row" id="mBackup"><div class="row-main"><div class="row-title">Download backup</div><div class="row-sub">Last backup: '+(last?esc(dateLabel(last)):'never')+'</div></div></button>' +
+      '<label class="row" style="cursor:pointer"><div class="row-main"><div class="row-title">Restore from backup</div><div class="row-sub">Replaces all data on this phone</div></div><input type="file" id="mRestore" accept="application/json,.json" style="display:none"></label>' +
+      '</div>';
+    var trs = db.transfers.filter(function(t){ return t.date.slice(0,7)===ym; }).sort(byDateDesc);
+    if(trs.length){
+      html += '<div class="section-title">Transfers — '+esc(monthLabel(ym))+'</div><div class="list">' + trs.map(function(t){
+        return '<div class="row" data-transfer="'+t.id+'"><div class="row-main"><div class="row-title">'+(t.dir==='c2b'?'Cash → Bank':'Bank → Cash')+'</div><div class="row-sub">'+esc(dateShort(t.date))+'</div></div><div class="row-end"><div class="row-amt num">'+money(t.amount)+'</div></div></div>';
+      }).join('') + '</div>';
+    }
+    $view.innerHTML = html;
+    wireNav();
+    f($view,'mAddJeep').onclick = function(){ openJeepForm(); };
+    $view.querySelectorAll('[data-jeep]').forEach(function(r){ r.onclick = function(){ openJeepForm(r.getAttribute('data-jeep')); }; });
+    $view.querySelectorAll('[data-transfer]').forEach(function(r){ r.onclick = function(){ openTransferForm(r.getAttribute('data-transfer')); }; });
+    f($view,'mSettings').onclick = openSettingsForm;
+    f($view,'mTransfer').onclick = function(){ openTransferForm(); };
+    f($view,'mBackup').onclick = exportData;
+    f($view,'mRestore').addEventListener('change', importData);
+  }
+
+  function openJeepForm(id){
+    var j = id ? jeepById(id) : null;
+    var html = '<h2>'+(j?'Edit':'Add')+' Jeep</h2>' +
+      '<div class="field"><label>Jeep name / number</label><input type="text" id="jName" value="'+esc(j?j.name:'')+'" placeholder="e.g. Jeep 1 / PB 10 AB 1234"></div>' +
+      '<div class="field-row"><div class="field"><label>Driver</label><input type="text" id="jDriver" value="'+esc(j?j.driver||'':'')+'"></div>' +
+      '<div class="field"><label>Helper</label><input type="text" id="jHelper" value="'+esc(j?j.helper||'':'')+'"></div></div>' +
+      '<div class="btn-row">'+(j?'<button class="btn btn-danger" id="jDel">Delete</button>':'')+'<button class="btn btn-primary" id="jSave">Save</button></div>';
+    openSheet(html, function(root){
+      f(root,'jSave').onclick = function(){
+        var n = f(root,'jName').value.trim();
+        if(!n){ toast('Enter a jeep name'); return; }
+        var rec = j || { id:uid() };
+        rec.name = n; rec.driver = f(root,'jDriver').value.trim(); rec.helper = f(root,'jHelper').value.trim();
+        upsert('jeeps', rec); closeSheet(); toast('Jeep saved'); render();
+      };
+      if(j) f(root,'jDel').onclick = function(){
+        var used = ['loads','sales','handovers'].some(function(c){ return db[c].some(function(x){ return x.jeepId===j.id; }); });
+        if(used){ toast('This jeep has entries — can\'t delete. Rename it instead.'); return; }
+        removeRec('jeeps', j.id, 'jeep');
+      };
+      f(root,'jName').focus();
+    });
+  }
+
+  function openSettingsForm(){
+    var s = db.settings;
+    var html = '<h2>Settings</h2>' +
+      '<div class="field"><label>Business name</label><input type="text" id="stName" value="'+esc(s.company||'Aryan Trades')+'"></div>' +
+      '<div class="field"><label>Loading / unloading wage per 100 kg (₹)</label><input type="number" id="stLab" inputmode="decimal" value="'+(num(s.labourPer100)||'')+'"></div>' +
+      '<div class="field-row"><div class="field"><label>Opening cash</label><input type="number" id="stCash" inputmode="decimal" value="'+(num(s.openingCash)||'')+'"></div>' +
+      '<div class="field"><label>Opening bank</label><input type="number" id="stBank" inputmode="decimal" value="'+(num(s.openingBank)||'')+'"></div></div>' +
+      '<p class="hint" style="margin:-6px 0 14px;">Opening cash &amp; bank = what you had on the day you started using this app. Everything after is worked out from your entries.</p>' +
+      '<button class="btn btn-primary" id="stSave">Save</button>';
+    openSheet(html, function(root){
+      f(root,'stSave').onclick = function(){
+        s.company = f(root,'stName').value.trim() || 'Aryan Trades';
+        s.labourPer100 = num(f(root,'stLab').value); s.openingCash = num(f(root,'stCash').value); s.openingBank = num(f(root,'stBank').value);
+        save(); closeSheet(); toast('Settings saved'); render();
+      };
+    });
+  }
+
+  function openTransferForm(id){
+    var t = id ? db.transfers.find(function(x){ return x.id===id; }) : null;
+    var html = '<h2>Cash ↔ Bank</h2>' +
+      '<div class="field">'+segmented('xDir', [['c2b','Cash → Bank (deposit)'],['b2c','Bank → Cash (withdraw)']], t?t.dir:'c2b')+'</div>' +
+      '<div class="field-row"><div class="field"><label>Date</label><input type="date" id="xDate" value="'+(t?t.date:state.date)+'"></div>' +
+      '<div class="field"><label>Amount</label><input type="number" id="xAmt" inputmode="decimal" value="'+(t?t.amount:'')+'"></div></div>' +
+      '<div class="btn-row">'+(t?'<button class="btn btn-danger" id="xDel">Delete</button>':'')+'<button class="btn btn-primary" id="xSave">Save</button></div>';
+    openSheet(html, function(root){
+      var dir = wireSeg(root, 'xDir');
+      f(root,'xSave').onclick = function(){
+        var a = num(f(root,'xAmt').value);
+        if(a <= 0){ toast('Enter the amount'); return; }
+        var rec = t || { id:uid() };
+        rec.dir = dir(); rec.date = f(root,'xDate').value || state.date; rec.amount = a;
+        upsert('transfers', rec); closeSheet(); toast('Saved'); render();
+      };
+      if(t) f(root,'xDel').onclick = function(){ removeRec('transfers', t.id, 'transfer'); };
+    });
+  }
+
+  function exportData(){
+    var blob = new Blob([JSON.stringify(db, null, 1)], { type:'application/json' });
+    var url = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = url; a.download = 'aryan-trades-backup-' + todayISO() + '.json';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+    try{ localStorage.setItem(BACKUP_KEY, todayISO()); }catch(e){}
+    toast('Backup downloaded'); render();
+  }
+  function importData(ev){
+    var file = ev.target.files[0]; if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(){
+      var parsed;
+      try{ parsed = JSON.parse(reader.result); }catch(e){ toast('Not a valid backup file'); return; }
+      if(!parsed || !Array.isArray(parsed.sales)){ toast('Not an Aryan Trades backup'); return; }
+      confirmThen('Restore backup?', 'All data on this phone will be replaced with the backup.', 'Restore', function(){
+        db = normalize(parsed); save(); toast('Backup restored'); render();
+      });
+    };
+    reader.readAsText(file);
+    ev.target.value = '';
+  }
+
+  /* ================= render dispatch ================= */
+  var FAB = {
+    today: function(){ openSaleForm(); },
+    truck: function(){ openTruckForm(); },
+    jeeps: function(){ openSaleForm(); },
+    udhar: function(){ openReceiptForm(); },
+    expenses: function(){ openExpenseForm(); }
+  };
+  $fab.addEventListener('click', function(){ if(FAB[state.tab]) FAB[state.tab](); });
+  document.querySelectorAll('.tab').forEach(function(t){
+    t.addEventListener('click', function(){
+      state.tab = t.getAttribute('data-tab');
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.toggle('active', x===t); });
+      window.scrollTo(0,0); render();
+    });
+  });
+  function render(){
+    $title.textContent = TITLES[state.tab] || db.settings.company || 'Aryan Trades';
+    document.title = db.settings.company || 'Aryan Trades';
+    $dateLabel.textContent = state.date===todayISO() ? 'Today' : chipLabel(state.date);
+    $datePick.value = state.date;
+    $fab.classList.toggle('hidden', !FAB[state.tab]);
+    ({ today:renderToday, truck:renderTruck, jeeps:renderJeeps, udhar:renderUdhar, expenses:renderExpenses, more:renderMore })[state.tab]();
+  }
+  render();
+
+  if('serviceWorker' in navigator && (location.protocol==='http:' || location.protocol==='https:')){
+    window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
+  }
+})();
+</script>
+</body>
+</html>
