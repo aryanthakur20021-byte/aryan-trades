@@ -1,7 +1,8 @@
 {
+  "id": "/aryan-trades/",
   "name": "Aryan Trades",
   "short_name": "Aryan Trades",
-  "description": "Poultry supply, jeep sales, udhar and expense ledger",
+  "description": "Poultry supply, jeep sales, udhar, staff and expense ledger",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -9,8 +10,9 @@
   "theme_color": "#2d1e14",
   "orientation": "portrait",
   "icons": [
-    { "src": "icon.svg", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any" },
-    { "src": "icon.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any" },
-    { "src": "icon.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "maskable" }
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
   ]
 }

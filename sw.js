@@ -1,4 +1,4 @@
-const CACHE = 'aryan-trades-v2';
+﻿const CACHE = 'aryan-trades-v3';
 const ASSETS = ['./index.html', './manifest.json', './icon.svg'];
 
 self.addEventListener('install', (e) => {
