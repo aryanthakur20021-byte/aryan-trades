@@ -14,6 +14,7 @@
 <style>
   :root{
     --paper:#fdf8f0;
+    --paper-2:#f4ebdb;
     --cream:#f8efe0;
     --cream-2:#efe1c8;
     --ink:#2b2016;
@@ -37,11 +38,7 @@
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
   html,body{height:100%;}
-  body{
-    background:var(--brand-2); color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-    font-size:15px; line-height:1.45; overscroll-behavior-y:none; -webkit-font-smoothing:antialiased;
-  }
+  body{background:var(--brand-2);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.45;overscroll-behavior-y:none;-webkit-font-smoothing:antialiased;}
   button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
   input,select,textarea{font-family:inherit;font-size:16px;color:var(--ink);}
   h1,h2,h3{font-family:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,serif;font-weight:600;letter-spacing:-0.01em;color:var(--ink);}
@@ -49,18 +46,20 @@
 
   .app{max-width:480px;margin:0 auto;min-height:100dvh;background:var(--paper);position:relative;box-shadow:var(--shadow-lg);display:flex;flex-direction:column;}
 
-  /* top bar */
   .topbar{position:sticky;top:0;z-index:40;background:var(--brand);color:var(--cream);padding-top:calc(var(--safe-top) + 14px);}
   .topbar-inner{display:flex;align-items:center;justify-content:space-between;padding:2px 18px 14px;gap:10px;}
   .brand-row{display:flex;align-items:center;gap:10px;min-width:0;}
-  .brand-mark{width:28px;height:28px;border-radius:8px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:Georgia,serif;font-weight:700;color:var(--brand-2);font-size:14px;}
+  .brand-mark{width:28px;height:28px;border-radius:8px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:Georgia,serif;font-weight:700;color:var(--brand-2);font-size:13px;}
   .topbar h1{font-size:20px;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .date-chip{position:relative;display:flex;align-items:center;gap:6px;background:rgba(248,239,224,0.12);color:var(--cream);padding:8px 12px;border-radius:100px;font-weight:700;font-size:13px;border:1px solid rgba(248,239,224,0.2);flex-shrink:0;}
+  .top-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+  .sync-dot{width:9px;height:9px;border-radius:50%;background:rgba(248,239,224,.3);}
+  .sync-dot.on{background:#6fcf87;box-shadow:0 0 0 3px rgba(111,207,135,.2);}
+  .date-chip{position:relative;display:flex;align-items:center;gap:6px;background:rgba(248,239,224,0.12);color:var(--cream);padding:8px 12px;border-radius:100px;font-weight:700;font-size:13px;border:1px solid rgba(248,239,224,0.2);}
   .date-chip svg{width:13px;height:13px;opacity:.85;}
   .date-chip input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;}
 
-  .view{flex:1;padding:16px 16px calc(120px + var(--safe-bottom));overflow-x:hidden;}
-  .section-title{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin:22px 2px 10px;display:flex;justify-content:space-between;align-items:center;}
+  .view{flex:1;padding:16px 16px calc(120px + var(--safe-bottom));overflow-x:hidden;width:100%;}
+  .section-title{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin:22px 2px 10px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
   .section-title:first-child{margin-top:2px;}
   .section-title button{font-size:12px;letter-spacing:0;text-transform:none;color:var(--accent-dark);font-weight:700;}
 
@@ -68,10 +67,11 @@
   .date-nav button{width:38px;height:34px;border-radius:10px;background:var(--cream-2);font-size:19px;font-weight:700;color:var(--ink-soft);}
   .date-nav .dn-label{font-weight:800;font-size:14px;text-align:center;}
   .date-nav .dn-sub{display:block;font-size:11px;font-weight:700;color:var(--accent-dark);}
+  .back-btn{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:13px;color:var(--accent-dark);margin-bottom:12px;}
 
-  /* KPI */
   .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  .kpi-card{background:var(--brand);color:var(--cream);border-radius:18px;padding:14px 15px 13px;box-shadow:var(--shadow);position:relative;}
+  .kpi-card{background:var(--brand);color:var(--cream);border-radius:18px;padding:14px 15px 13px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+  .kpi-card::after{content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,.05);}
   .kpi-card.gold{background:linear-gradient(155deg,var(--gold) 0%,#cf8520 100%);color:var(--brand-2);}
   .kpi-card.accent{background:linear-gradient(155deg,var(--accent) 0%,var(--accent-dark) 100%);color:var(--paper);}
   .kpi-card.light{background:var(--cream);color:var(--ink);border:1px solid var(--line);box-shadow:none;}
@@ -85,8 +85,8 @@
   .list{display:flex;flex-direction:column;gap:8px;}
   .row{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:11px 14px;transition:transform .18s var(--ease),background .18s var(--ease);}
   .row:active{transform:scale(.98);background:var(--cream-2);}
-  button.row,label.row{width:100%;text-align:left;font:inherit;color:inherit;}
-  .row-main{display:flex;flex-direction:column;gap:2px;min-width:0;}
+  button.row,label.row{width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;}
+  .row-main{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1;}
   .row-title{font-weight:700;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .row-sub{font-size:12.5px;color:var(--ink-soft);}
   .row-end{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;}
@@ -108,42 +108,67 @@
   .ms.total{border-top:2px solid var(--ink);border-bottom:none;margin-top:2px;padding-top:10px;font-size:14.5px;}
   .ms.total span{font-weight:800;}
   .ms .good{color:var(--good);} .ms .bad{color:var(--bad);}
-  .ms button.link{font-size:12px;font-weight:700;color:var(--brand);background:var(--gold-light);padding:5px 10px;border-radius:100px;}
+  .link{font-size:12px;font-weight:700;color:var(--brand);background:var(--gold-light);padding:5px 10px;border-radius:100px;flex-shrink:0;}
 
   .actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
   .act{background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:12px 6px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--ink);transition:transform .15s var(--ease);}
   .act:active{transform:scale(.95);background:var(--cream-2);}
-  .act .ic{width:30px;height:30px;border-radius:10px;background:var(--brand);color:var(--gold-light);display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .act .ic{width:30px;height:30px;border-radius:10px;background:var(--brand);color:var(--gold-light);display:flex;align-items:center;justify-content:center;}
+  .act .ic svg{width:17px;height:17px;}
 
-  .rate-card{display:flex;align-items:center;justify-content:space-between;background:var(--brand);color:var(--cream);border-radius:16px;padding:12px 15px;margin-bottom:12px;}
-  .rate-card .kpi-label{opacity:.75;}
-  .rate-card .rv{font-family:Georgia,serif;font-size:22px;font-weight:600;}
+  .rate-card{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,var(--brand) 0%,var(--brand-3) 100%);color:var(--cream);border-radius:18px;padding:14px 16px;margin-bottom:12px;box-shadow:var(--shadow);}
+  .rate-card .rv{font-family:Georgia,serif;font-size:24px;font-weight:600;}
   .pill-btn{font-size:12.5px;font-weight:700;color:var(--brand-2);background:var(--gold);padding:8px 14px;border-radius:100px;flex-shrink:0;}
-  .pill-btn.ghost{background:var(--cream-2);color:var(--ink);}
 
   .jeep-card{background:var(--cream);border:1px solid var(--line);border-radius:18px;padding:14px 14px 12px;margin-bottom:12px;}
   .jeep-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px;}
   .jeep-head h3{font-size:17px;}
-  .jeep-head .row-sub{margin-top:1px;}
   .stat3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
-  .stat3 div{background:var(--paper);border-radius:10px;padding:7px 8px;border:1px solid var(--line);}
+  .stat3 div{background:var(--paper);border-radius:10px;padding:7px 8px;border:1px solid var(--line);min-width:0;}
   .stat3 span{display:block;font-size:10.5px;font-weight:700;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.04em;}
   .stat3 b{font-size:14px;font-weight:800;}
   .jeep-btns{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px;}
   .jeep-btns button{background:var(--brand);color:var(--cream);border-radius:10px;padding:9px 2px;font-size:12px;font-weight:700;}
   .jeep-btns button.alt{background:var(--cream-2);color:var(--ink);}
   .sub-list{margin-top:8px;border-top:1px dashed var(--line);}
-  .sub-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 2px;border-bottom:1px solid var(--line);font-size:13px;}
+  .sub-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 2px;border-bottom:1px solid var(--line);font-size:13px;cursor:pointer;}
   .sub-row:last-child{border-bottom:none;}
   .sub-row:active{background:var(--cream-2);}
   .sub-row .l{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .sub-row .l small{color:var(--ink-faint);font-weight:600;}
   .sub-row .r{display:flex;align-items:center;gap:6px;flex-shrink:0;font-weight:700;}
+  .calc-line{background:var(--cream-2);border-radius:12px;padding:10px 14px;font-size:13.5px;margin-bottom:13px;display:flex;justify-content:space-between;gap:10px;}
+  .calc-line b{font-weight:800;}
 
   .search{width:100%;padding:11px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--cream);margin-bottom:10px;outline:none;}
   .search:focus{border-color:var(--brand);}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+  .chip{padding:8px 13px;border-radius:100px;background:var(--cream-2);font-size:12.5px;font-weight:700;color:var(--ink-soft);}
+  .chip.active{background:var(--brand);color:var(--cream);}
 
-  /* buttons */
+  .att{display:flex;gap:4px;flex-shrink:0;}
+  .att button{width:34px;height:32px;border-radius:9px;background:var(--cream-2);font-weight:800;font-size:12.5px;color:var(--ink-faint);}
+  .att button.on.P{background:var(--good);color:#fff;}
+  .att button.on.H{background:var(--gold);color:var(--brand-2);}
+  .att button.on.A{background:var(--bad);color:#fff;}
+  .att button.dflt.P{box-shadow:inset 0 0 0 1.5px var(--good);color:var(--good);}
+
+  .hub{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .hub button{background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:14px;text-align:left;display:flex;flex-direction:column;gap:8px;transition:transform .15s var(--ease);}
+  .hub button:active{transform:scale(.97);}
+  .hub .ic{width:34px;height:34px;border-radius:11px;background:var(--brand);color:var(--gold-light);display:flex;align-items:center;justify-content:center;}
+  .hub .ic svg{width:18px;height:18px;}
+  .hub b{font-size:14px;}
+  .hub small{font-size:11.5px;color:var(--ink-faint);font-weight:600;line-height:1.3;}
+
+  .tbl-wrap{overflow-x:auto;background:var(--cream);border:1px solid var(--line);border-radius:14px;-webkit-overflow-scrolling:touch;}
+  .tbl{border-collapse:collapse;width:100%;font-size:12.5px;white-space:nowrap;}
+  .tbl th,.tbl td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:right;}
+  .tbl th:first-child,.tbl td:first-child{text-align:left;position:sticky;left:0;background:var(--cream);z-index:1;}
+  .tbl th{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-faint);font-weight:700;}
+  .tbl tr.tot td{font-weight:800;border-top:2px solid var(--ink);border-bottom:none;}
+  .tbl td.bad{color:var(--bad);font-weight:700;} .tbl td.good{color:var(--good);font-weight:700;}
+
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 18px;border-radius:14px;font-weight:700;font-size:14.5px;width:100%;transition:transform .2s var(--ease);}
   .btn:active{transform:scale(.97);}
   .btn-primary{background:var(--brand);color:var(--cream);box-shadow:0 12px 26px -12px rgba(45,30,20,.55);}
@@ -159,12 +184,12 @@
   .fab.hidden{opacity:0;pointer-events:none;transform:scale(.6);}
 
   .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:44;max-width:480px;margin:0 auto;background:rgba(253,248,240,0.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--line);display:flex;padding:7px 2px calc(7px + var(--safe-bottom));}
+  .side-brand{display:none;}
   .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;color:var(--ink-faint);border-radius:12px;min-width:0;}
-  .tab svg{width:21px;height:21px;}
+  .tab svg{width:21px;height:21px;flex-shrink:0;}
   .tab span{font-size:10px;font-weight:700;}
   .tab.active{color:var(--accent-dark);}
 
-  /* sheet */
   .sheet-overlay{position:fixed;inset:0;background:rgba(24,16,10,0.45);z-index:60;opacity:0;pointer-events:none;transition:opacity .3s var(--ease);}
   .sheet-overlay.open{opacity:1;pointer-events:auto;}
   .sheet{position:fixed;left:0;right:0;bottom:0;z-index:61;max-width:480px;margin:0 auto;background:var(--paper);border-radius:22px 22px 0 0;box-shadow:0 -20px 60px -20px rgba(0,0,0,.4);padding:10px 20px calc(24px + var(--safe-bottom));max-height:90vh;overflow-y:auto;transform:translateY(105%);transition:transform .38s var(--ease);}
@@ -182,12 +207,48 @@
   .segmented button{flex:1;padding:9px 4px;border-radius:9px;font-weight:700;font-size:12.5px;color:var(--ink-soft);}
   .segmented button.active{background:var(--brand);color:var(--cream);}
   .hint{font-size:11.5px;color:var(--ink-faint);margin-top:4px;}
-  .calc-line{background:var(--cream-2);border-radius:12px;padding:10px 14px;font-size:13.5px;margin-bottom:13px;display:flex;justify-content:space-between;gap:10px;}
-  .calc-line b{font-weight:800;}
   .toast{position:fixed;left:50%;bottom:calc(96px + var(--safe-bottom));z-index:80;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--brand-2);color:var(--cream);padding:11px 20px;border-radius:100px;font-size:13px;font-weight:700;box-shadow:var(--shadow-lg);transition:opacity .25s var(--ease),transform .25s var(--ease);white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis;}
   .toast.show{opacity:1;transform:translate(-50%,0);}
   .banner{background:rgba(232,163,61,.15);border:1px solid rgba(232,163,61,.4);color:#744a0e;border-radius:14px;padding:11px 14px;font-size:12.5px;margin-bottom:14px;}
   .banner b{display:block;font-size:13px;margin-bottom:2px;}
+
+  /* ---------- laptop / desktop ---------- */
+  @media (min-width: 960px){
+    body{background:var(--paper-2);}
+    .app{max-width:none;margin:0;padding-left:236px;box-shadow:none;background:var(--paper-2);}
+    .topbar{background:var(--paper-2);color:var(--ink);padding-top:18px;border-bottom:1px solid var(--line);}
+    .topbar-inner{max-width:1140px;margin:0 auto;padding:4px 32px 16px;}
+    .topbar h1{color:var(--ink);font-size:26px;}
+    .topbar .brand-mark{display:none;}
+    .date-chip{background:var(--brand);color:var(--cream);border:none;padding:10px 16px;}
+    .sync-dot{background:rgba(43,32,22,.2);}
+    .view{max-width:1140px;margin:0 auto;padding:24px 32px 60px;}
+    .tabbar{top:0;bottom:0;left:0;right:auto;width:236px;max-width:none;margin:0;flex-direction:column;justify-content:flex-start;gap:4px;padding:22px 14px;border-top:none;background:var(--brand);backdrop-filter:none;-webkit-backdrop-filter:none;}
+    .side-brand{display:flex;align-items:center;gap:10px;padding:4px 8px 26px;color:var(--cream);}
+    .side-brand .brand-mark{width:36px;height:36px;font-size:15px;}
+    .side-brand b{font-family:Georgia,serif;font-size:19px;font-weight:600;}
+    .side-brand small{display:block;font-size:11px;opacity:.6;font-weight:600;}
+    .tab{flex:none;flex-direction:row;gap:12px;padding:12px 14px;color:rgba(248,239,224,.62);}
+    .tab span{font-size:14px;}
+    .tab:hover{background:rgba(248,239,224,.06);}
+    .tab.active{background:rgba(248,239,224,.12);color:var(--gold-light);}
+    .kpi-grid{grid-template-columns:repeat(4,1fr);}
+    .actions{grid-template-columns:repeat(6,1fr);}
+    .cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+    .cols .section-title:first-child{margin-top:22px;}
+    .jeep-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;}
+    .jeep-grid .jeep-card{margin:0;}
+    .list.grid2{display:grid;grid-template-columns:1fr 1fr;}
+    .hub{grid-template-columns:repeat(4,1fr);}
+    .card,.row,.jeep-card,.act,.hub button,.tbl-wrap,.date-nav{background:var(--paper);}
+    .tbl th:first-child,.tbl td:first-child{background:var(--paper);}
+    .sheet{left:50%;right:auto;bottom:auto;top:50%;width:560px;max-width:92vw;border-radius:22px;max-height:88vh;transform:translate(-50%,-46%);opacity:0;pointer-events:none;transition:opacity .25s var(--ease),transform .3s var(--ease);padding:14px 26px 26px;}
+    .sheet.open{transform:translate(-50%,-50%);opacity:1;pointer-events:auto;}
+    .sheet-handle{display:none;}
+    .fab{right:36px;bottom:36px;}
+    .toast{bottom:36px;}
+    .row:hover,.act:hover,.hub button:hover{border-color:rgba(43,32,22,.25);}
+  }
 </style>
 </head>
 <body>
@@ -198,11 +259,14 @@
         <div class="brand-mark">AT</div>
         <h1 id="pageTitle">Aryan Trades</h1>
       </div>
-      <label class="date-chip" aria-label="Change date">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
-        <span id="dateLabel"></span>
-        <input type="date" id="datePick">
-      </label>
+      <div class="top-right">
+        <span class="sync-dot" id="syncDot" title="Not signed in — data only on this device"></span>
+        <label class="date-chip" aria-label="Change date">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+          <span id="dateLabel"></span>
+          <input type="date" id="datePick">
+        </label>
+      </div>
     </div>
   </header>
   <main class="view" id="view"></main>
@@ -210,13 +274,10 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
   </button>
   <nav class="tabbar">
+    <div class="side-brand"><div class="brand-mark">AT</div><div><b id="sideName">Aryan Trades</b><small>Poultry ledger</small></div></div>
     <button class="tab active" data-tab="today">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v10h4.5v-6h3v6H18V10"/></svg>
       <span>Today</span>
-    </button>
-    <button class="tab" data-tab="truck">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.5h11v9.5h-11zM13.5 10h4l3.5 3.5V16h-7.5"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>
-      <span>Truck</span>
     </button>
     <button class="tab" data-tab="jeeps">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15.5V11l2.5-4.5h9L17 11h3.5v4.5z"/><path d="M3 11h17.5"/><circle cx="7" cy="16.5" r="1.9"/><circle cx="16.5" cy="16.5" r="1.9"/></svg>
@@ -226,13 +287,17 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h11l3 3V20.5H5z"/><path d="M8.5 9h7M8.5 12.5h7M8.5 16h4.5"/></svg>
       <span>Udhar</span>
     </button>
+    <button class="tab" data-tab="staff">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19.5c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.6c2.4 0 4 1.5 4.5 4.4"/></svg>
+      <span>Staff</span>
+    </button>
     <button class="tab" data-tab="expenses">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3.5" y="7" width="17" height="12.5" rx="2.5"/><path d="M3.5 10.5h17M14.5 15h3"/></svg>
       <span>Expenses</span>
     </button>
     <button class="tab" data-tab="more">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5h16M7 16V11M12 16V6.5M17 16v-7"/></svg>
-      <span>Reports</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg>
+      <span>More</span>
     </button>
   </nav>
 </div>
@@ -244,22 +309,19 @@
 (function(){
   'use strict';
 
-  /* ================= storage ================= */
+  /* ================= storage =================
+     Guest data lives under DB_KEY. Once signed in, the account's data is
+     cached under CLOUD_KEY instead, so signing out returns to guest data. */
   var DB_KEY = 'aryanTradesDB_v1';
+  var CLOUD_KEY = 'aryanTradesCloudCache_v1';
   var BACKUP_KEY = 'aryanTradesLastBackup';
-  var COLLS = ['clients','jeeps','trucks','farmPays','loads','sales','receipts','dead','stock','handovers','expenses','transfers'];
+  var AUTH_FLAG_KEY = 'aryanTradesAuthUsed';
+  var COLLS = ['clients','jeeps','trucks','farmPays','loads','sales','receipts','dead','stock','handovers','expenses','transfers','workers','attendance'];
 
   function defaultDB(){
     var d = { settings:{ company:'Aryan Trades', labourPer100:0, openingCash:0, openingBank:0 }, rates:{} };
     COLLS.forEach(function(c){ d[c] = []; });
     return d;
-  }
-  function load(){
-    try{
-      var raw = localStorage.getItem(DB_KEY);
-      if(!raw) return defaultDB();
-      return normalize(JSON.parse(raw));
-    }catch(e){ return defaultDB(); }
   }
   function normalize(p){
     var d = defaultDB();
@@ -270,18 +332,217 @@
     }
     return d;
   }
+  function authFlag(){ try{ return localStorage.getItem(AUTH_FLAG_KEY)==='1'; }catch(e){ return false; } }
+  function storeKey(){ return authFlag() ? CLOUD_KEY : DB_KEY; }
+  function load(key){
+    try{ var raw = localStorage.getItem(key || storeKey()); return raw ? normalize(JSON.parse(raw)) : defaultDB(); }
+    catch(e){ return defaultDB(); }
+  }
   var db = load();
   function save(){
     _stock = null;
-    try{ localStorage.setItem(DB_KEY, JSON.stringify(db)); return true; }
+    try{ localStorage.setItem(storeKey(), JSON.stringify(db)); return true; }
     catch(e){ toast('Save failed — storage full. Download a backup!'); return false; }
   }
   function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+  function isEmptyDB(d){ return COLLS.every(function(c){ return !(d[c]||[]).length; }); }
+
+  /* ================= cloud sync (optional account) =================
+     Same Firebase project as Dairy Ledger, but everything lives under its own
+     root (at_users/{uid}/...), so the two apps never touch each other's data.
+     One Firestore document per record — two devices editing different
+     records never overwrite each other. */
+  var FIREBASE_CONFIG = {
+    apiKey: "AIzaSyC4mBfQDO5cZXOWX6vNIshmg4NyJxP2yJI",
+    authDomain: "dairy-ledger-8d2e4.firebaseapp.com",
+    projectId: "dairy-ledger-8d2e4",
+    storageBucket: "dairy-ledger-8d2e4.firebasestorage.app",
+    messagingSenderId: "557857723065",
+    appId: "1:557857723065:web:b42e234a90a8224d31c168"
+  };
+  var FB_VER = '10.14.1';
+  var CLOUD_ROOT = 'at_users';
+  var CLOUD_COLLS = COLLS.concat(['rates','meta']);
+  var authUser = null, fb = null, fbPromise = null, unsubs = [], pendingOps = [];
+
+  function loadFirebase(){
+    if(fbPromise) return fbPromise;
+    var base = 'https://www.gstatic.com/firebasejs/'+FB_VER+'/';
+    fbPromise = Promise.all([import(base+'firebase-app.js'), import(base+'firebase-auth.js'), import(base+'firebase-firestore.js')]).then(function(m){
+      var app = m[0].initializeApp(FIREBASE_CONFIG, 'aryan-trades');
+      var fs;
+      try{ fs = m[2].initializeFirestore(app, { localCache: m[2].persistentLocalCache({ tabManager: m[2].persistentMultipleTabManager() }) }); }
+      catch(e){ fs = m[2].getFirestore(app); }
+      fb = { authMod:m[1], fsMod:m[2], auth:m[1].getAuth(app), fs:fs };
+      return fb;
+    }).catch(function(err){ fbPromise = null; throw err; });
+    return fbPromise;
+  }
+  function cleanRec(r){ return JSON.parse(JSON.stringify(r)); }
+  function cloudDoc(coll, id){ return fb.fsMod.doc(fb.fs, CLOUD_ROOT, authUser.uid, coll, id); }
+  function cloudPut(coll, rec){
+    if(authUser && fb) fb.fsMod.setDoc(cloudDoc(coll, rec.id), cleanRec(rec)).catch(function(){ toast('Could not sync — will retry when online'); });
+    else if(authFlag()) pendingOps.push({ op:'put', coll:coll, rec:cleanRec(rec) });
+  }
+  function cloudDel(coll, id){
+    if(authUser && fb) fb.fsMod.deleteDoc(cloudDoc(coll, id)).catch(function(){});
+    else if(authFlag()) pendingOps.push({ op:'del', coll:coll, id:id });
+  }
+  function cloudShape(d){
+    var out = {};
+    COLLS.forEach(function(c){ out[c] = d[c] || []; });
+    out.rates = Object.keys(d.rates||{}).map(function(k){ return { id:k, rate:d.rates[k] }; });
+    out.meta = [Object.assign({ id:'settings' }, d.settings)];
+    return out;
+  }
+  function commitChunks(ops){
+    var chain = Promise.resolve();
+    for(var i=0;i<ops.length;i+=400){
+      (function(slice){
+        chain = chain.then(function(){
+          var b = fb.fsMod.writeBatch(fb.fs);
+          slice.forEach(function(o){ if(o.del) b.delete(o.ref); else b.set(o.ref, o.data); });
+          return b.commit();
+        });
+      })(ops.slice(i, i+400));
+    }
+    return chain;
+  }
+  function uploadAll(uidStr, d, skipMeta){
+    var shaped = cloudShape(d), ops = [];
+    CLOUD_COLLS.forEach(function(c){
+      if(skipMeta && c==='meta') return;
+      shaped[c].forEach(function(r){ ops.push({ ref: fb.fsMod.doc(fb.fs, CLOUD_ROOT, uidStr, c, r.id), data: cleanRec(r) }); });
+    });
+    return commitChunks(ops);
+  }
+  function cloudReplaceAll(d){
+    if(!authUser || !fb) return;
+    Promise.all(CLOUD_COLLS.map(function(c){ return fb.fsMod.getDocs(fb.fsMod.collection(fb.fs, CLOUD_ROOT, authUser.uid, c)); })).then(function(snaps){
+      var ops = [];
+      snaps.forEach(function(s){ s.forEach(function(docSnap){ ops.push({ del:true, ref:docSnap.ref }); }); });
+      return commitChunks(ops);
+    }).then(function(){ return uploadAll(authUser.uid, d); }).catch(function(){ toast('Could not sync the restore — try again online'); });
+  }
+  function cloudIsEmpty(uidStr){
+    return Promise.all(CLOUD_COLLS.map(function(c){ return fb.fsMod.getDocs(fb.fsMod.collection(fb.fs, CLOUD_ROOT, uidStr, c)); }))
+      .then(function(snaps){ return snaps.every(function(s){ return s.empty; }); });
+  }
+  function detach(){ unsubs.forEach(function(u){ u(); }); unsubs = []; }
+  function attach(uidStr){
+    detach();
+    CLOUD_COLLS.forEach(function(c){
+      var ref = fb.fsMod.collection(fb.fs, CLOUD_ROOT, uidStr, c);
+      unsubs.push(fb.fsMod.onSnapshot(ref, function(snap){
+        var docs = snap.docs.map(function(x){ return x.data(); });
+        if(c==='rates'){ db.rates = {}; docs.forEach(function(r){ db.rates[r.id] = r.rate; }); }
+        else if(c==='meta'){
+          var s = docs.find(function(x){ return x.id==='settings'; });
+          if(s){ var ns = defaultDB().settings; for(var k in s) if(k!=='id') ns[k] = s[k]; db.settings = ns; }
+        } else db[c] = docs;
+        save(); render();
+      }, function(){ toast('Sync error — check your connection'); }));
+    });
+  }
+  function flushPending(){
+    var ops = pendingOps; pendingOps = [];
+    ops.forEach(function(o){ if(o.op==='put') cloudPut(o.coll, o.rec); else cloudDel(o.coll, o.id); });
+  }
+  function friendlyAuthError(err){
+    var map = {
+      'auth/email-already-in-use':'That email already has an account — use Log In instead.',
+      'auth/invalid-email':'That doesn\'t look like a valid email.',
+      'auth/weak-password':'Password should be at least 6 characters.',
+      'auth/wrong-password':'Wrong password.', 'auth/invalid-credential':'Wrong email or password.',
+      'auth/user-not-found':'No account with that email.',
+      'auth/network-request-failed':'No internet — try again once online.',
+      'auth/too-many-requests':'Too many attempts. Wait a bit and try again.'
+    };
+    return (err && map[err.code]) || (err && !err.code && err.message) || 'Something went wrong. Please try again.';
+  }
+  function finishSignIn(user, msg){
+    authUser = user;
+    try{ localStorage.setItem(AUTH_FLAG_KEY, '1'); }catch(e){}
+    db = load(CLOUD_KEY);
+    attach(user.uid);
+    closeSheet(); toast(msg || ('Signed in as '+user.email)); render();
+  }
+  function performSignIn(isSignUp, email, pass){
+    var guest = db;
+    return loadFirebase().then(function(x){
+      return (isSignUp ? x.authMod.createUserWithEmailAndPassword : x.authMod.signInWithEmailAndPassword)(x.auth, email, pass);
+    }).then(function(cred){
+      var user = cred.user;
+      return cloudIsEmpty(user.uid).then(function(empty){
+        if(isEmptyDB(guest)) return finishSignIn(user);
+        if(empty) return uploadAll(user.uid, guest).then(function(){ finishSignIn(user, 'Signed in — your data is now in your account'); });
+        askMerge(user, guest);
+      });
+    }).catch(function(err){ toast(friendlyAuthError(err)); });
+  }
+  function askMerge(user, guest){
+    openSheet('<h2>Data on this device</h2><p style="font-size:13.5px;color:var(--ink-soft);margin-bottom:18px;">Your account already has data, and this device also has entries that aren\'t in the account yet.</p>' +
+      '<button class="btn btn-primary" id="mgMerge" style="margin-bottom:10px;">Add this device\'s entries to the account</button>' +
+      '<button class="btn btn-ghost" id="mgKeep">Use account data only</button>',
+      function(root){
+        f(root,'mgMerge').onclick = function(){
+          this.disabled = true;
+          uploadAll(user.uid, guest, true).then(function(){ finishSignIn(user, 'Merged into your account'); })
+            .catch(function(){ toast('Could not upload — try again online'); });
+        };
+        f(root,'mgKeep').onclick = function(){ finishSignIn(user); };
+      });
+  }
+  function performSignOut(){
+    if(!fb) return;
+    fb.authMod.signOut(fb.auth).then(function(){
+      authUser = null; detach();
+      try{ localStorage.removeItem(AUTH_FLAG_KEY); }catch(e){}
+      db = load(DB_KEY); toast('Signed out'); render();
+    });
+  }
+  function restoreSession(){
+    if(!authFlag()) return;
+    loadFirebase().then(function(x){
+      var un = x.authMod.onAuthStateChanged(x.auth, function(user){
+        un();
+        if(user){ authUser = user; flushPending(); attach(user.uid); render(); }
+        else { try{ localStorage.removeItem(AUTH_FLAG_KEY); }catch(e){} db = load(DB_KEY); render(); }
+      });
+    }).catch(function(){ /* offline and SDK not cached yet: keep showing the cached copy */ });
+  }
+  function openAuthSheet(mode){
+    var html = '<h2>Account</h2>' + segmented('auMode', [['login','Log In'],['signup','Create account']], mode) +
+      '<div class="field" style="margin-top:14px;"><label>Email</label><input type="email" id="auEmail" autocomplete="email"></div>' +
+      '<div class="field"><label>Password</label><input type="password" id="auPass" autocomplete="current-password"></div>' +
+      '<div class="field" id="auConfWrap" style="display:'+(mode==='signup'?'':'none')+'"><label>Confirm password</label><input type="password" id="auConf" autocomplete="new-password"></div>' +
+      '<button class="btn btn-primary" id="auGo">'+(mode==='signup'?'Create account':'Log In')+'</button>' +
+      '<button class="btn btn-ghost" id="auForgot" style="margin-top:10px;">Forgot password?</button>' +
+      '<p class="hint" style="margin-top:12px;">Use the same email &amp; password on your phone and laptop to see the same data on both.</p>';
+    openSheet(html, function(root){
+      var m = wireSeg(root, 'auMode', function(v){ f(root,'auConfWrap').style.display = v==='signup' ? '' : 'none'; f(root,'auGo').textContent = v==='signup' ? 'Create account' : 'Log In'; });
+      f(root,'auGo').onclick = function(){
+        var btn = this, email = f(root,'auEmail').value.trim(), pass = f(root,'auPass').value;
+        if(!email || !pass){ toast('Enter email and password'); return; }
+        if(m()==='signup' && pass !== f(root,'auConf').value){ toast('Passwords don\'t match'); return; }
+        btn.disabled = true; btn.textContent = 'Please wait…';
+        performSignIn(m()==='signup', email, pass).then(function(){ btn.disabled = false; btn.textContent = m()==='signup' ? 'Create account' : 'Log In'; });
+      };
+      f(root,'auForgot').onclick = function(){
+        var email = f(root,'auEmail').value.trim();
+        if(!email){ toast('Type your email above first'); return; }
+        loadFirebase().then(function(x){ return x.authMod.sendPasswordResetEmail(x.auth, email); })
+          .then(function(){ toast('Reset link sent — check your email'); }, function(err){ toast(friendlyAuthError(err)); });
+      };
+    });
+  }
 
   /* ================= formatting ================= */
   function todayISO(){ var d = new Date(); return new Date(d - d.getTimezoneOffset()*60000).toISOString().slice(0,10); }
   function addDays(iso, n){ var p = iso.split('-'); return new Date(Date.UTC(+p[0], +p[1]-1, +p[2]+n)).toISOString().slice(0,10); }
-  function addMonths(iso, n){ var p = iso.split('-'); var d = new Date(Date.UTC(+p[0], +p[1]-1+n, 1)); return d.toISOString().slice(0,10); }
+  function addMonths(iso, n){ var p = iso.split('-'); return new Date(Date.UTC(+p[0], +p[1]-1+n, 1)).toISOString().slice(0,10); }
+  function daysInMonth(iso){ var p = iso.split('-'); return new Date(Date.UTC(+p[0], +p[1], 0)).getUTCDate(); }
+  function monthEnd(ym){ return ym + '-' + String(daysInMonth(ym+'-01')).padStart(2,'0'); }
   function r2(n){ return Math.round((Number(n)||0)*100)/100; }
   function num(v){ var n = parseFloat(v); return isFinite(n) ? n : 0; }
   function money(n){
@@ -289,6 +550,7 @@
     return (neg?'-':'') + '₹' + n.toLocaleString('en-IN', {maximumFractionDigits:2, minimumFractionDigits:(n%1===0?0:2)});
   }
   function kg(n){ return r2(n).toLocaleString('en-IN', {maximumFractionDigits:2}) + ' kg'; }
+  function kgN(n){ return r2(n).toLocaleString('en-IN', {maximumFractionDigits:2}); }
   function birds(n){ n = Math.round(Number(n)||0); return n.toLocaleString('en-IN') + ' bird' + (n===1?'':'s'); }
   function pct(part, whole){ return whole > 0 ? (Math.round(part/whole*1000)/10) + '%' : '—'; }
   function dateLabel(iso){ return new Date(iso+'T00:00:00').toLocaleDateString('en-IN', {weekday:'short', day:'2-digit', month:'short', year:'numeric'}); }
@@ -296,18 +558,25 @@
   function chipLabel(iso){ return new Date(iso+'T00:00:00').toLocaleDateString('en-IN', {weekday:'short', day:'2-digit', month:'short'}); }
   function monthLabel(ym){ var p = ym.split('-'); return new Date(+p[0], +p[1]-1, 1).toLocaleDateString('en-IN', {month:'long', year:'numeric'}); }
   function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
-  function sum(list, f){ return list.reduce(function(s,x){ return s + (Number(typeof f==='function' ? f(x) : x[f])||0); }, 0); }
+  function sum(list, fn){ return list.reduce(function(s,x){ return s + (Number(typeof fn==='function' ? fn(x) : x[fn])||0); }, 0); }
   function byDateDesc(a,b){ return a.date < b.date ? 1 : (a.date > b.date ? -1 : 0); }
+  function byDateAsc(a,b){ return a.date < b.date ? -1 : (a.date > b.date ? 1 : 0); }
+  function inMonth(ym){ return function(x){ return !!x.date && x.date.slice(0,7)===ym; }; }
 
   var EXP_CATS = [
     ['diesel','Diesel / fuel'], ['repair','Jeep repair'], ['driver','Driver salary'], ['helper','Helper salary'],
     ['food','Food (staff)'], ['farmwage','Farm staff wages'], ['labour','Labour (other)'], ['house','House expense'], ['other','Other']
   ];
   function catLabel(k){ var c = EXP_CATS.find(function(x){ return x[0]===k; }); return c ? c[1] : 'Other'; }
+  var ROLES = [['driver','Driver'],['helper','Helper'],['farm','Farm staff'],['labour','Labour'],['other','Other']];
+  var ROLE_CAT = { driver:'driver', helper:'helper', farm:'farmwage', labour:'labour', other:'other' };
+  function roleLabel(k){ var r = ROLES.find(function(x){ return x[0]===k; }); return r ? r[1] : 'Other'; }
 
   /* ================= lookups ================= */
   function clientById(id){ return db.clients.find(function(c){ return c.id===id; }); }
   function jeepById(id){ return db.jeeps.find(function(j){ return j.id===id; }); }
+  function workerById(id){ return db.workers.find(function(w){ return w.id===id; }); }
+  function jeepName(id){ var j = jeepById(id); return j ? j.name + (j.driver ? ' · '+j.driver : '') : ''; }
   function rateFor(clientId, date){
     var c = clientById(clientId);
     if(c && num(c.fixedRate) > 0) return num(c.fixedRate);
@@ -319,10 +588,10 @@
   }
 
   /* ================= stock (weight) tally =================
-     Farm stock carries over day to day. For each day with activity:
+     Farm stock carries over day to day:
        expected closing = opening + truck in − sent in jeeps (net of returns) − dead
-     If the user counted/weighed the stock that day, the counted figure becomes
-     the closing stock and the gap is recorded as weight loss. */
+     A counted/weighed stock that day becomes the closing figure; the gap is
+     recorded as farm weight loss. */
   var _stock = null;
   function computeDay(d, open){
     var tr = db.trucks.filter(function(x){ return x.date===d; });
@@ -342,7 +611,6 @@
     o.counted = cnt || null;
     o.close = cnt ? { birds: num(cnt.birds), kg: num(cnt.kg) } : o.exp;
     o.lossK = cnt ? r2(o.exp.kg - o.close.kg) : 0;
-    o.lossB = cnt ? o.exp.birds - o.close.birds : 0;
     return o;
   }
   function stockSeries(){
@@ -359,14 +627,11 @@
     for(var i=s.dates.length-1;i>=0;i--) if(s.dates[i] < d) return s.byDate[s.dates[i]].close;
     return { birds:0, kg:0 };
   }
-  function stockOn(d){
-    var s = stockSeries();
-    return s.byDate[d] || computeDay(d, stockBefore(d));
-  }
+  function stockOn(d){ var s = stockSeries(); return s.byDate[d] || computeDay(d, stockBefore(d)); }
 
   /* ================= jeep day =================
      Cash the driver should hand over = cash sales + udhar collected in cash on
-     the road − expenses the driver paid from that cash (diesel etc). */
+     the road − expenses the driver paid out of that cash. */
   function jeepDay(jeepId, d){
     function mine(x){ return x.date===d && x.jeepId===jeepId; }
     var ld = db.loads.filter(mine);
@@ -376,10 +641,9 @@
     var ex = db.expenses.filter(function(x){ return mine(x) && x.mode==='driver'; });
     var hv = db.handovers.filter(mine);
     var o = {
-      ld: ld, sales: sales, hv: hv, rc: rc, ex: ex,
-      loadK: r2(sum(loads,'kg')), loadB: sum(loads,'birds'), retK: r2(sum(rets,'kg')), retB: sum(rets,'birds'),
-      soldK: r2(sum(sales,'kg')), soldB: sum(sales,'birds'),
-      amt: r2(sum(sales,'amount')), cash: r2(sum(sales,'cash')), online: r2(sum(sales,'online')), udhar: r2(sum(sales,'udhar')),
+      ld:ld, sales:sales, hv:hv, rc:rc, ex:ex,
+      loadK: r2(sum(loads,'kg')), retK: r2(sum(rets,'kg')),
+      soldK: r2(sum(sales,'kg')), amt: r2(sum(sales,'amount')), cash: r2(sum(sales,'cash')), online: r2(sum(sales,'online')), udhar: r2(sum(sales,'udhar')),
       rcash: r2(sum(rc,'amount')), exCash: r2(sum(ex,'amount')), handed: r2(sum(hv,'amount'))
     };
     o.netK = r2(o.loadK - o.retK);
@@ -420,31 +684,67 @@
   }
   function farmBalances(){
     var m = {};
-    db.trucks.forEach(function(t){ var f = t.farm||'Unknown farm'; m[f] = (m[f]||0) + num(t.amount) - num(t.paid); });
-    db.farmPays.forEach(function(p){ var f = p.farm||'Unknown farm'; m[f] = (m[f]||0) - num(p.amount); });
-    return Object.keys(m).map(function(f){ return { farm:f, due:r2(m[f]) }; }).filter(function(x){ return Math.abs(x.due) > 0.004; })
+    db.trucks.forEach(function(t){ var k = t.farm||'Unknown farm'; m[k] = (m[k]||0) + num(t.amount) - num(t.paid); });
+    db.farmPays.forEach(function(p){ var k = p.farm||'Unknown farm'; m[k] = (m[k]||0) - num(p.amount); });
+    return Object.keys(m).map(function(k){ return { farm:k, due:r2(m[k]) }; }).filter(function(x){ return Math.abs(x.due) > 0.004; })
       .sort(function(a,b){ return b.due - a.due; });
   }
 
-  /* ================= monthly report ================= */
+  /* ================= staff =================
+     Monthly workers earn salary/days-in-month for every day except absences
+     (unmarked days count as present). Daily-wage workers earn only on days
+     marked present. Payments to workers are stored as expenses (with
+     workerId), so they flow into cash/bank and profit automatically. */
+  function attOf(wid, d){ return db.attendance.find(function(a){ return a.workerId===wid && a.date===d; }); }
+  function attStatus(w, d){ var a = attOf(w.id, d); return a ? a.s : (w.payType==='daily' ? '' : 'P'); }
+  function dayEarn(w, d){
+    var s = attStatus(w, d), fr = s==='P' ? 1 : s==='H' ? 0.5 : 0;
+    return w.payType==='daily' ? num(w.wage) * fr : num(w.salary) / daysInMonth(d) * fr;
+  }
+  function workerPays(wid){ return db.expenses.filter(function(e){ return e.workerId===wid; }); }
+  function workerPeriod(w, from, to){
+    var o = { P:0, H:0, A:0, earned:0 };
+    var start = w.start && w.start > from ? w.start : from;
+    var end = to > todayISO() ? todayISO() : to;
+    for(var d = start; d <= end; d = addDays(d, 1)){
+      var s = attStatus(w, d);
+      if(s==='P') o.P++; else if(s==='H') o.H++; else if(s==='A') o.A++;
+      o.earned += dayEarn(w, d);
+    }
+    o.earned = r2(o.earned);
+    return o;
+  }
+  function workerBalance(w){
+    var e = workerPeriod(w, w.start || todayISO(), todayISO()).earned;
+    return r2(e + num(w.openingDue) - sum(workerPays(w.id), 'amount'));
+  }
+  function workerMonth(w, ym){
+    var p = workerPeriod(w, ym+'-01', monthEnd(ym));
+    var pays = workerPays(w.id).filter(inMonth(ym));
+    p.paidSalary = r2(sum(pays.filter(function(e){ return e.kind!=='advance'; }),'amount'));
+    p.paidAdvance = r2(sum(pays.filter(function(e){ return e.kind==='advance'; }),'amount'));
+    return p;
+  }
+
+  /* ================= reports ================= */
   function monthReport(ym){
-    function inM(x){ return x.date.slice(0,7)===ym; }
-    var tr = db.trucks.filter(inM), sa = db.sales.filter(inM), ex = db.expenses.filter(inM);
-    var ld = db.loads.filter(inM), dd = db.dead.filter(inM);
+    var M = inMonth(ym);
+    var tr = db.trucks.filter(M), sa = db.sales.filter(M), ex = db.expenses.filter(M);
+    var ld = db.loads.filter(M), dd = db.dead.filter(M);
     var r = {
-      buyK: r2(sum(tr,'kg')), buyB: sum(tr,'birds'), buyAmt: r2(sum(tr,'amount')),
+      buyK: r2(sum(tr,'kg')), buyAmt: r2(sum(tr,'amount')),
       freight: r2(sum(tr,'freight')), labour: r2(sum(tr,'labour')), trucks: tr.length,
       sellK: r2(sum(sa,'kg')), sellAmt: r2(sum(sa,'amount')),
       cash: r2(sum(sa,'cash')), online: r2(sum(sa,'online')), udhar: r2(sum(sa,'udhar')),
-      collected: r2(sum(db.receipts.filter(inM),'amount')),
+      collected: r2(sum(db.receipts.filter(M),'amount')),
       deadK: r2(sum(dd,'kg')), deadB: sum(dd,'birds')
     };
     r.avgBuy = r.buyK > 0 ? r.buyAmt / r.buyK : 0;
     r.avgSell = r.sellK > 0 ? r.sellAmt / r.sellK : 0;
     var lastTruck = db.trucks.filter(function(t){ return t.date.slice(0,7) <= ym; }).sort(byDateDesc)[0];
     var valRate = r.avgBuy || (lastTruck ? num(lastTruck.rate) : 0);
-    var first = ym + '-01', next = addMonths(first, 1);
-    r.openStock = stockBefore(first); r.closeStock = stockBefore(next);
+    var first = ym + '-01';
+    r.openStock = stockBefore(first); r.closeStock = stockBefore(addMonths(first, 1));
     r.stockChange = r2((r.closeStock.kg - r.openStock.kg) * valRate);
     r.jeepLossK = r2(sum(ld, function(x){ return x.type==='return' ? -num(x.kg) : num(x.kg); }) - r.sellK);
     var s = stockSeries();
@@ -459,6 +759,57 @@
     r.net = r2(r.profit - r.house);
     return r;
   }
+  function monthDates(ym){
+    var out = [], end = monthEnd(ym), t = todayISO();
+    if(end > t) end = t;
+    for(var d = ym+'-01'; d <= end; d = addDays(d,1)) out.push(d);
+    return out;
+  }
+  function dailyRows(ym){
+    var set = {};
+    ['trucks','loads','sales','expenses','dead','stock','handovers','receipts'].forEach(function(c){ db[c].forEach(function(x){ if(x.date && x.date.slice(0,7)===ym) set[x.date] = 1; }); });
+    return Object.keys(set).sort().map(function(d){
+      var st = stockOn(d), jd = db.jeeps.map(function(j){ return jeepDay(j.id, d); });
+      var diff = r2(jd.filter(function(o){ return o.hv.length; }).reduce(function(t,o){ return t + o.diff; }, 0));
+      return { date:d, inK:st.inK, soldK:r2(sum(jd,'soldK')), jeepLoss:r2(sum(jd,'lossK')), farmLoss: st.counted ? st.lossK : null,
+        deadK:st.deadK, sales:r2(sum(jd,'amt')), exp:r2(sum(db.expenses.filter(function(e){ return e.date===d; }),'amount')), diff:diff };
+    });
+  }
+  function jeepRows(ym){
+    var dates = monthDates(ym);
+    return db.jeeps.map(function(j){
+      var t = { j:j, netK:0, soldK:0, lossK:0, amt:0, cash:0, online:0, udhar:0, toHand:0, handed:0, diff:0, pending:0 };
+      dates.forEach(function(d){
+        var o = jeepDay(j.id, d);
+        ['netK','soldK','lossK','amt','cash','online','udhar','toHand','handed'].forEach(function(k){ t[k] += o[k]; });
+        if(o.hv.length) t.diff += o.diff; else t.pending += o.toHand;
+      });
+      ['netK','soldK','lossK','amt','cash','online','udhar','toHand','handed','diff','pending'].forEach(function(k){ t[k] = r2(t[k]); });
+      return t;
+    });
+  }
+  function clientRows(ym){
+    var M = inMonth(ym);
+    return db.clients.map(function(c){
+      var s = db.sales.filter(function(x){ return x.clientId===c.id && M(x); });
+      var rc = db.receipts.filter(function(x){ return x.clientId===c.id && M(x); });
+      return { c:c, kg:r2(sum(s,'kg')), amt:r2(sum(s,'amount')), udhar:r2(sum(s,'udhar')), got:r2(sum(rc,'amount')), bal:clientBalance(c.id), n:s.length+rc.length };
+    }).filter(function(x){ return x.n || Math.abs(x.bal) > 0.004; }).sort(function(a,b){ return b.amt - a.amt; });
+  }
+  function farmRows(ym){
+    var M = inMonth(ym), bal = {};
+    farmBalances().forEach(function(x){ bal[x.farm] = x.due; });
+    var names = {}; db.trucks.filter(M).forEach(function(t){ names[t.farm||'Unknown farm'] = 1; }); db.farmPays.filter(M).forEach(function(p){ names[p.farm||'Unknown farm'] = 1; });
+    return Object.keys(names).sort().map(function(n){
+      var tr = db.trucks.filter(function(t){ return M(t) && (t.farm||'Unknown farm')===n; });
+      var fp = db.farmPays.filter(function(p){ return M(p) && (p.farm||'Unknown farm')===n; });
+      var k = sum(tr,'kg'), a = sum(tr,'amount');
+      return { farm:n, trucks:tr.length, kg:r2(k), amt:r2(a), avg: k>0 ? r2(a/k) : 0, paid:r2(sum(tr,'paid') + sum(fp,'amount')), bal: bal[n]||0 };
+    });
+  }
+  function salaryRows(ym){
+    return db.workers.map(function(w){ return { w:w, m:workerMonth(w, ym), bal:workerBalance(w) }; });
+  }
 
   /* ================= dom / ui helpers ================= */
   var $view = document.getElementById('view');
@@ -470,13 +821,12 @@
   var $toast = document.getElementById('toast');
   var $dateLabel = document.getElementById('dateLabel');
   var $datePick = document.getElementById('datePick');
-  var state = { tab:'today', date:todayISO() };
-  var TITLES = { today:null, truck:'Truck Supply', jeeps:'Jeeps & Sales', udhar:'Udhar', expenses:'Expenses', more:'Reports' };
+  var state = { tab:'today', date:todayISO(), sub:null, report:'profit', udharView:'all' };
 
   var toastTimer;
   function toast(msg){
     $toast.textContent = msg; $toast.classList.add('show');
-    clearTimeout(toastTimer); toastTimer = setTimeout(function(){ $toast.classList.remove('show'); }, 2400);
+    clearTimeout(toastTimer); toastTimer = setTimeout(function(){ $toast.classList.remove('show'); }, 2600);
   }
   function openSheet(html, onMount){
     $sheetContent.innerHTML = html;
@@ -486,25 +836,29 @@
   }
   function closeSheet(){ $sheet.classList.remove('open'); $overlay.classList.remove('open'); }
   $overlay.addEventListener('click', closeSheet);
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeSheet(); });
   function confirmThen(title, msg, okLabel, fn){
     openSheet('<h2>'+esc(title)+'</h2><p style="font-size:13.5px;color:var(--ink-soft);margin-bottom:18px;">'+esc(msg)+'</p>' +
       '<div class="btn-row"><button class="btn btn-ghost" id="cfNo">Cancel</button><button class="btn btn-danger" id="cfYes">'+esc(okLabel||'Delete')+'</button></div>',
-      function(root){
-        root.querySelector('#cfNo').onclick = closeSheet;
-        root.querySelector('#cfYes').onclick = function(){ fn(); closeSheet(); };
-      });
-  }
-  function removeRec(coll, id, label){
-    confirmThen('Delete '+(label||'entry')+'?', 'This will be permanently removed.', 'Delete', function(){
-      db[coll] = db[coll].filter(function(x){ return x.id!==id; });
-      save(); toast('Deleted'); render();
-    });
+      function(root){ f(root,'cfNo').onclick = closeSheet; f(root,'cfYes').onclick = function(){ fn(); closeSheet(); }; });
   }
   function upsert(coll, rec){
     var i = db[coll].findIndex(function(x){ return x.id===rec.id; });
     if(i < 0) db[coll].push(rec); else db[coll][i] = rec;
-    save();
+    save(); cloudPut(coll, rec);
   }
+  function removeNow(coll, id){
+    db[coll] = db[coll].filter(function(x){ return x.id!==id; });
+    save(); cloudDel(coll, id);
+  }
+  function removeRec(coll, id, label){
+    confirmThen('Delete '+(label||'entry')+'?', 'This will be permanently removed.', 'Delete', function(){ removeNow(coll, id); toast('Deleted'); render(); });
+  }
+  function setRate(d, v){
+    if(v > 0){ db.rates[d] = v; save(); cloudPut('rates', { id:d, rate:v }); }
+    else { delete db.rates[d]; save(); cloudDel('rates', d); }
+  }
+  function saveSettings(){ save(); cloudPut('meta', Object.assign({ id:'settings' }, db.settings)); }
   function segmented(id, opts, cur){
     return '<div class="segmented" id="'+id+'">' + opts.map(function(o){
       return '<button type="button" data-v="'+o[0]+'"'+(o[0]===cur?' class="active"':'')+'>'+esc(o[1])+'</button>';
@@ -512,7 +866,7 @@
   }
   function wireSeg(root, id, onChange){
     var wrap = root.querySelector('#'+id);
-    var val = (wrap.querySelector('.active')||{}).getAttribute ? wrap.querySelector('.active').getAttribute('data-v') : null;
+    var a = wrap.querySelector('.active'), val = a ? a.getAttribute('data-v') : null;
     wrap.querySelectorAll('button').forEach(function(b){
       b.addEventListener('click', function(){
         wrap.querySelectorAll('button').forEach(function(x){ x.classList.remove('active'); });
@@ -521,8 +875,8 @@
     });
     return function(){ return val; };
   }
-  function jeepOptions(sel, allowNone){
-    return (allowNone ? '<option value="">— none —</option>' : '') + db.jeeps.map(function(j){
+  function jeepOptions(sel, noneLabel){
+    return (noneLabel ? '<option value="">'+esc(noneLabel)+'</option>' : '') + db.jeeps.map(function(j){
       return '<option value="'+j.id+'"'+(j.id===sel?' selected':'')+'>'+esc(j.name)+(j.driver?' · '+esc(j.driver):'')+'</option>';
     }).join('');
   }
@@ -548,77 +902,26 @@
     $view.querySelectorAll('[data-dnav]').forEach(function(b){ b.onclick = function(){ setDate(addDays(state.date, +b.getAttribute('data-dnav'))); }; });
     $view.querySelectorAll('[data-mnav]').forEach(function(b){ b.onclick = function(){ setDate(addMonths(state.date, +b.getAttribute('data-mnav'))); }; });
     $view.querySelectorAll('[data-dtoday]').forEach(function(b){ b.onclick = function(){ setDate(todayISO()); }; });
+    $view.querySelectorAll('[data-back]').forEach(function(b){ b.onclick = function(){ state.sub = null; render(); window.scrollTo(0,0); }; });
   }
   function setDate(d){ if(!d) return; state.date = d; render(); }
   $datePick.addEventListener('change', function(){ setDate($datePick.value); });
-
-  /* ================= TODAY ================= */
-  function renderToday(){
-    var d = state.date, st = stockOn(d), rate = db.rates[d];
-    var html = dateNav();
-    if(!db.jeeps.length){
-      html += '<div class="banner"><b>Welcome to Aryan Trades</b>Start in the <b style="display:inline">Reports</b> tab → add your jeeps and set the loading/unloading wage per 100 kg. Then add clients in the Udhar tab.</div>';
-    }
-    html += '<div class="rate-card"><div><div class="kpi-label">Daily rate</div><div class="rv num">'+(rate ? money(rate)+'/kg' : 'Not set')+'</div></div>' +
-      '<button class="pill-btn" id="setRate">'+(rate?'Change':'Set rate')+'</button></div>';
-
-    html += '<div class="actions">' +
-      act('truck','🚚','Truck in') + act('load','⬆','Load jeep') + act('sale','₹','Sale') +
-      act('dead','✕','Dead birds') + act('expense','−','Expense') + act('count','⚖','Count stock') +
-      '</div>';
-
-    // weight tally
-    var jd = db.jeeps.map(function(j){ return jeepDay(j.id, d); });
-    var jNet = r2(sum(jd,'netK')), jSold = r2(sum(jd,'soldK')), jLoss = r2(jNet - jSold);
-    var base = st.open.kg + st.inK;
-    html += '<div class="section-title">Weight tally</div><div class="card">' +
-      ms('Opening stock at farm', bk(st.open)) +
-      ms('+ Truck in', bk({birds:st.inB, kg:st.inK})) +
-      ms('− Sent in jeeps <small>after returns</small>', bk({birds:st.outB, kg:st.outK})) +
-      ms('− Dead birds', bk({birds:st.deadB, kg:st.deadK})) +
-      '<div class="ms total"><span>Should be at farm</span><b class="num">'+bk(st.exp)+'</b></div>' +
-      (st.counted
-        ? ms('Counted at farm', bk(st.close)) + ms('Farm weight loss', '<span class="'+(st.lossK>0?'bad':'good')+'">'+kg(st.lossK)+' · '+pct(st.lossK, base)+'</span>')
-        : '<div class="ms"><span>Counted at farm <small>weigh/count the leftover stock to find weight loss</small></span><button class="link" data-act="count">Count</button></div>') +
-      '</div>';
-    html += '<div class="card">' +
-      ms('Jeeps: sent out (net)', kg(jNet)) + ms('Jeeps: sold', kg(jSold)) +
-      ms('Jeep weight loss', '<span class="'+(jLoss>0.004?'bad':'good')+'">'+kg(jLoss)+' · '+pct(jLoss, jNet)+'</span>') +
-      '</div>';
-
-    // money tally
-    var tAmt = r2(sum(jd,'amt')), tCash = r2(sum(jd,'cash')), tOn = r2(sum(jd,'online')), tUd = r2(sum(jd,'udhar'));
-    var dayRc = db.receipts.filter(function(r){ return r.date===d; });
-    html += '<div class="section-title">Money tally</div><div class="card">' +
-      ms('Sales ('+kg(jSold)+')', money(tAmt)) +
-      ms('Cash', money(tCash)) + ms('Online', money(tOn)) + ms('New udhar', money(tUd)) +
-      '<div class="ms total"><span>Cash + Online + Udhar</span><b class="num '+(Math.abs(tCash+tOn+tUd-tAmt)<0.01?'good':'bad')+'">'+money(tCash+tOn+tUd)+'</b></div>' +
-      (dayRc.length ? ms('Old udhar collected', money(sum(dayRc,'amount'))) : '') +
-      '</div>';
-    var active = db.jeeps.map(function(j,i){ return { j:j, o:jd[i] }; }).filter(function(x){ return x.o.active; });
-    if(active.length){
-      html += '<div class="card">';
-      active.forEach(function(x){
-        html += '<div class="ms"><span>'+esc(x.j.name)+' <small>should hand over '+money(x.o.toHand)+' · got '+money(x.o.handed)+'</small></span>'+handBadge(x.o)+'</div>';
-      });
-      html += '</div>';
-    }
-
-    // balances
-    var bal = balances(d), ud = udharTotals(), farmDue = r2(sum(farmBalances().filter(function(x){ return x.due>0; }),'due'));
-    html += '<div class="section-title">Balances <span style="text-transform:none;letter-spacing:0;font-weight:600">end of '+esc(dateShort(d))+'</span></div><div class="kpi-grid">' +
-      kpi('Cash in hand', money(bal.cash), 'from handovers & payments', '') +
-      kpi('Bank / GPay', money(bal.bank), 'match with your statement', 'gold') +
-      kpi('Udhar to collect', money(ud.owed), ud.adv ? money(ud.adv)+' advance held' : 'all clients', 'accent') +
-      kpi('Owed to farms', money(farmDue), 'Punjab farms', 'light') +
-      '</div>';
-
-    $view.innerHTML = html;
-    wireNav();
-    f($view,'setRate').onclick = function(){ openRateForm(d); };
-    $view.querySelectorAll('[data-act]').forEach(function(b){ b.onclick = function(){ quickAction(b.getAttribute('data-act')); }; });
-  }
-  function act(k, ic, label){ return '<button class="act" data-act="'+k+'"><span class="ic">'+ic+'</span>'+esc(label)+'</button>'; }
+  var ICONS = {
+    truck:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.5h11v9.5h-11zM13.5 10h4l3.5 3.5V16h-7.5"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>',
+    load:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>',
+    sale:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 5h10M7 9h10M10 5c3.5 0 5 1.8 5 4s-1.5 4-5 4H7l7 6"/></svg>',
+    dead:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+    expense:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3.5" y="7" width="17" height="12.5" rx="2.5"/><path d="M3.5 10.5h17"/></svg>',
+    scale:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M5 20h14M5 8h14M7 8l-3 6a3 3 0 0 0 6 0zM17 8l-3 6a3 3 0 0 0 6 0z"/></svg>',
+    report:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5h16M7 16V11M12 16V6.5M17 16v-7"/></svg>',
+    excel:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3.5" width="16" height="17" rx="2"/><path d="M9 8.5l6 7M15 8.5l-6 7"/></svg>',
+    jeep:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15.5V11l2.5-4.5h9L17 11h3.5v4.5z"/><circle cx="7" cy="16.5" r="1.9"/><circle cx="16.5" cy="16.5" r="1.9"/></svg>',
+    gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg>',
+    user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-3.8 3.6-6 7-6s6.2 2.2 7 6"/></svg>',
+    swap:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h14l-3-3M20 16H6l3 3"/></svg>',
+    save:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>'
+  };
+  function act(k, icon, label){ return '<button class="act" data-act="'+k+'"><span class="ic">'+ICONS[icon]+'</span>'+esc(label)+'</button>'; }
   function ms(label, val){ return '<div class="ms"><span>'+label+'</span><b class="num">'+val+'</b></div>'; }
   function bk(o){ return (o.birds ? esc(birds(o.birds))+' · ' : '') + kg(o.kg); }
   function kpi(label, val, sub, cls){ return '<div class="kpi-card '+(cls||'')+'"><div class="kpi-label">'+esc(label)+'</div><div class="kpi-value num">'+val+'</div><div class="kpi-sub">'+esc(sub)+'</div></div>'; }
@@ -626,6 +929,64 @@
     if(!o.hv.length && o.toHand > 0) return '<span class="badge warn">Pending</span>';
     if(Math.abs(o.diff) < 1) return '<span class="badge good">Tallied</span>';
     return o.diff < 0 ? '<span class="badge bad">Short '+money(-o.diff)+'</span>' : '<span class="badge warn">Extra '+money(o.diff)+'</span>';
+  }
+  function table(heads, rows, totals){
+    var h = '<div class="tbl-wrap"><table class="tbl"><thead><tr>' + heads.map(function(x){ return '<th>'+x+'</th>'; }).join('') + '</tr></thead><tbody>';
+    rows.forEach(function(r){ h += '<tr>' + r.map(function(c){ return c && typeof c==='object' ? '<td class="'+(c.cls||'')+'">'+c.v+'</td>' : '<td>'+c+'</td>'; }).join('') + '</tr>'; });
+    if(totals) h += '<tr class="tot">' + totals.map(function(c){ return '<td>'+c+'</td>'; }).join('') + '</tr>';
+    return h + '</tbody></table></div>';
+  }
+
+  /* ================= TODAY ================= */
+  function renderToday(){
+    var d = state.date, st = stockOn(d), rate = db.rates[d];
+    var html = dateNav();
+    if(!db.jeeps.length){
+      html += '<div class="banner"><b>Welcome to '+esc(db.settings.company)+'</b>Start in <b style="display:inline">More → Jeeps</b> to add your jeeps, then <b style="display:inline">More → Settings</b> for the loading wage per 100 kg. Add workers in the Staff tab and clients in the Udhar tab.</div>';
+    }
+    html += '<div class="rate-card"><div><div class="kpi-label">Daily rate</div><div class="rv num">'+(rate ? money(rate)+'/kg' : 'Not set')+'</div></div>' +
+      '<button class="pill-btn" id="setRate">'+(rate?'Change':'Set rate')+'</button></div>';
+    html += '<div class="actions">' + act('truck','truck','Truck in') + act('load','load','Load jeep') + act('sale','sale','Sale') +
+      act('dead','dead','Dead birds') + act('expense','expense','Expense') + act('count','scale','Count stock') + '</div>';
+
+    var jd = db.jeeps.map(function(j){ return jeepDay(j.id, d); });
+    var jNet = r2(sum(jd,'netK')), jSold = r2(sum(jd,'soldK')), jLoss = r2(jNet - jSold);
+    var base = st.open.kg + st.inK;
+    var weight = '<div class="section-title">Weight tally</div><div class="card">' +
+      ms('Opening stock at farm', bk(st.open)) + ms('+ Truck in', bk({birds:st.inB, kg:st.inK})) +
+      ms('− Sent in jeeps <small>after returns</small>', bk({birds:st.outB, kg:st.outK})) + ms('− Dead birds', bk({birds:st.deadB, kg:st.deadK})) +
+      '<div class="ms total"><span>Should be at farm</span><b class="num">'+bk(st.exp)+'</b></div>' +
+      (st.counted
+        ? ms('Counted at farm', bk(st.close)) + ms('Farm weight loss', '<span class="'+(st.lossK>0?'bad':'good')+'">'+kg(st.lossK)+' · '+pct(st.lossK, base)+'</span>')
+        : '<div class="ms"><span>Counted at farm <small>weigh/count leftover stock to find weight loss</small></span><button class="link" data-act="count">Count</button></div>') +
+      '</div><div class="card">' + ms('Jeeps: sent out (net)', kg(jNet)) + ms('Jeeps: sold', kg(jSold)) +
+      ms('Jeep weight loss', '<span class="'+(jLoss>0.004?'bad':'good')+'">'+kg(jLoss)+' · '+pct(jLoss, jNet)+'</span>') + '</div>';
+
+    var tAmt = r2(sum(jd,'amt')), tCash = r2(sum(jd,'cash')), tOn = r2(sum(jd,'online')), tUd = r2(sum(jd,'udhar'));
+    var dayRc = db.receipts.filter(function(r){ return r.date===d; });
+    var moneyH = '<div class="section-title">Money tally</div><div class="card">' +
+      ms('Sales ('+kg(jSold)+')', money(tAmt)) + ms('Cash', money(tCash)) + ms('Online', money(tOn)) + ms('New udhar', money(tUd)) +
+      '<div class="ms total"><span>Cash + Online + Udhar</span><b class="num '+(Math.abs(tCash+tOn+tUd-tAmt)<0.01?'good':'bad')+'">'+money(tCash+tOn+tUd)+'</b></div>' +
+      (dayRc.length ? ms('Old udhar collected', money(sum(dayRc,'amount'))) : '') + '</div>';
+    var active = db.jeeps.map(function(j,i){ return { j:j, o:jd[i] }; }).filter(function(x){ return x.o.active; });
+    if(active.length){
+      moneyH += '<div class="card">' + active.map(function(x){
+        return '<div class="ms"><span>'+esc(x.j.name)+' <small>should hand over '+money(x.o.toHand)+' · got '+money(x.o.handed)+'</small></span>'+handBadge(x.o)+'</div>';
+      }).join('') + '</div>';
+    }
+    html += '<div class="cols"><div>'+weight+'</div><div>'+moneyH+'</div></div>';
+
+    var bal = balances(d), ud = udharTotals(), farmDue = r2(sum(farmBalances().filter(function(x){ return x.due>0; }),'due'));
+    html += '<div class="section-title">Balances <span style="text-transform:none;letter-spacing:0;font-weight:600">end of '+esc(dateShort(d))+'</span></div><div class="kpi-grid">' +
+      kpi('Cash in hand', money(bal.cash), 'from handovers & payments', '') +
+      kpi('Bank / GPay', money(bal.bank), 'match with your statement', 'gold') +
+      kpi('Udhar to collect', money(ud.owed), ud.adv ? money(ud.adv)+' advance held' : 'all clients', 'accent') +
+      kpi('Owed to farms', money(farmDue), 'Punjab farms', 'light') + '</div>';
+
+    $view.innerHTML = html;
+    wireNav();
+    f($view,'setRate').onclick = function(){ openRateForm(d); };
+    $view.querySelectorAll('[data-act]').forEach(function(b){ b.onclick = function(){ quickAction(b.getAttribute('data-act')); }; });
   }
   function quickAction(k){
     if(k==='truck') return openTruckForm();
@@ -636,43 +997,39 @@
     if(k==='count') return openStockForm(state.date);
   }
 
-  /* ================= TRUCK ================= */
-  function renderTruck(){
-    var ym = state.date.slice(0,7);
-    var trucks = db.trucks.filter(function(t){ return t.date.slice(0,7)===ym; }).sort(byDateDesc);
-    var pays = db.farmPays.filter(function(p){ return p.date.slice(0,7)===ym; }).sort(byDateDesc);
-    var html = monthNav();
-    var fb = farmBalances();
-    html += '<div class="section-title">Owed to farms</div>';
-    if(!fb.length) html += '<div class="card"><div class="ms"><span>Nothing pending</span><b>—</b></div></div>';
-    else {
-      html += '<div class="card">';
-      fb.forEach(function(x){
-        html += '<div class="ms"><span>'+esc(x.farm)+(x.due<0?' <small>advance paid</small>':'')+'</span><span style="display:flex;align-items:center;gap:8px;"><b class="num '+(x.due>0?'bad':'good')+'">'+money(Math.abs(x.due))+'</b>' +
-          '<button class="link" data-payfarm="'+esc(x.farm)+'">Pay</button></span></div>';
-      });
-      html += '</div>';
+  /* ================= TRUCKS & FARMS (More → Trucks) ================= */
+  function renderTrucks(){
+    var ym = state.date.slice(0,7), M = inMonth(ym);
+    var trucks = db.trucks.filter(M).sort(byDateDesc), pays = db.farmPays.filter(M).sort(byDateDesc);
+    var html = '<button class="back-btn" data-back>‹ More</button>' + monthNav();
+    var fbal = farmBalances();
+    var left = '<div class="section-title">Owed to farms</div>';
+    if(!fbal.length) left += '<div class="card"><div class="ms"><span>Nothing pending</span><b>—</b></div></div>';
+    else left += '<div class="card">' + fbal.map(function(x){
+      return '<div class="ms"><span>'+esc(x.farm)+(x.due<0?' <small>advance paid</small>':'')+'</span><span style="display:flex;align-items:center;gap:8px;"><b class="num '+(x.due>0?'bad':'good')+'">'+money(Math.abs(x.due))+'</b>' +
+        '<button class="link" data-payfarm="'+esc(x.farm)+'">Pay</button></span></div>';
+    }).join('') + '</div>';
+    if(pays.length){
+      left += '<div class="section-title">Farm payments</div><div class="list">' + pays.map(function(p){
+        return '<div class="row" data-fpay="'+p.id+'"><div class="row-main"><div class="row-title">'+esc(p.farm)+'</div><div class="row-sub">'+esc(dateShort(p.date))+' · '+(p.mode==='bank'?'Bank':'Cash')+'</div></div><div class="row-end"><div class="row-amt num">'+money(p.amount)+'</div></div></div>';
+      }).join('') + '</div>';
     }
-    html += '<div class="section-title">Trucks — '+esc(monthLabel(ym))+'</div>';
-    if(!trucks.length) html += emptyState('No trucks this month', 'Tap + when a truck arrives from Punjab.');
+    var right = '<div class="section-title">Trucks — '+esc(monthLabel(ym))+' <button id="addTruck">+ Truck</button></div>';
+    if(!trucks.length) right += emptyState('No trucks this month', 'Tap + when a truck arrives from Punjab.');
     else {
-      html += '<div class="card" style="margin-bottom:10px;">' + ms(trucks.length+' truck'+(trucks.length===1?'':'s'), bk({birds:sum(trucks,'birds'), kg:sum(trucks,'kg')})) +
+      right += '<div class="card" style="margin-bottom:10px;">' + ms(trucks.length+' truck'+(trucks.length===1?'':'s'), bk({birds:sum(trucks,'birds'), kg:sum(trucks,'kg')})) +
         ms('Chicken cost', money(sum(trucks,'amount'))) + ms('Freight + loading labour', money(sum(trucks,'freight')+sum(trucks,'labour'))) + '</div>';
-      html += '<div class="list">' + trucks.map(function(t){
+      right += '<div class="list">' + trucks.map(function(t){
         return '<div class="row" data-truck="'+t.id+'"><div class="row-main"><div class="row-title">'+esc(t.farm||'Truck')+'</div>' +
           '<div class="row-sub">'+esc(dateShort(t.date))+' · '+bk(t)+' @ '+money(t.rate)+'/kg</div></div>' +
           '<div class="row-end"><div class="row-amt num">'+money(t.amount)+'</div>' +
           (num(t.paid) >= num(t.amount)-0.01 ? '<span class="badge good">Paid</span>' : (num(t.paid)>0 ? '<span class="badge warn">Part paid</span>' : '<span class="badge bad">Unpaid</span>')) + '</div></div>';
       }).join('') + '</div>';
     }
-    if(pays.length){
-      html += '<div class="section-title">Farm payments — '+esc(monthLabel(ym))+'</div><div class="list">' + pays.map(function(p){
-        return '<div class="row" data-fpay="'+p.id+'"><div class="row-main"><div class="row-title">'+esc(p.farm)+'</div><div class="row-sub">'+esc(dateShort(p.date))+' · '+(p.mode==='bank'?'Bank':'Cash')+'</div></div>' +
-          '<div class="row-end"><div class="row-amt num">'+money(p.amount)+'</div></div></div>';
-      }).join('') + '</div>';
-    }
+    html += '<div class="cols"><div>'+right+'</div><div>'+left+'</div></div>';
     $view.innerHTML = html;
     wireNav();
+    f($view,'addTruck').onclick = function(){ openTruckForm(); };
     $view.querySelectorAll('[data-truck]').forEach(function(r){ r.onclick = function(){ openTruckForm(r.getAttribute('data-truck')); }; });
     $view.querySelectorAll('[data-payfarm]').forEach(function(b){ b.onclick = function(){ openFarmPayForm(null, b.getAttribute('data-payfarm')); }; });
     $view.querySelectorAll('[data-fpay]').forEach(function(r){ r.onclick = function(){ openFarmPayForm(r.getAttribute('data-fpay')); }; });
@@ -691,7 +1048,7 @@
       '<div class="field"><label>Chicken cost</label><input type="number" id="tAmt" readonly></div></div>' +
       '<div class="field-row"><div class="field"><label>Truck freight</label><input type="number" id="tFreight" inputmode="decimal" value="'+(t&&t.freight?t.freight:'')+'"></div>' +
       '<div class="field"><label>Loading labour</label><input type="number" id="tLabour" inputmode="decimal" value="'+(t?(t.labour||''):'')+'"></div></div>' +
-      '<div class="hint" style="margin:-6px 0 12px;">'+(per100 ? 'Loading/unloading labour is worked out at '+money(per100)+' per 100 kg — change it if needed.' : 'Set the loading/unloading wage per 100 kg in Reports → Settings to fill this in automatically.')+' Freight &amp; labour are counted as paid in cash.</div>' +
+      '<div class="hint" style="margin:-6px 0 12px;">'+(per100 ? 'Loading/unloading labour is worked out at '+money(per100)+' per 100 kg — change it if needed.' : 'Set the loading/unloading wage per 100 kg in More → Settings to fill this in automatically.')+' Freight &amp; labour are counted as paid in cash.</div>' +
       '<div class="field-row"><div class="field"><label>Paid to farm now</label><input type="number" id="tPaid" inputmode="decimal" value="'+(t&&t.paid?t.paid:'')+'" placeholder="0"></div>' +
       '<div class="field"><label>Paid from</label>'+segmented('tMode', [['bank','Bank'],['cash','Cash']], t?t.payMode||'bank':'bank')+'</div></div>' +
       '<div class="field"><label>Note (optional)</label><input type="text" id="tNote" value="'+esc(t?t.note||'':'')+'" placeholder="Truck no., driver…"></div>' +
@@ -710,10 +1067,8 @@
         var kgV = num(f(root,'tKg').value);
         if(kgV <= 0){ toast('Enter the weight'); return; }
         var rec = t || { id:uid() };
-        rec.date = f(root,'tDate').value || state.date;
-        rec.farm = f(root,'tFarm').value.trim();
-        rec.birds = Math.round(num(f(root,'tBirds').value));
-        rec.kg = kgV; rec.rate = num(f(root,'tRate').value);
+        rec.date = f(root,'tDate').value || state.date; rec.farm = f(root,'tFarm').value.trim();
+        rec.birds = Math.round(num(f(root,'tBirds').value)); rec.kg = kgV; rec.rate = num(f(root,'tRate').value);
         rec.amount = r2(rec.kg * rec.rate);
         rec.freight = num(f(root,'tFreight').value); rec.labour = num(f(root,'tLabour').value);
         rec.paid = Math.min(num(f(root,'tPaid').value), rec.amount); rec.payMode = mode();
@@ -753,10 +1108,8 @@
   function renderJeeps(){
     var d = state.date;
     var html = dateNav();
-    if(!db.jeeps.length){
-      $view.innerHTML = html + emptyState('No jeeps yet', 'Add your jeeps in Reports → Jeeps.');
-      wireNav(); return;
-    }
+    if(!db.jeeps.length){ $view.innerHTML = html + emptyState('No jeeps yet', 'Add your jeeps in More → Jeeps.'); wireNav(); return; }
+    html += '<div class="jeep-grid">';
     db.jeeps.forEach(function(j){
       var o = jeepDay(j.id, d);
       html += '<div class="jeep-card"><div class="jeep-head"><div><h3>'+esc(j.name)+'</h3><div class="row-sub">'+esc([j.driver, j.helper].filter(Boolean).join(' · ')||'No driver set')+'</div></div>'+(o.active?handBadge(o):'')+'</div>';
@@ -774,25 +1127,27 @@
       o.ex.forEach(function(e){ rows += '<div class="sub-row" data-exp="'+e.id+'"><span class="l">Spent: '+esc(catLabel(e.cat))+'</span><span class="r num">−'+money(e.amount)+'</span></div>'; });
       o.hv.forEach(function(h){ rows += '<div class="sub-row" data-hand="'+h.id+'"><span class="l">Cash handed over</span><span class="r num">'+money(h.amount)+'</span></div>'; });
       if(rows) html += '<div class="sub-list">'+rows+'</div>';
-      html += '<div class="jeep-btns"><button data-jload="'+j.id+'">Load</button><button data-jsale="'+j.id+'">Sale</button><button class="alt" data-jret="'+j.id+'">Return</button><button class="alt" data-jhand="'+j.id+'">Hand over</button></div>';
-      html += '</div>';
+      html += '<div class="jeep-btns"><button data-jload="'+j.id+'">Load</button><button data-jsale="'+j.id+'">Sale</button><button class="alt" data-jret="'+j.id+'">Return</button><button class="alt" data-jhand="'+j.id+'">Hand over</button></div></div>';
     });
+    html += '</div>';
     $view.innerHTML = html;
     wireNav();
     $view.querySelectorAll('[data-jload]').forEach(function(b){ b.onclick = function(){ openLoadForm(null, b.getAttribute('data-jload'), 'load'); }; });
     $view.querySelectorAll('[data-jret]').forEach(function(b){ b.onclick = function(){ openLoadForm(null, b.getAttribute('data-jret'), 'return'); }; });
     $view.querySelectorAll('[data-jsale]').forEach(function(b){ b.onclick = function(){ openSaleForm(null, b.getAttribute('data-jsale')); }; });
     $view.querySelectorAll('[data-jhand]').forEach(function(b){ b.onclick = function(){ openHandoverForm(null, b.getAttribute('data-jhand')); }; });
-    $view.querySelectorAll('[data-load]').forEach(function(r){ r.onclick = function(){ openLoadForm(r.getAttribute('data-load')); }; });
-    $view.querySelectorAll('[data-sale]').forEach(function(r){ r.onclick = function(){ openSaleForm(r.getAttribute('data-sale')); }; });
-    $view.querySelectorAll('[data-receipt]').forEach(function(r){ r.onclick = function(){ openReceiptForm(r.getAttribute('data-receipt')); }; });
-    $view.querySelectorAll('[data-exp]').forEach(function(r){ r.onclick = function(){ openExpenseForm(r.getAttribute('data-exp')); }; });
-    $view.querySelectorAll('[data-hand]').forEach(function(r){ r.onclick = function(){ openHandoverForm(r.getAttribute('data-hand')); }; });
+    wireEntryRows($view);
+  }
+  function wireEntryRows(root){
+    root.querySelectorAll('[data-load]').forEach(function(r){ r.onclick = function(){ openLoadForm(r.getAttribute('data-load')); }; });
+    root.querySelectorAll('[data-sale]').forEach(function(r){ r.onclick = function(){ openSaleForm(r.getAttribute('data-sale')); }; });
+    root.querySelectorAll('[data-receipt]').forEach(function(r){ r.onclick = function(){ openReceiptForm(r.getAttribute('data-receipt')); }; });
+    root.querySelectorAll('[data-exp]').forEach(function(r){ r.onclick = function(){ openExpenseForm(r.getAttribute('data-exp')); }; });
+    root.querySelectorAll('[data-hand]').forEach(function(r){ r.onclick = function(){ openHandoverForm(r.getAttribute('data-hand')); }; });
   }
   function payMode(s){
     var a = num(s.amount);
-    if(a <= 0) return 'cash';
-    if(Math.abs(num(s.cash)-a) < 0.01) return 'cash';
+    if(a <= 0 || Math.abs(num(s.cash)-a) < 0.01) return 'cash';
     if(Math.abs(num(s.online)-a) < 0.01) return 'online';
     if(Math.abs(num(s.udhar)-a) < 0.01) return 'udhar';
     return 'split';
@@ -801,8 +1156,7 @@
     var m = payMode(s);
     return m==='cash' ? '<span class="badge good">Cash</span>' : m==='online' ? '<span class="badge plain">Online</span>' : m==='udhar' ? '<span class="badge bad">Udhar</span>' : '<span class="badge warn">Split</span>';
   }
-
-  function needJeeps(){ if(!db.jeeps.length){ toast('Add a jeep first (Reports → Jeeps)'); return true; } return false; }
+  function needJeeps(){ if(!db.jeeps.length){ toast('Add a jeep first (More → Jeeps)'); return true; } return false; }
 
   function openLoadForm(id, jeepId, type){
     var l = id ? db.loads.find(function(x){ return x.id===id; }) : null;
@@ -863,9 +1217,8 @@
         f(root,'sUd').textContent = money(m==='udhar' ? a : Math.max(0, a - num(f(root,'sCash').value) - num(f(root,'sOnline').value)));
       }
       function clientChanged(fillRate){
-        var v = cSel.value;
+        var v = cSel.value, line = f(root,'sBalLine');
         f(root,'sNewWrap').style.display = v==='__new' ? '' : 'none';
-        var line = f(root,'sBalLine');
         if(v && v!=='__new'){
           var b = clientBalance(v);
           line.style.display = Math.abs(b) > 0.004 ? '' : 'none';
@@ -885,16 +1238,19 @@
       function doSave(next){
         var a = amt();
         if(num(f(root,'sKg').value) <= 0){ toast('Enter the weight'); return; }
-        var cid = cSel.value;
+        var cid = cSel.value, jid = f(root,'sJeep').value;
         if(!cid){ toast('Pick a client'); return; }
         if(cid==='__new'){
           var nm = f(root,'sNewName').value.trim();
           if(!nm){ toast('Enter the new client name'); return; }
-          var nc = { id:uid(), name:nm, phone:'', fixedRate:0, openingUdhar:0 };
-          db.clients.push(nc); cid = nc.id;
+          var nc = { id:uid(), name:nm, phone:'', fixedRate:0, openingUdhar:0, jeepId:jid };
+          upsert('clients', nc); cid = nc.id;
+        } else {
+          var ec = clientById(cid);
+          if(ec && !ec.jeepId){ ec.jeepId = jid; upsert('clients', ec); }
         }
         var rec = s || { id:uid() };
-        rec.date = f(root,'sDate').value || state.date; rec.jeepId = f(root,'sJeep').value; rec.clientId = cid;
+        rec.date = f(root,'sDate').value || state.date; rec.jeepId = jid; rec.clientId = cid;
         rec.birds = Math.round(num(f(root,'sBirds').value)); rec.kg = num(f(root,'sKg').value); rec.rate = num(f(root,'sRate').value); rec.amount = a;
         var m = mode();
         if(m==='cash'){ rec.cash = a; rec.online = 0; }
@@ -973,8 +1329,7 @@
         var rec = cur || { id:'stock_'+d, date:d };
         rec.birds = Math.round(num(f(root,'kBirds').value)); rec.kg = num(k);
         upsert('stock', rec); closeSheet();
-        var after = stockOn(d);
-        toast('Weight loss: '+kg(after.lossK)); render();
+        toast('Weight loss: '+kg(stockOn(d).lossK)); render();
       };
       if(cur) f(root,'kDel').onclick = function(){ removeRec('stock', cur.id, 'count'); };
       f(root,'kKg').focus();
@@ -987,11 +1342,7 @@
       '<p class="hint" style="margin:-6px 0 14px;">Used for every client except those with their own fixed rate.</p>' +
       '<button class="btn btn-primary" id="rSave">Save</button>';
     openSheet(html, function(root){
-      f(root,'rSave').onclick = function(){
-        var v = num(f(root,'rRate').value);
-        if(v > 0) db.rates[d] = v; else delete db.rates[d];
-        save(); closeSheet(); toast('Rate saved'); render();
-      };
+      f(root,'rSave').onclick = function(){ setRate(d, num(f(root,'rRate').value)); closeSheet(); toast('Rate saved'); render(); };
       f(root,'rRate').focus();
     });
   }
@@ -999,24 +1350,33 @@
   /* ================= UDHAR ================= */
   function renderUdhar(){
     var ut = udharTotals();
+    var nOwe = db.clients.filter(function(c){ return clientBalance(c.id) > 0.004; }).length;
     var html = '<div class="kpi-grid" style="margin-bottom:14px;">' +
-      kpi('Udhar to collect', money(ut.owed), (function(n){ return n+' client'+(n===1?'':'s'); })(db.clients.filter(function(c){ return clientBalance(c.id) > 0.004; }).length), 'accent') +
+      kpi('Udhar to collect', money(ut.owed), nOwe+' client'+(nOwe===1?'':'s'), 'accent') +
       kpi('Advance held', money(ut.adv), 'paid ahead by clients', 'light') + '</div>';
+    html += '<div class="chips"><button class="chip'+(state.udharView==='all'?' active':'')+'" data-uv="all">All clients</button><button class="chip'+(state.udharView==='driver'?' active':'')+'" data-uv="driver">By driver</button></div>';
     html += '<input type="search" class="search" id="uSearch" placeholder="Search client…">';
     html += '<div class="btn-row" style="margin-bottom:12px;"><button class="btn btn-ghost" id="uAdd">+ Add client</button><button class="btn btn-primary" id="uPay">Receive payment</button></div>';
-    if(!db.clients.length) html += emptyState('No clients yet', 'Add your clients to track their udhar.');
-    else {
-      var list = db.clients.map(function(c){ return { c:c, b:clientBalance(c.id) }; }).sort(function(a,b){ return b.b - a.b || a.c.name.localeCompare(b.c.name); });
-      html += '<div class="list" id="uList">' + list.map(function(x){
-        return '<div class="row" data-client="'+x.c.id+'" data-name="'+esc(x.c.name.toLowerCase())+'"><div class="row-main"><div class="row-title">'+esc(x.c.name)+'</div>' +
-          '<div class="row-sub">'+(num(x.c.fixedRate)>0 ? 'Fixed rate '+money(x.c.fixedRate)+'/kg' : 'Daily rate')+(x.c.phone?' · '+esc(x.c.phone):'')+'</div></div>' +
-          '<div class="row-end"><div class="row-amt num" style="color:'+(x.b>0.004?'var(--bad)':'var(--good)')+'">'+money(Math.abs(x.b))+'</div>' +
-          (x.b>0.004 ? '<span class="badge bad">Udhar</span>' : x.b < -0.004 ? '<span class="badge good">Advance</span>' : '<span class="badge plain">Clear</span>') + '</div></div>';
-      }).join('') + '</div>';
+    var list = db.clients.map(function(c){ return { c:c, b:clientBalance(c.id) }; }).sort(function(a,b){ return b.b - a.b || a.c.name.localeCompare(b.c.name); });
+    function clientRow(x){
+      return '<div class="row" data-client="'+x.c.id+'" data-name="'+esc(x.c.name.toLowerCase())+'"><div class="row-main"><div class="row-title">'+esc(x.c.name)+'</div>' +
+        '<div class="row-sub">'+(num(x.c.fixedRate)>0 ? 'Fixed '+money(x.c.fixedRate)+'/kg' : 'Daily rate')+(x.c.jeepId && state.udharView==='all' ? ' · '+esc(jeepName(x.c.jeepId)) : '')+'</div></div>' +
+        '<div class="row-end"><div class="row-amt num" style="color:'+(x.b>0.004?'var(--bad)':'var(--good)')+'">'+money(Math.abs(x.b))+'</div>' +
+        (x.b>0.004 ? '<span class="badge bad">Udhar</span>' : x.b < -0.004 ? '<span class="badge good">Advance</span>' : '<span class="badge plain">Clear</span>') + '</div></div>';
     }
+    if(!db.clients.length) html += emptyState('No clients yet', 'Add your clients to track their udhar.');
+    else if(state.udharView==='driver'){
+      var groups = db.jeeps.map(function(j){ return { title:j.name+(j.driver?' · '+j.driver:''), items:list.filter(function(x){ return x.c.jeepId===j.id; }) }; });
+      groups.push({ title:'No driver set', items:list.filter(function(x){ return !x.c.jeepId || !jeepById(x.c.jeepId); }) });
+      groups.filter(function(g){ return g.items.length; }).forEach(function(g){
+        var tot = r2(sum(g.items.filter(function(x){ return x.b > 0; }), 'b'));
+        html += '<div class="section-title"><span>'+esc(g.title)+'</span><span style="color:var(--bad);letter-spacing:0">'+money(tot)+' to collect</span></div><div class="list grid2">' + g.items.map(clientRow).join('') + '</div>';
+      });
+    } else html += '<div class="list grid2">' + list.map(clientRow).join('') + '</div>';
     $view.innerHTML = html;
     f($view,'uAdd').onclick = function(){ openClientForm(); };
     f($view,'uPay').onclick = function(){ openReceiptForm(); };
+    $view.querySelectorAll('[data-uv]').forEach(function(b){ b.onclick = function(){ state.udharView = b.getAttribute('data-uv'); render(); }; });
     f($view,'uSearch').addEventListener('input', function(e){
       var q = e.target.value.trim().toLowerCase();
       $view.querySelectorAll('[data-client]').forEach(function(r){ r.style.display = !q || r.getAttribute('data-name').indexOf(q) >= 0 ? '' : 'none'; });
@@ -1031,6 +1391,7 @@
       .concat(db.receipts.filter(function(r){ return r.clientId===cid; }).map(function(r){ return { t:'r', date:r.date, r:r }; }))
       .sort(byDateDesc).slice(0, 60);
     var html = '<h2>'+esc(c.name)+'</h2>' +
+      (c.jeepId ? '<p class="hint" style="margin:-8px 0 12px;font-size:12.5px;">Driver: '+esc(jeepName(c.jeepId))+'</p>' : '') +
       '<div class="calc-line"><span>'+(b>0.004?'Udhar balance':b<-0.004?'Advance with you':'Balance')+'</span><b class="num" style="color:'+(b>0.004?'var(--bad)':'var(--good)')+'">'+money(Math.abs(b))+'</b></div>' +
       '<div class="btn-row" style="margin-bottom:14px;"><button class="btn btn-ghost" id="cdEdit">Edit client</button><button class="btn btn-primary" id="cdPay">Receive payment</button></div>';
     if(num(c.openingUdhar)) html += '<div class="sub-row"><span class="l">Opening udhar</span><span class="r num">'+money(c.openingUdhar)+'</span></div>';
@@ -1046,8 +1407,7 @@
     openSheet(html, function(root){
       f(root,'cdEdit').onclick = function(){ openClientForm(cid); };
       f(root,'cdPay').onclick = function(){ openReceiptForm(null, cid); };
-      root.querySelectorAll('[data-sale]').forEach(function(r){ r.onclick = function(){ openSaleForm(r.getAttribute('data-sale')); }; });
-      root.querySelectorAll('[data-receipt]').forEach(function(r){ r.onclick = function(){ openReceiptForm(r.getAttribute('data-receipt')); }; });
+      wireEntryRows(root);
     });
   }
 
@@ -1056,6 +1416,7 @@
     var html = '<h2>'+(c?'Edit':'Add')+' Client</h2>' +
       '<div class="field"><label>Name</label><input type="text" id="cName" value="'+esc(c?c.name:'')+'" placeholder="Shop / person name"></div>' +
       '<div class="field"><label>Phone (optional)</label><input type="tel" id="cPhone" value="'+esc(c?c.phone||'':'')+'"></div>' +
+      '<div class="field"><label>Driver / jeep (whose udhar)</label><select id="cJeep">'+jeepOptions(c?c.jeepId:'', '— not set —')+'</select><div class="hint">This client\'s udhar shows under this driver in Udhar → By driver.</div></div>' +
       '<div class="field"><label>Fixed rate ₹/kg (optional)</label><input type="number" id="cRate" inputmode="decimal" value="'+(c&&num(c.fixedRate)>0?c.fixedRate:'')+'" placeholder="Leave blank to use the daily rate"></div>' +
       '<div class="field"><label>Old udhar already pending</label><input type="number" id="cOpen" inputmode="decimal" value="'+(c&&num(c.openingUdhar)?c.openingUdhar:'')+'" placeholder="0"></div>' +
       '<div class="btn-row">'+(c?'<button class="btn btn-danger" id="cDel">Delete</button>':'')+'<button class="btn btn-primary" id="cSave">Save</button></div>';
@@ -1064,7 +1425,8 @@
         var n = f(root,'cName').value.trim();
         if(!n){ toast('Enter a name'); return; }
         var rec = c || { id:uid() };
-        rec.name = n; rec.phone = f(root,'cPhone').value.trim(); rec.fixedRate = num(f(root,'cRate').value); rec.openingUdhar = num(f(root,'cOpen').value);
+        rec.name = n; rec.phone = f(root,'cPhone').value.trim(); rec.jeepId = f(root,'cJeep').value;
+        rec.fixedRate = num(f(root,'cRate').value); rec.openingUdhar = num(f(root,'cOpen').value);
         upsert('clients', rec); closeSheet(); toast('Client saved'); render();
       };
       if(c) f(root,'cDel').onclick = function(){
@@ -1080,13 +1442,14 @@
     var r = id ? db.receipts.find(function(x){ return x.id===id; }) : null;
     if(!r && !db.clients.length){ toast('Add a client first'); return; }
     var cid = r ? r.clientId : (clientId||'');
+    var c0 = cid ? clientById(cid) : null;
     var html = '<h2>'+(r?'Edit':'Receive')+' Payment</h2>' +
       '<div class="field"><label>Client</label><select id="rClient"><option value="">Select client…</option>'+clientOptions(cid)+'</select></div>' +
       '<div class="calc-line" id="rBal" style="display:none;"></div>' +
       '<div class="field-row"><div class="field"><label>Date</label><input type="date" id="rDate" value="'+(r?r.date:state.date)+'"></div>' +
       '<div class="field"><label>Amount</label><input type="number" id="rAmt" inputmode="decimal" value="'+(r?r.amount:'')+'"></div></div>' +
       '<div class="field"><label>Paid by</label>'+segmented('rMode', [['cash','Cash'],['online','Online / GPay']], r?r.mode:'cash')+'</div>' +
-      '<div class="field" id="rJeepWrap"><label>Collected by jeep driver? (optional)</label><select id="rJeep">'+jeepOptions(r?r.jeepId:'', true)+'</select>' +
+      '<div class="field" id="rJeepWrap"><label>Collected by jeep driver? (optional)</label><select id="rJeep">'+jeepOptions(r?r.jeepId:((c0&&c0.jeepId)||''), '— No, I collected it —')+'</select>' +
       '<div class="hint">If a driver collected this cash, it gets added to what he must hand over.</div></div>' +
       '<div class="btn-row">'+(r?'<button class="btn btn-danger" id="rDel">Delete</button>':'')+'<button class="btn btn-primary" id="rSave">Save</button></div>';
     openSheet(html, function(root){
@@ -1099,7 +1462,12 @@
         line.style.display = ''; line.innerHTML = '<span>'+(b>=0?'Udhar pending':'Advance already')+'</span><b class="num">'+money(Math.abs(b))+'</b>';
         if(!r && b > 0 && !f(root,'rAmt').value) f(root,'rAmt').value = r2(b);
       }
-      f(root,'rClient').addEventListener('change', showBal); showBal();
+      f(root,'rClient').addEventListener('change', function(){
+        var c = clientById(f(root,'rClient').value);
+        if(!r) f(root,'rJeep').value = (c && c.jeepId) || '';
+        showBal();
+      });
+      showBal();
       f(root,'rSave').onclick = function(){
         var a = num(f(root,'rAmt').value), c = f(root,'rClient').value;
         if(!c){ toast('Pick a client'); return; }
@@ -1116,43 +1484,188 @@
     });
   }
 
+  /* ================= STAFF ================= */
+  function renderStaff(){
+    var d = state.date, ws = db.workers.filter(function(w){ return w.active !== false; });
+    var toPay = 0, adv = 0, present = 0;
+    db.workers.forEach(function(w){ var b = workerBalance(w); if(b > 0) toPay += b; else adv -= b; });
+    ws.forEach(function(w){ var s = attStatus(w, d); if(s==='P'||s==='H') present++; });
+    var html = dateNav();
+    html += '<div class="kpi-grid" style="margin-bottom:6px;">' +
+      kpi('Salary to pay', money(toPay), 'earned but not yet paid', 'accent') +
+      kpi('Advance outstanding', money(adv), 'paid more than earned', 'light') +
+      kpi('Present', present+' / '+ws.length, dateShort(d), '') +
+      kpi('Paid this month', money(sum(db.expenses.filter(function(e){ return e.workerId && e.date.slice(0,7)===d.slice(0,7); }),'amount')), monthLabel(d.slice(0,7)), 'gold') + '</div>';
+    html += '<div class="section-title">Attendance — '+esc(dateShort(d))+' <span style="display:flex;gap:14px"><button id="allP">All present</button><button id="addW">+ Worker</button></span></div>';
+    if(!ws.length) html += emptyState('No workers yet', 'Add drivers, helpers, farm staff and labour to track salary, advances and attendance.');
+    else {
+      html += '<div class="list grid2">' + ws.map(function(w){
+        var s = attStatus(w, d), rec = attOf(w.id, d), b = workerBalance(w);
+        function btn(v, lab){ return '<button data-att="'+w.id+'" data-v="'+v+'" class="'+v+(s===v?(rec?' on':' dflt'):'')+'">'+lab+'</button>'; }
+        return '<div class="row"><div class="row-main" data-worker="'+w.id+'" style="cursor:pointer"><div class="row-title">'+esc(w.name)+'</div>' +
+          '<div class="row-sub">'+esc(roleLabel(w.role))+' · '+(w.payType==='daily' ? money(w.wage)+'/day' : money(w.salary)+'/month')+'</div>' +
+          '<div class="row-sub" style="font-weight:700;color:'+(b>0.004?'var(--accent-dark)':b<-0.004?'var(--good)':'var(--ink-faint)')+'">'+(b>0.004?'To pay '+money(b):b<-0.004?'Advance '+money(-b):'Settled')+'</div></div>' +
+          '<div class="att">'+btn('P','P')+btn('H','½')+btn('A','A')+'</div></div>';
+      }).join('') + '</div>';
+      html += '<p class="hint" style="margin-top:8px;">P = present, ½ = half day, A = absent. Monthly-salary workers count as present unless marked absent; daily-wage workers are paid only for days marked P or ½. Tap a name to pay salary or give an advance.</p>';
+    }
+    var inactive = db.workers.filter(function(w){ return w.active === false; });
+    if(inactive.length) html += '<div class="section-title">Left / inactive</div><div class="list grid2">' + inactive.map(function(w){
+      return '<div class="row" data-worker="'+w.id+'"><div class="row-main"><div class="row-title">'+esc(w.name)+'</div><div class="row-sub">'+esc(roleLabel(w.role))+'</div></div><div class="row-end"><div class="row-amt num">'+money(workerBalance(w))+'</div></div></div>';
+    }).join('') + '</div>';
+    $view.innerHTML = html;
+    wireNav();
+    f($view,'addW').onclick = function(){ openWorkerForm(); };
+    f($view,'allP').onclick = function(){
+      ws.forEach(function(w){ var cur = attOf(w.id, d); if(!cur || cur.s!=='P') upsert('attendance', { id:'att_'+d+'_'+w.id, date:d, workerId:w.id, s:'P' }); });
+      toast('Everyone marked present'); render();
+    };
+    $view.querySelectorAll('[data-att]').forEach(function(b){
+      b.onclick = function(){
+        var wid = b.getAttribute('data-att'), v = b.getAttribute('data-v'), cur = attOf(wid, d);
+        if(cur && cur.s===v) removeNow('attendance', cur.id);
+        else upsert('attendance', { id:'att_'+d+'_'+wid, date:d, workerId:wid, s:v });
+        render();
+      };
+    });
+    $view.querySelectorAll('[data-worker]').forEach(function(r){ r.onclick = function(){ openWorkerDetail(r.getAttribute('data-worker')); }; });
+  }
+
+  function openWorkerDetail(wid){
+    var w = workerById(wid); if(!w) return;
+    var ym = state.date.slice(0,7), m = workerMonth(w, ym), b = workerBalance(w);
+    var pays = workerPays(wid).sort(byDateDesc).slice(0, 40);
+    var html = '<h2>'+esc(w.name)+'</h2>' +
+      '<p class="hint" style="margin:-8px 0 12px;font-size:12.5px;">'+esc(roleLabel(w.role))+' · '+(w.payType==='daily' ? money(w.wage)+' per day' : money(w.salary)+' per month')+(w.jeepId?' · '+esc(jeepName(w.jeepId)):'')+(w.phone?' · '+esc(w.phone):'')+'</p>' +
+      '<div class="calc-line"><span>'+(b>0.004?'Salary to pay':b<-0.004?'Advance outstanding':'Balance')+'</span><b class="num" style="color:'+(b>0.004?'var(--accent-dark)':'var(--good)')+'">'+money(Math.abs(b))+'</b></div>' +
+      '<div class="card" style="margin-bottom:12px;">' +
+      ms(esc(monthLabel(ym))+' attendance', m.P+' P · '+m.H+' ½ · '+m.A+' A') +
+      ms('Earned in '+esc(monthLabel(ym)), money(m.earned)) + ms('Salary paid', money(m.paidSalary)) + ms('Advance given', money(m.paidAdvance)) + '</div>' +
+      '<div class="btn-row" style="margin-bottom:10px;"><button class="btn btn-primary" id="wdPay">Pay salary</button><button class="btn btn-ghost" id="wdAdv">Give advance</button></div>' +
+      '<button class="btn btn-ghost" id="wdEdit" style="margin-bottom:12px;">Edit worker</button>';
+    if(pays.length) html += '<div>' + pays.map(function(e){
+      return '<div class="sub-row" data-exp="'+e.id+'"><span class="l">'+esc(dateShort(e.date))+' · '+(e.kind==='advance'?'Advance':'Salary')+' <small>'+(e.mode==='bank'?'bank':'cash')+'</small></span><span class="r num">'+money(e.amount)+'</span></div>';
+    }).join('') + '</div>';
+    openSheet(html, function(root){
+      f(root,'wdPay').onclick = function(){ openWorkerPayForm(wid, 'salary'); };
+      f(root,'wdAdv').onclick = function(){ openWorkerPayForm(wid, 'advance'); };
+      f(root,'wdEdit').onclick = function(){ openWorkerForm(wid); };
+      wireEntryRows(root);
+    });
+  }
+
+  function openWorkerForm(id){
+    var w = id ? workerById(id) : null;
+    var html = '<h2>'+(w?'Edit':'Add')+' Worker</h2>' +
+      '<div class="field"><label>Name</label><input type="text" id="wName" value="'+esc(w?w.name:'')+'"></div>' +
+      '<div class="field-row"><div class="field"><label>Role</label><select id="wRole">'+ROLES.map(function(r){ return '<option value="'+r[0]+'"'+(w&&w.role===r[0]?' selected':'')+'>'+r[1]+'</option>'; }).join('')+'</select></div>' +
+      '<div class="field"><label>Phone</label><input type="tel" id="wPhone" value="'+esc(w?w.phone||'':'')+'"></div></div>' +
+      '<div class="field"><label>Paid</label>'+segmented('wType', [['monthly','Monthly salary'],['daily','Daily wage']], w?w.payType||'monthly':'monthly')+'</div>' +
+      '<div class="field-row"><div class="field" id="wSalWrap"><label>Salary per month</label><input type="number" id="wSal" inputmode="decimal" value="'+(w&&w.salary?w.salary:'')+'"></div>' +
+      '<div class="field" id="wWageWrap"><label>Wage per day</label><input type="number" id="wWage" inputmode="decimal" value="'+(w&&w.wage?w.wage:'')+'"></div></div>' +
+      '<div class="field"><label>Jeep (optional)</label><select id="wJeep">'+jeepOptions(w?w.jeepId:'', '— none —')+'</select></div>' +
+      '<div class="field-row"><div class="field"><label>Working since</label><input type="date" id="wStart" value="'+(w?w.start:state.date)+'"></div>' +
+      '<div class="field"><label>Old salary pending</label><input type="number" id="wOpen" inputmode="decimal" value="'+(w&&num(w.openingDue)?w.openingDue:'')+'" placeholder="0"></div></div>' +
+      '<div class="hint" style="margin:-6px 0 12px;">Old salary pending = what you already owed him before starting this app (use minus for an old advance).</div>' +
+      (w ? '<div class="field"><label>Status</label>'+segmented('wAct', [['1','Working'],['0','Left']], w.active===false?'0':'1')+'</div>' : '') +
+      '<div class="btn-row">'+(w?'<button class="btn btn-danger" id="wDel">Delete</button>':'')+'<button class="btn btn-primary" id="wSave">Save</button></div>';
+    openSheet(html, function(root){
+      var tp = wireSeg(root, 'wType', show), actv = w ? wireSeg(root, 'wAct') : function(){ return '1'; };
+      function show(){ f(root,'wSalWrap').style.display = tp()==='monthly' ? '' : 'none'; f(root,'wWageWrap').style.display = tp()==='daily' ? '' : 'none'; }
+      show();
+      f(root,'wSave').onclick = function(){
+        var n = f(root,'wName').value.trim();
+        if(!n){ toast('Enter a name'); return; }
+        var rec = w || { id:uid() };
+        rec.name = n; rec.role = f(root,'wRole').value; rec.phone = f(root,'wPhone').value.trim();
+        rec.payType = tp(); rec.salary = num(f(root,'wSal').value); rec.wage = num(f(root,'wWage').value);
+        rec.jeepId = f(root,'wJeep').value; rec.start = f(root,'wStart').value || state.date; rec.openingDue = num(f(root,'wOpen').value);
+        rec.active = actv() !== '0';
+        upsert('workers', rec); closeSheet(); toast('Worker saved'); render();
+      };
+      if(w) f(root,'wDel').onclick = function(){
+        if(workerPays(w.id).length){ toast('Has payments — mark as "Left" instead'); return; }
+        confirmThen('Delete worker?', 'Their attendance will also be removed.', 'Delete', function(){
+          db.attendance.filter(function(a){ return a.workerId===w.id; }).forEach(function(a){ removeNow('attendance', a.id); });
+          removeNow('workers', w.id); toast('Deleted'); render();
+        });
+      };
+      f(root,'wName').focus();
+    });
+  }
+
+  function openWorkerPayForm(wid, kind, id){
+    var e = id ? db.expenses.find(function(x){ return x.id===id; }) : null;
+    var w = workerById(e ? e.workerId : wid); if(!w) return;
+    kind = e ? (e.kind||'salary') : kind;
+    var b = workerBalance(w);
+    var html = '<h2>'+(e?'Edit ':'')+(kind==='advance'?'Advance':'Salary')+' — '+esc(w.name)+'</h2>' +
+      '<div class="calc-line"><span>'+(b>=0?'Salary to pay now':'Advance outstanding')+'</span><b class="num">'+money(Math.abs(b))+'</b></div>' +
+      '<div class="field">'+segmented('wpKind', [['salary','Salary'],['advance','Advance']], kind)+'</div>' +
+      '<div class="field-row"><div class="field"><label>Date</label><input type="date" id="wpDate" value="'+(e?e.date:state.date)+'"></div>' +
+      '<div class="field"><label>Amount</label><input type="number" id="wpAmt" inputmode="decimal" value="'+(e?e.amount:(kind==='salary'&&b>0?b:''))+'"></div></div>' +
+      '<div class="field"><label>Paid from</label>'+segmented('wpMode', [['cash','Cash'],['bank','Bank / GPay']], e?e.mode:'cash')+'</div>' +
+      '<div class="field"><label>Note (optional)</label><input type="text" id="wpNote" value="'+esc(e?e.note||'':'')+'" placeholder="e.g. September salary"></div>' +
+      '<div class="btn-row">'+(e?'<button class="btn btn-danger" id="wpDel">Delete</button>':'')+'<button class="btn btn-primary" id="wpSave">Save</button></div>';
+    openSheet(html, function(root){
+      var k = wireSeg(root, 'wpKind'), mode = wireSeg(root, 'wpMode');
+      f(root,'wpSave').onclick = function(){
+        var a = num(f(root,'wpAmt').value);
+        if(a <= 0){ toast('Enter the amount'); return; }
+        var rec = e || { id:uid() };
+        rec.date = f(root,'wpDate').value || state.date; rec.amount = a; rec.cat = ROLE_CAT[w.role] || 'other';
+        rec.workerId = w.id; rec.kind = k(); rec.mode = mode(); rec.jeepId = ''; rec.note = f(root,'wpNote').value.trim();
+        upsert('expenses', rec); closeSheet();
+        var nb = workerBalance(w);
+        toast(nb > 0.004 ? 'Saved — '+money(nb)+' still to pay' : nb < -0.004 ? 'Saved — advance '+money(-nb) : 'Saved — settled');
+        render();
+      };
+      if(e) f(root,'wpDel').onclick = function(){ removeRec('expenses', e.id, 'payment'); };
+    });
+  }
+
   /* ================= EXPENSES ================= */
   function renderExpenses(){
     var ym = state.date.slice(0,7);
-    var ex = db.expenses.filter(function(e){ return e.date.slice(0,7)===ym; }).sort(byDateDesc);
+    var ex = db.expenses.filter(inMonth(ym)).sort(byDateDesc);
     var html = monthNav();
     var house = sum(ex.filter(function(e){ return e.cat==='house'; }),'amount');
-    html += '<div class="kpi-grid" style="margin-bottom:6px;">' + kpi('Business', money(sum(ex,'amount') - house), 'jeeps, wages, farm…', '') + kpi('House', money(house), 'kept separate', 'light') + '</div>';
+    var staffAmt = sum(ex.filter(function(e){ return e.workerId; }),'amount');
+    html += '<div class="kpi-grid" style="margin-bottom:6px;">' + kpi('Business', money(sum(ex,'amount') - house), 'jeeps, wages, farm…', '') + kpi('House', money(house), 'kept separate', 'light') +
+      kpi('Staff paid', money(staffAmt), 'salary + advances', 'gold') + kpi('Entries', String(ex.length), monthLabel(ym), 'light') + '</div>';
     var cats = EXP_CATS.map(function(c){ return [c[1], sum(ex.filter(function(e){ return e.cat===c[0]; }),'amount')]; }).filter(function(c){ return c[1]; });
-    if(cats.length) html += '<div class="section-title">By type</div><div class="card">' + cats.map(function(c){ return ms(esc(c[0]), money(c[1])); }).join('') + '</div>';
-    html += '<div class="section-title">Entries — '+esc(monthLabel(ym))+'</div>';
-    if(!ex.length) html += emptyState('No expenses this month', 'Tap + to add diesel, salaries, repairs, house expenses…');
+    var side = cats.length ? '<div class="section-title">By type</div><div class="card">' + cats.map(function(c){ return ms(esc(c[0]), money(c[1])); }).join('') + '</div>' : '';
+    var main = '<div class="section-title">Entries — '+esc(monthLabel(ym))+'</div>';
+    if(!ex.length) main += emptyState('No expenses this month', 'Tap + to add diesel, repairs, house expenses… Staff salaries are paid from the Staff tab.');
     else {
       var last = null;
-      html += '<div class="list">';
+      main += '<div class="list">';
       ex.forEach(function(e){
-        if(e.date !== last){ html += '<div class="date-heading">'+esc(dateLabel(e.date))+'</div>'; last = e.date; }
-        var j = e.jeepId ? jeepById(e.jeepId) : null;
-        html += '<div class="row" data-exp="'+e.id+'"><div class="row-main"><div class="row-title">'+esc(catLabel(e.cat))+'</div>' +
-          '<div class="row-sub">'+esc([j?j.name:'', e.note||''].filter(Boolean).join(' · ')||'—')+'</div></div>' +
+        if(e.date !== last){ main += '<div class="date-heading">'+esc(dateLabel(e.date))+'</div>'; last = e.date; }
+        var j = e.jeepId ? jeepById(e.jeepId) : null, w = e.workerId ? workerById(e.workerId) : null;
+        main += '<div class="row" data-exp="'+e.id+'"><div class="row-main"><div class="row-title">'+esc(w ? w.name+' — '+(e.kind==='advance'?'advance':'salary') : catLabel(e.cat))+'</div>' +
+          '<div class="row-sub">'+esc([w?catLabel(e.cat):'', j?j.name:'', e.note||''].filter(Boolean).join(' · ')||'—')+'</div></div>' +
           '<div class="row-end"><div class="row-amt num">'+money(e.amount)+'</div><span class="badge plain">'+(e.mode==='bank'?'Bank':e.mode==='driver'?'Driver cash':'Cash')+'</span></div></div>';
       });
-      html += '</div>';
+      main += '</div>';
     }
+    html += '<div class="cols"><div>'+main+'</div><div>'+side+'</div></div>';
     $view.innerHTML = html;
     wireNav();
-    $view.querySelectorAll('[data-exp]').forEach(function(r){ r.onclick = function(){ openExpenseForm(r.getAttribute('data-exp')); }; });
+    wireEntryRows($view);
   }
 
   function openExpenseForm(id){
     var e = id ? db.expenses.find(function(x){ return x.id===id; }) : null;
+    if(e && e.workerId) return openWorkerPayForm(null, null, e.id);
     var html = '<h2>'+(e?'Edit':'Add')+' Expense</h2>' +
       '<div class="field-row"><div class="field"><label>Date</label><input type="date" id="eDate" value="'+(e?e.date:state.date)+'"></div>' +
       '<div class="field"><label>Amount</label><input type="number" id="eAmt" inputmode="decimal" value="'+(e?e.amount:'')+'"></div></div>' +
       '<div class="field"><label>Type</label><select id="eCat">'+EXP_CATS.map(function(c){ return '<option value="'+c[0]+'"'+(e&&e.cat===c[0]?' selected':'')+'>'+c[1]+'</option>'; }).join('')+'</select></div>' +
-      '<div class="field"><label>Jeep (optional)</label><select id="eJeep">'+jeepOptions(e?e.jeepId:'', true)+'</select></div>' +
+      '<div class="field"><label>Jeep (optional)</label><select id="eJeep">'+jeepOptions(e?e.jeepId:'', '— none —')+'</select></div>' +
       '<div class="field"><label>Paid from</label><div id="eModeWrap"></div></div>' +
-      '<div class="field"><label>Note (optional)</label><input type="text" id="eNote" value="'+esc(e?e.note||'':'')+'" placeholder="e.g. Ramesh — Sept salary"></div>' +
+      '<div class="field"><label>Note (optional)</label><input type="text" id="eNote" value="'+esc(e?e.note||'':'')+'"></div>' +
+      '<div class="hint" style="margin:-6px 0 12px;">For a worker\'s salary or advance, use the Staff tab so it\'s counted against that worker.</div>' +
       '<div class="btn-row">'+(e?'<button class="btn btn-danger" id="eDel">Delete</button>':'')+'<button class="btn btn-primary" id="eSave">Save</button></div>';
     openSheet(html, function(root){
       var mode = function(){ return 'cash'; }, cur = e ? e.mode : 'cash';
@@ -1177,59 +1690,151 @@
     });
   }
 
-  /* ================= REPORTS / SETTINGS ================= */
+  /* ================= MORE (hub) ================= */
   function renderMore(){
-    var ym = state.date.slice(0,7), r = monthReport(ym);
-    var html = monthNav();
-    html += '<div class="kpi-grid">' +
-      kpi('Business profit', money(r.profit), 'before house expenses', r.profit >= 0 ? '' : 'accent') +
+    if(state.sub==='reports') return renderReports();
+    if(state.sub==='trucks') return renderTrucks();
+    if(state.sub==='jeeplist') return renderJeepList();
+    if(state.sub==='data') return renderData();
+    var r = monthReport(state.date.slice(0,7));
+    var html = '<div class="kpi-grid" style="margin-bottom:16px;">' +
+      kpi('Profit this month', money(r.profit), 'before house expenses', r.profit >= 0 ? '' : 'accent') +
       kpi('Left after house', money(r.net), 'house: '+money(r.house), 'gold') + '</div>';
-    html += '<div class="section-title">Profit — '+esc(monthLabel(ym))+'</div><div class="card">' +
-      ms('Sales <small>'+kg(r.sellK)+(r.avgSell?' · avg '+money(r.avgSell)+'/kg':'')+'</small>', money(r.sellAmt)) +
-      ms('− Chicken bought <small>'+kg(r.buyK)+(r.avgBuy?' · avg '+money(r.avgBuy)+'/kg':'')+'</small>', money(r.buyAmt)) +
-      (r.stockChange ? ms((r.stockChange>0?'+':'−')+' Stock change at farm <small>'+kg(r.openStock.kg)+' → '+kg(r.closeStock.kg)+'</small>', money(Math.abs(r.stockChange))) : '') +
-      '<div class="ms total"><span>Margin on chicken</span><b class="num">'+money(r.gross)+'</b></div>' +
-      ms('− Truck freight', money(r.freight)) + ms('− Loading/unloading labour', money(r.labour)) +
-      r.cats.filter(function(c){ return c.key!=='house'; }).map(function(c){ return ms('− '+esc(c.label), money(c.amt)); }).join('') +
-      '<div class="ms total"><span>Business profit</span><b class="num '+(r.profit>=0?'good':'bad')+'">'+money(r.profit)+'</b></div>' +
-      ms('− House expenses', money(r.house)) +
-      '<div class="ms total"><span>Left after house</span><b class="num '+(r.net>=0?'good':'bad')+'">'+money(r.net)+'</b></div></div>';
-    html += '<div class="section-title">Weight — '+esc(monthLabel(ym))+'</div><div class="card">' +
-      ms('Bought ('+r.trucks+' truck'+(r.trucks===1?'':'s')+')', kg(r.buyK)) + ms('Sold', kg(r.sellK)) +
-      ms('Dead birds', (r.deadB?esc(birds(r.deadB))+' · ':'')+kg(r.deadK)) +
-      ms('Jeep weight loss', kg(r.jeepLossK)) + ms('Farm weight loss <small>on days stock was counted</small>', kg(r.farmLossK)) +
-      '<div class="ms total"><span>Total loss</span><b class="num">'+kg(r.totalLossK)+' · '+pct(r.totalLossK, r.buyK)+'</b></div></div>';
-    html += '<div class="section-title">Money in — '+esc(monthLabel(ym))+'</div><div class="card">' +
-      ms('Cash sales', money(r.cash)) + ms('Online sales', money(r.online)) + ms('Given on udhar', money(r.udhar)) + ms('Udhar collected', money(r.collected)) + '</div>';
+    function tile(k, ic, t, s){ return '<button data-sub="'+k+'"><span class="ic">'+ICONS[ic]+'</span><b>'+t+'</b><small>'+s+'</small></button>'; }
+    html += '<div class="hub">' +
+      tile('reports','report','Reports','Profit, daily, jeeps, clients, farms, salary') +
+      tile('trucks','truck','Trucks &amp; farms','Arrivals and what you owe each farm') +
+      tile('excel','excel','Excel export','Download everything as an Excel file') +
+      tile('jeeplist','jeep','Jeeps','Add jeeps, drivers and helpers') +
+      tile('settings','gear','Settings','Business name, labour wage, opening balances') +
+      tile('transfer','swap','Cash ↔ Bank','Deposit or withdraw') +
+      tile('account','user', authUser ? 'Account' : 'Sign in &amp; sync', authUser ? esc(authUser.email) : 'Same data on phone and laptop') +
+      tile('data','save','Backup','Download or restore a backup file') + '</div>';
+    html += '<div class="section-title">Sync</div><div class="card">' + (authUser
+      ? ms('Signed in as', esc(authUser.email)) + ms('Status', '<span class="badge good">Syncing</span>')
+      : '<p style="font-size:13px;color:var(--ink-soft);">Not signed in — data is only on this device. Sign in with the same account on your phone and laptop to share the data.</p>') + '</div>';
+    $view.innerHTML = html;
+    $view.querySelectorAll('[data-sub]').forEach(function(b){
+      b.onclick = function(){
+        var k = b.getAttribute('data-sub');
+        if(k==='excel') return openExcelForm();
+        if(k==='settings') return openSettingsForm();
+        if(k==='transfer') return openTransferForm();
+        if(k==='account') return authUser ? openAccountSheet() : openAuthSheet('login');
+        state.sub = k; render(); window.scrollTo(0,0);
+      };
+    });
+  }
+  function openAccountSheet(){
+    openSheet('<h2>Account</h2><div class="card" style="margin-bottom:14px;">'+ms('Signed in as', esc(authUser.email))+ms('Status','<span class="badge good">Syncing</span>')+'</div>' +
+      '<p class="hint" style="margin-bottom:14px;">Every entry is saved to your account and shows up on any phone or laptop signed in with this email.</p>' +
+      '<button class="btn btn-ghost" id="soBtn">Sign out</button>', function(root){ f(root,'soBtn').onclick = function(){ closeSheet(); performSignOut(); }; });
+  }
 
-    html += '<div class="section-title">Jeeps <button id="mAddJeep">+ Add jeep</button></div>';
-    if(!db.jeeps.length) html += '<div class="card"><div class="ms"><span>No jeeps yet</span><b>—</b></div></div>';
-    else html += '<div class="list">' + db.jeeps.map(function(j){
-      return '<div class="row" data-jeep="'+j.id+'"><div class="row-main"><div class="row-title">'+esc(j.name)+'</div><div class="row-sub">'+esc([j.driver?'Driver: '+j.driver:'', j.helper?'Helper: '+j.helper:''].filter(Boolean).join(' · ')||'—')+'</div></div><div class="row-end"><span class="badge plain">Edit</span></div></div>';
+  function renderReports(){
+    var ym = state.date.slice(0,7), r = monthReport(ym);
+    var html = '<button class="back-btn" data-back>‹ More</button>' + monthNav();
+    var tabs = [['profit','Profit'],['daily','Daily'],['jeeps','Jeeps'],['clients','Clients'],['farms','Farms'],['salary','Salary']];
+    html += '<div class="chips">' + tabs.map(function(t){ return '<button class="chip'+(state.report===t[0]?' active':'')+'" data-rep="'+t[0]+'">'+t[1]+'</button>'; }).join('') + '</div>';
+    if(state.report==='profit'){
+      html += '<div class="kpi-grid">' + kpi('Business profit', money(r.profit), 'before house expenses', r.profit>=0?'':'accent') +
+        kpi('Left after house', money(r.net), 'house: '+money(r.house), 'gold') +
+        kpi('Sold', kg(r.sellK), r.avgSell?'avg '+money(r.avgSell)+'/kg':'—', 'light') + kpi('Weight loss', pct(r.totalLossK, r.buyK), kg(r.totalLossK), 'light') + '</div>';
+      var profit = '<div class="section-title">Profit — '+esc(monthLabel(ym))+'</div><div class="card">' +
+        ms('Sales <small>'+kg(r.sellK)+(r.avgSell?' · avg '+money(r.avgSell)+'/kg':'')+'</small>', money(r.sellAmt)) +
+        ms('− Chicken bought <small>'+kg(r.buyK)+(r.avgBuy?' · avg '+money(r.avgBuy)+'/kg':'')+'</small>', money(r.buyAmt)) +
+        (r.stockChange ? ms((r.stockChange>0?'+':'−')+' Stock change at farm <small>'+kg(r.openStock.kg)+' → '+kg(r.closeStock.kg)+'</small>', money(Math.abs(r.stockChange))) : '') +
+        '<div class="ms total"><span>Margin on chicken</span><b class="num">'+money(r.gross)+'</b></div>' +
+        ms('− Truck freight', money(r.freight)) + ms('− Loading/unloading labour', money(r.labour)) +
+        r.cats.filter(function(c){ return c.key!=='house'; }).map(function(c){ return ms('− '+esc(c.label), money(c.amt)); }).join('') +
+        '<div class="ms total"><span>Business profit</span><b class="num '+(r.profit>=0?'good':'bad')+'">'+money(r.profit)+'</b></div>' +
+        ms('− House expenses', money(r.house)) +
+        '<div class="ms total"><span>Left after house</span><b class="num '+(r.net>=0?'good':'bad')+'">'+money(r.net)+'</b></div></div>';
+      var side = '<div class="section-title">Weight</div><div class="card">' +
+        ms('Bought ('+r.trucks+' truck'+(r.trucks===1?'':'s')+')', kg(r.buyK)) + ms('Sold', kg(r.sellK)) +
+        ms('Dead birds', (r.deadB?esc(birds(r.deadB))+' · ':'')+kg(r.deadK)) +
+        ms('Jeep weight loss', kg(r.jeepLossK)) + ms('Farm weight loss <small>on days stock was counted</small>', kg(r.farmLossK)) +
+        '<div class="ms total"><span>Total loss</span><b class="num">'+kg(r.totalLossK)+' · '+pct(r.totalLossK, r.buyK)+'</b></div></div>' +
+        '<div class="section-title">Money in</div><div class="card">' +
+        ms('Cash sales', money(r.cash)) + ms('Online sales', money(r.online)) + ms('Given on udhar', money(r.udhar)) + ms('Udhar collected', money(r.collected)) + '</div>';
+      html += '<div class="cols"><div>'+profit+'</div><div>'+side+'</div></div>';
+    } else if(state.report==='daily'){
+      var dr = dailyRows(ym);
+      html += '<div class="section-title">Day by day — '+esc(monthLabel(ym))+'</div>';
+      html += dr.length ? table(['Date','Truck in','Sold','Jeep loss','Farm loss','Dead','Sales','Expenses','Cash short/extra'],
+        dr.map(function(x){ return ['<a data-goday="'+x.date+'" style="cursor:pointer;font-weight:700;text-decoration:underline">'+esc(dateShort(x.date))+'</a>', kgN(x.inK), kgN(x.soldK), {v:kgN(x.jeepLoss), cls:x.jeepLoss>0.004?'bad':''}, x.farmLoss==null?'—':{v:kgN(x.farmLoss), cls:x.farmLoss>0.004?'bad':''}, kgN(x.deadK), money(x.sales), money(x.exp), {v:x.diff?money(x.diff):'—', cls:x.diff<-0.5?'bad':x.diff>0.5?'good':''}]; }),
+        ['Total', kgN(sum(dr,'inK')), kgN(sum(dr,'soldK')), kgN(sum(dr,'jeepLoss')), kgN(sum(dr,function(x){ return x.farmLoss||0; })), kgN(sum(dr,'deadK')), money(sum(dr,'sales')), money(sum(dr,'exp')), money(sum(dr,'diff'))])
+        : emptyState('No entries this month', '');
+      html += '<p class="hint" style="margin-top:8px;">Weights in kg. Tap a date to open that day.</p>';
+    } else if(state.report==='jeeps'){
+      var jr = jeepRows(ym);
+      html += '<div class="section-title">Jeeps — '+esc(monthLabel(ym))+'</div>';
+      html += jr.length ? table(['Jeep','Loaded','Sold','Loss','Loss %','Sales','Cash','Online','Udhar','Should hand','Handed','Not handed yet','Short/extra'],
+        jr.map(function(x){ return [esc(x.j.name)+(x.j.driver?' <span style="color:var(--ink-faint)">'+esc(x.j.driver)+'</span>':''), kgN(x.netK), kgN(x.soldK), {v:kgN(x.lossK), cls:x.lossK>0.004?'bad':''}, pct(x.lossK, x.netK), money(x.amt), money(x.cash), money(x.online), money(x.udhar), money(x.toHand), money(x.handed), {v:x.pending?money(x.pending):'—', cls:x.pending>0.5?'bad':''}, {v:money(x.diff), cls:x.diff<-0.5?'bad':x.diff>0.5?'good':''}]; }),
+        ['Total', kgN(sum(jr,'netK')), kgN(sum(jr,'soldK')), kgN(sum(jr,'lossK')), pct(sum(jr,'lossK'), sum(jr,'netK')), money(sum(jr,'amt')), money(sum(jr,'cash')), money(sum(jr,'online')), money(sum(jr,'udhar')), money(sum(jr,'toHand')), money(sum(jr,'handed')), money(sum(jr,'pending')), money(sum(jr,'diff'))])
+        : emptyState('No jeeps yet', '');
+    } else if(state.report==='clients'){
+      var cr = clientRows(ym);
+      html += '<div class="section-title">Clients — '+esc(monthLabel(ym))+'</div>';
+      html += cr.length ? table(['Client','Driver','Kg','Sales','Udhar given','Paid','Balance now'],
+        cr.map(function(x){ var j = jeepById(x.c.jeepId); return [esc(x.c.name), esc(j?(j.driver||j.name):'—'), kgN(x.kg), money(x.amt), money(x.udhar), money(x.got), {v:money(x.bal), cls:x.bal>0.004?'bad':'good'}]; }),
+        ['Total', '', kgN(sum(cr,'kg')), money(sum(cr,'amt')), money(sum(cr,'udhar')), money(sum(cr,'got')), money(sum(cr,'bal'))])
+        : emptyState('No client activity this month', '');
+    } else if(state.report==='farms'){
+      var fr = farmRows(ym);
+      html += '<div class="section-title">Farms — '+esc(monthLabel(ym))+'</div>';
+      html += fr.length ? table(['Farm','Trucks','Kg','Cost','Avg ₹/kg','Paid','Owed now'],
+        fr.map(function(x){ return [esc(x.farm), x.trucks, kgN(x.kg), money(x.amt), money(x.avg), money(x.paid), {v:money(x.bal), cls:x.bal>0.004?'bad':''}]; }),
+        ['Total', sum(fr,'trucks'), kgN(sum(fr,'kg')), money(sum(fr,'amt')), sum(fr,'kg')>0?money(sum(fr,'amt')/sum(fr,'kg')):'—', money(sum(fr,'paid')), money(sum(fr,'bal'))])
+        : emptyState('No trucks this month', '');
+    } else if(state.report==='salary'){
+      var sr = salaryRows(ym);
+      html += '<div class="section-title">Salary — '+esc(monthLabel(ym))+'</div>';
+      html += sr.length ? table(['Worker','Role','Rate','P','½','A','Earned','Salary paid','Advance','Balance now'],
+        sr.map(function(x){ return [esc(x.w.name), esc(roleLabel(x.w.role)), x.w.payType==='daily'?money(x.w.wage)+'/day':money(x.w.salary)+'/mo', x.m.P, x.m.H, x.m.A, money(x.m.earned), money(x.m.paidSalary), money(x.m.paidAdvance), {v:(x.bal<0?'Adv ':'')+money(Math.abs(x.bal)), cls:x.bal>0.004?'bad':'good'}]; }),
+        ['Total','','','','','', money(sum(sr,function(x){ return x.m.earned; })), money(sum(sr,function(x){ return x.m.paidSalary; })), money(sum(sr,function(x){ return x.m.paidAdvance; })), money(sum(sr,'bal'))])
+        : emptyState('No workers yet', 'Add workers in the Staff tab.');
+      html += '<p class="hint" style="margin-top:8px;">Balance now: red = salary still to pay, green "Adv" = advance he still owes.</p>';
+    }
+    html += '<button class="btn btn-ghost" id="repXls" style="margin-top:16px;">Download as Excel</button>';
+    $view.innerHTML = html;
+    wireNav();
+    $view.querySelectorAll('[data-rep]').forEach(function(b){ b.onclick = function(){ state.report = b.getAttribute('data-rep'); render(); }; });
+    $view.querySelectorAll('[data-goday]').forEach(function(a){ a.onclick = function(){ state.date = a.getAttribute('data-goday'); switchTab('today'); }; });
+    f($view,'repXls').onclick = openExcelForm;
+  }
+
+  function renderJeepList(){
+    var html = '<button class="back-btn" data-back>‹ More</button><div class="section-title">Jeeps <button id="mAddJeep">+ Add jeep</button></div>';
+    if(!db.jeeps.length) html += emptyState('No jeeps yet', 'Add your 4 jeeps with their driver and helper.');
+    else html += '<div class="list grid2">' + db.jeeps.map(function(j){
+      var nC = db.clients.filter(function(c){ return c.jeepId===j.id; }).length;
+      return '<div class="row" data-jeep="'+j.id+'"><div class="row-main"><div class="row-title">'+esc(j.name)+'</div><div class="row-sub">'+esc([j.driver?'Driver: '+j.driver:'', j.helper?'Helper: '+j.helper:''].filter(Boolean).join(' · ')||'—')+'</div><div class="row-sub">'+nC+' client'+(nC===1?'':'s')+'</div></div><div class="row-end"><span class="badge plain">Edit</span></div></div>';
     }).join('') + '</div>';
+    $view.innerHTML = html;
+    wireNav();
+    f($view,'mAddJeep').onclick = function(){ openJeepForm(); };
+    $view.querySelectorAll('[data-jeep]').forEach(function(r){ r.onclick = function(){ openJeepForm(r.getAttribute('data-jeep')); }; });
+  }
 
+  function renderData(){
     var last = null; try{ last = localStorage.getItem(BACKUP_KEY); }catch(e){}
-    html += '<div class="section-title">Settings &amp; data</div><div class="list">' +
-      '<button class="row" id="mSettings"><div class="row-main"><div class="row-title">Settings</div><div class="row-sub">Labour wage per 100 kg, opening cash &amp; bank</div></div></button>' +
-      '<button class="row" id="mTransfer"><div class="row-main"><div class="row-title">Cash ↔ Bank transfer</div><div class="row-sub">Deposit cash to bank or withdraw</div></div></button>' +
-      '<button class="row" id="mBackup"><div class="row-main"><div class="row-title">Download backup</div><div class="row-sub">Last backup: '+(last?esc(dateLabel(last)):'never')+'</div></div></button>' +
-      '<label class="row" style="cursor:pointer"><div class="row-main"><div class="row-title">Restore from backup</div><div class="row-sub">Replaces all data on this phone</div></div><input type="file" id="mRestore" accept="application/json,.json" style="display:none"></label>' +
-      '</div>';
-    var trs = db.transfers.filter(function(t){ return t.date.slice(0,7)===ym; }).sort(byDateDesc);
+    var html = '<button class="back-btn" data-back>‹ More</button><div class="section-title">Backup</div>' +
+      '<div class="card" style="margin-bottom:12px;"><p style="font-size:13px;color:var(--ink-soft);">'+(authUser ? 'You\'re signed in, so your data is already saved in your account. A backup file is an extra copy.' : 'You\'re not signed in — data lives only on this device. Download a backup every week, or sign in to keep it safe in your account.')+'</p>' +
+      ms('Last backup', last ? esc(dateLabel(last)) : 'never') + '</div>' +
+      '<div class="list"><button class="row" id="mBackup"><div class="row-main"><div class="row-title">Download backup</div><div class="row-sub">A .json file with all your data</div></div></button>' +
+      '<label class="row"><div class="row-main"><div class="row-title">Restore from backup</div><div class="row-sub">Replaces all current data'+(authUser?' in your account':' on this device')+'</div></div><input type="file" id="mRestore" accept="application/json,.json" style="display:none"></label></div>';
+    var trs = db.transfers.slice().sort(byDateDesc).slice(0, 30);
     if(trs.length){
-      html += '<div class="section-title">Transfers — '+esc(monthLabel(ym))+'</div><div class="list">' + trs.map(function(t){
+      html += '<div class="section-title">Cash ↔ Bank transfers</div><div class="list">' + trs.map(function(t){
         return '<div class="row" data-transfer="'+t.id+'"><div class="row-main"><div class="row-title">'+(t.dir==='c2b'?'Cash → Bank':'Bank → Cash')+'</div><div class="row-sub">'+esc(dateShort(t.date))+'</div></div><div class="row-end"><div class="row-amt num">'+money(t.amount)+'</div></div></div>';
       }).join('') + '</div>';
     }
     $view.innerHTML = html;
     wireNav();
-    f($view,'mAddJeep').onclick = function(){ openJeepForm(); };
-    $view.querySelectorAll('[data-jeep]').forEach(function(r){ r.onclick = function(){ openJeepForm(r.getAttribute('data-jeep')); }; });
-    $view.querySelectorAll('[data-transfer]').forEach(function(r){ r.onclick = function(){ openTransferForm(r.getAttribute('data-transfer')); }; });
-    f($view,'mSettings').onclick = openSettingsForm;
-    f($view,'mTransfer').onclick = function(){ openTransferForm(); };
     f($view,'mBackup').onclick = exportData;
     f($view,'mRestore').addEventListener('change', importData);
+    $view.querySelectorAll('[data-transfer]').forEach(function(r){ r.onclick = function(){ openTransferForm(r.getAttribute('data-transfer')); }; });
   }
 
   function openJeepForm(id){
@@ -1269,7 +1874,7 @@
       f(root,'stSave').onclick = function(){
         s.company = f(root,'stName').value.trim() || 'Aryan Trades';
         s.labourPer100 = num(f(root,'stLab').value); s.openingCash = num(f(root,'stCash').value); s.openingBank = num(f(root,'stBank').value);
-        save(); closeSheet(); toast('Settings saved'); render();
+        saveSettings(); closeSheet(); toast('Settings saved'); render();
       };
     });
   }
@@ -1294,6 +1899,91 @@
     });
   }
 
+  /* ================= EXCEL ================= */
+  var XLSX_URL = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+  function loadXLSX(){
+    if(window.XLSX) return Promise.resolve(window.XLSX);
+    return new Promise(function(res, rej){
+      var sc = document.createElement('script'); sc.src = XLSX_URL;
+      sc.onload = function(){ res(window.XLSX); }; sc.onerror = rej;
+      document.head.appendChild(sc);
+    });
+  }
+  function openExcelForm(){
+    var ym = state.date.slice(0,7);
+    var html = '<h2>Excel Export</h2>' +
+      '<p class="hint" style="margin:-6px 0 14px;font-size:12.5px;">One Excel file with separate sheets: profit, day-by-day, jeeps, salary, attendance, udhar list, sales, trucks, expenses and more. Opens in Excel, Google Sheets or WPS on phone or laptop.</p>' +
+      '<div class="field"><label>Month for reports</label><input type="month" id="xlMonth" value="'+ym+'"></div>' +
+      '<div class="field"><label>Entry sheets (sales, trucks, expenses…)</label>'+segmented('xlScope', [['month','That month only'],['all','All time']], 'month')+'</div>' +
+      '<button class="btn btn-primary" id="xlGo">Download Excel file</button>';
+    openSheet(html, function(root){
+      var scope = wireSeg(root, 'xlScope');
+      f(root,'xlGo').onclick = function(){
+        var btn = this, m = f(root,'xlMonth').value || ym;
+        btn.disabled = true; btn.textContent = 'Preparing…';
+        loadXLSX().then(function(X){ buildExcel(X, m, scope()==='all'); closeSheet(); toast('Excel file downloaded'); })
+          .catch(function(){ toast('Needs internet the first time — try again online'); })
+          .then(function(){ btn.disabled = false; btn.textContent = 'Download Excel file'; });
+      };
+    });
+  }
+  function buildExcel(X, ym, all){
+    var wb = X.utils.book_new(), co = db.settings.company || 'Aryan Trades';
+    var pick = all ? function(){ return true; } : inMonth(ym);
+    function add(name, rows, widths){
+      var ws = X.utils.aoa_to_sheet(rows);
+      ws['!cols'] = (widths || rows[0].map(function(){ return 14; })).map(function(w){ return { wch:w }; });
+      X.utils.book_append_sheet(wb, ws, name.slice(0,31));
+    }
+    function cn(id){ var c = clientById(id); return c ? c.name : ''; }
+    function jn(id){ var j = jeepById(id); return j ? j.name : ''; }
+    function jd(id){ var j = jeepById(id); return j ? (j.driver||'') : ''; }
+    var r = monthReport(ym), mLab = monthLabel(ym);
+
+    var p = [[co+' — Profit '+mLab], [], ['Item','Amount (₹)','Detail'],
+      ['Sales', r.sellAmt, r2(r.sellK)+' kg'], ['Chicken bought', -r.buyAmt, r2(r.buyK)+' kg'], ['Stock change at farm', r.stockChange, r2(r.openStock.kg)+' → '+r2(r.closeStock.kg)+' kg'],
+      ['Margin on chicken', r.gross, ''], ['Truck freight', -r.freight, ''], ['Loading/unloading labour', -r.labour, '']];
+    r.cats.filter(function(c){ return c.key!=='house'; }).forEach(function(c){ p.push([c.label, -c.amt, '']); });
+    p.push(['Business profit', r.profit, ''], ['House expenses', -r.house, ''], ['Left after house', r.net, ''], [],
+      ['Weight', 'kg', ''], ['Bought', r.buyK, r.trucks+' trucks'], ['Sold', r.sellK, ''], ['Dead birds', r.deadK, r.deadB+' birds'],
+      ['Jeep weight loss', r.jeepLossK, ''], ['Farm weight loss', r.farmLossK, ''], ['Total loss', r.totalLossK, pct(r.totalLossK, r.buyK)], [],
+      ['Money in', '₹', ''], ['Cash sales', r.cash, ''], ['Online sales', r.online, ''], ['Given on udhar', r.udhar, ''], ['Udhar collected', r.collected, '']);
+    add('Profit', p, [28,16,26]);
+
+    add('Daily', [['Date','Truck in kg','Sold kg','Jeep loss kg','Farm loss kg','Dead kg','Sales ₹','Expenses ₹','Cash short/extra ₹']].concat(
+      dailyRows(ym).map(function(x){ return [x.date, x.inK, x.soldK, x.jeepLoss, x.farmLoss==null?'':x.farmLoss, x.deadK, x.sales, x.exp, x.diff]; })), [12,12,11,12,12,10,12,12,16]);
+    add('Jeeps', [['Jeep','Driver','Loaded kg','Sold kg','Loss kg','Sales ₹','Cash ₹','Online ₹','Udhar ₹','Should hand ₹','Handed ₹','Not handed yet ₹','Short/extra ₹']].concat(
+      jeepRows(ym).map(function(x){ return [x.j.name, x.j.driver||'', x.netK, x.soldK, x.lossK, x.amt, x.cash, x.online, x.udhar, x.toHand, x.handed, x.pending, x.diff]; })), [14,14,11,11,10,12,12,12,12,13,12,15,13]);
+    add('Salary', [['Worker','Role','Pay type','Rate ₹','Present','Half days','Absent','Earned ₹','Salary paid ₹','Advance ₹','Balance now ₹ (+ to pay / − advance)']].concat(
+      salaryRows(ym).map(function(x){ return [x.w.name, roleLabel(x.w.role), x.w.payType==='daily'?'Daily':'Monthly', x.w.payType==='daily'?num(x.w.wage):num(x.w.salary), x.m.P, x.m.H, x.m.A, x.m.earned, x.m.paidSalary, x.m.paidAdvance, x.bal]; })), [18,12,10,10,9,9,8,12,13,11,30]);
+    var dates = monthDates(ym);
+    add('Attendance', [['Worker'].concat(dates.map(function(d){ return +d.slice(8); }))].concat(
+      db.workers.map(function(w){ return [w.name].concat(dates.map(function(d){ if(w.start && d < w.start) return ''; var s = attStatus(w, d); return s==='H' ? '½' : s; })); })),
+      [18].concat(dates.map(function(){ return 4; })));
+    add('Udhar list', [['Client','Phone','Driver','Rate','Balance ₹ (+ owes you / − advance)']].concat(
+      db.clients.map(function(c){ return [c.name, c.phone||'', jn(c.jeepId)+(jd(c.jeepId)?' · '+jd(c.jeepId):''), num(c.fixedRate)>0?num(c.fixedRate):'Daily', clientBalance(c.id)]; })
+        .sort(function(a,b){ return b[4]-a[4]; })), [22,14,20,10,30]);
+    add('Sales', [['Date','Jeep','Driver','Client','Birds','Kg','Rate','Amount','Cash','Online','Udhar']].concat(
+      db.sales.filter(pick).sort(byDateAsc).map(function(s){ return [s.date, jn(s.jeepId), jd(s.jeepId), cn(s.clientId), num(s.birds)||'', num(s.kg), num(s.rate), num(s.amount), num(s.cash), num(s.online), num(s.udhar)]; })), [11,12,12,20,7,9,8,11,10,10,10]);
+    add('Trucks', [['Date','Farm','Birds','Kg','Rate','Chicken cost','Freight','Loading labour','Paid now','Paid from','Note']].concat(
+      db.trucks.filter(pick).sort(byDateAsc).map(function(t){ return [t.date, t.farm||'', num(t.birds)||'', num(t.kg), num(t.rate), num(t.amount), num(t.freight), num(t.labour), num(t.paid), t.payMode==='bank'?'Bank':'Cash', t.note||'']; })), [11,18,8,10,8,13,10,13,11,10,18]);
+    add('Farm payments', [['Date','Farm','Amount','Paid from']].concat(
+      db.farmPays.filter(pick).sort(byDateAsc).map(function(x){ return [x.date, x.farm, num(x.amount), x.mode==='bank'?'Bank':'Cash']; })), [11,20,12,10]);
+    add('Jeep loading', [['Date','Jeep','Type','Birds','Kg']].concat(
+      db.loads.filter(pick).sort(byDateAsc).map(function(l){ return [l.date, jn(l.jeepId), l.type==='return'?'Returned':'Loaded', num(l.birds)||'', num(l.kg)]; })), [11,14,10,8,10]);
+    add('Udhar payments', [['Date','Client','Amount','Mode','Collected by']].concat(
+      db.receipts.filter(pick).sort(byDateAsc).map(function(x){ return [x.date, cn(x.clientId), num(x.amount), x.mode==='online'?'Online':'Cash', x.jeepId ? jn(x.jeepId) : 'Owner']; })), [11,20,11,9,14]);
+    add('Expenses', [['Date','Type','Amount','Paid from','Jeep','Worker','Salary/Advance','Note']].concat(
+      db.expenses.filter(pick).sort(byDateAsc).map(function(e){ var w = workerById(e.workerId); return [e.date, catLabel(e.cat), num(e.amount), e.mode==='bank'?'Bank':e.mode==='driver'?'Driver cash':'Cash', jn(e.jeepId), w?w.name:'', e.workerId?(e.kind==='advance'?'Advance':'Salary'):'', e.note||'']; })), [11,18,11,12,12,16,14,24]);
+    add('Cash handover', [['Date','Jeep','Driver','Amount']].concat(
+      db.handovers.filter(pick).sort(byDateAsc).map(function(h){ return [h.date, jn(h.jeepId), jd(h.jeepId), num(h.amount)]; })), [11,14,14,12]);
+    add('Dead birds', [['Date','Birds','Kg','Note']].concat(
+      db.dead.filter(pick).sort(byDateAsc).map(function(x){ return [x.date, num(x.birds)||'', num(x.kg), x.note||'']; })), [11,8,8,20]);
+
+    X.writeFile(wb, co.replace(/[^a-z0-9]+/gi,'-') + '-' + ym + (all?'-all':'') + '.xlsx');
+  }
+
+  /* ================= backup ================= */
   function exportData(){
     var blob = new Blob([JSON.stringify(db, null, 1)], { type:'application/json' });
     var url = URL.createObjectURL(blob), a = document.createElement('a');
@@ -1310,8 +2000,8 @@
       var parsed;
       try{ parsed = JSON.parse(reader.result); }catch(e){ toast('Not a valid backup file'); return; }
       if(!parsed || !Array.isArray(parsed.sales)){ toast('Not an Aryan Trades backup'); return; }
-      confirmThen('Restore backup?', 'All data on this phone will be replaced with the backup.', 'Restore', function(){
-        db = normalize(parsed); save(); toast('Backup restored'); render();
+      confirmThen('Restore backup?', 'All current data'+(authUser?' in your account':' on this device')+' will be replaced with the backup.', 'Restore', function(){
+        db = normalize(parsed); save(); cloudReplaceAll(db); toast('Backup restored'); render();
       });
     };
     reader.readAsText(file);
@@ -1321,28 +2011,38 @@
   /* ================= render dispatch ================= */
   var FAB = {
     today: function(){ openSaleForm(); },
-    truck: function(){ openTruckForm(); },
     jeeps: function(){ openSaleForm(); },
     udhar: function(){ openReceiptForm(); },
+    staff: function(){ openWorkerForm(); },
     expenses: function(){ openExpenseForm(); }
   };
-  $fab.addEventListener('click', function(){ if(FAB[state.tab]) FAB[state.tab](); });
-  document.querySelectorAll('.tab').forEach(function(t){
-    t.addEventListener('click', function(){
-      state.tab = t.getAttribute('data-tab');
-      document.querySelectorAll('.tab').forEach(function(x){ x.classList.toggle('active', x===t); });
-      window.scrollTo(0,0); render();
-    });
+  var TITLES = { jeeps:'Jeeps & Sales', udhar:'Udhar', staff:'Staff', expenses:'Expenses', more:'More' };
+  var SUB_TITLES = { reports:'Reports', trucks:'Trucks & Farms', jeeplist:'Jeeps', data:'Backup' };
+  $fab.addEventListener('click', function(){
+    if(state.tab==='more' && state.sub==='trucks') return openTruckForm();
+    if(FAB[state.tab]) FAB[state.tab]();
   });
+  function switchTab(t){
+    state.tab = t; state.sub = null;
+    document.querySelectorAll('.tab').forEach(function(x){ x.classList.toggle('active', x.getAttribute('data-tab')===t); });
+    window.scrollTo(0,0); render();
+  }
+  document.querySelectorAll('.tab').forEach(function(t){ t.addEventListener('click', function(){ switchTab(t.getAttribute('data-tab')); }); });
   function render(){
-    $title.textContent = TITLES[state.tab] || db.settings.company || 'Aryan Trades';
-    document.title = db.settings.company || 'Aryan Trades';
+    var co = db.settings.company || 'Aryan Trades';
+    $title.textContent = state.tab==='today' ? co : (state.tab==='more' && state.sub ? SUB_TITLES[state.sub] : TITLES[state.tab]);
+    document.getElementById('sideName').textContent = co;
+    document.title = co;
     $dateLabel.textContent = state.date===todayISO() ? 'Today' : chipLabel(state.date);
     $datePick.value = state.date;
-    $fab.classList.toggle('hidden', !FAB[state.tab]);
-    ({ today:renderToday, truck:renderTruck, jeeps:renderJeeps, udhar:renderUdhar, expenses:renderExpenses, more:renderMore })[state.tab]();
+    var dot = document.getElementById('syncDot');
+    dot.classList.toggle('on', !!authUser);
+    dot.title = authUser ? 'Synced to '+authUser.email : 'Not signed in — data only on this device';
+    $fab.classList.toggle('hidden', !(FAB[state.tab] || (state.tab==='more' && state.sub==='trucks')));
+    ({ today:renderToday, jeeps:renderJeeps, udhar:renderUdhar, staff:renderStaff, expenses:renderExpenses, more:renderMore })[state.tab]();
   }
   render();
+  restoreSession();
 
   if('serviceWorker' in navigator && (location.protocol==='http:' || location.protocol==='https:')){
     window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
