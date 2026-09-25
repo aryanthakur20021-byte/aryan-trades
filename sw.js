@@ -1,5 +1,5 @@
-﻿const CACHE = 'aryan-trades-v3';
-const ASSETS = ['./index.html', './manifest.json', './icon.svg'];
+﻿const CACHE = 'aryan-traders-v4';
+const ASSETS = ['./index.html', './manifest.json', './icon.svg', './icon-192.png', './xlsx.min.js'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)));

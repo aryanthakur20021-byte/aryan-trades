@@ -1,6 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="96" fill="#ffffff"/>
-  <g transform="translate(116 22) scale(2.8)">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
   <g stroke="#0b1f3a" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
     <path d="M26 46 C14 40 10 26 16 16 C20 24 24 26 30 27 C27 20 28 13 33 9 C34 18 37 24 42 30 Z" fill="#1f2937"/>
     <path d="M24 50 C24 34 38 29 52 36 C55 26 60 20 67 20 C75 20 80 26 80 33 C80 44 75 49 73 56 C70 70 59 78 46 78 C32 78 24 66 24 50 Z" fill="#fff7ed"/>
@@ -11,7 +9,5 @@
     <path d="M80 29 L90 33 L80 37 Z" fill="#f59e0b"/>
     <path d="M42 78 L40 90 M35 91 L40 90 L44 92 M55 77 L57 90 M52 91 L57 90 L61 92" fill="none" stroke="#f59e0b" stroke-width="3"/>
   </g>
-  </g>
-  <text x="256" y="400" text-anchor="middle" font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="86" font-weight="900" fill="#d6202f">ARYAN</text>
-  <text x="256" y="472" text-anchor="middle" font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="62" font-weight="900" fill="#d6202f" letter-spacing="2">TRADERS</text>
+  <circle cx="72" cy="28" r="2.6" fill="#0b1f3a"/>
 </svg>
